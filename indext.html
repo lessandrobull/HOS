@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comportamento Humano | Plataforma de Estudos</title>
+    <style>
+        /* Paleta de Cores e Variáveis Base */
+        :root {
+            --bg-color: #F8FAFC; /* Fundo principal muito suave */
+            --card-bg: #FFFFFF; /* Fundo dos cartões branco limpo */
+            --primary-color: #3B82F6; /* Azul educacional e acolhedor */
+            --primary-light: #EFF6FF; /* Fundo para destaques */
+            --text-main: #334155; /* Texto escuro para leitura confortável (sem ser preto puro) */
+            --text-muted: #64748B; /* Texto secundário */
+            --border-color: #E2E8F0;
+            --success-color: #10B981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Container centralizado (Mobile First mas adaptável para PC) */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        /* Cabeçalho da Plataforma */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--primary-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo dos Cartões (Secções) */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .reference-badge {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Estilização do Player de Áudio nativo */
+        audio {
+            width: 100%;
+            height: 40px;
+            margin: 20px 0;
+            outline: none;
+        }
+
+        /* Botão para iniciar Quizzes (Placeholder) */
+        .btn-quiz {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-quiz:hover {
+            background-color: #2563EB;
+        }
+
+        /* Tipografia de Texto Corrido */
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        /* Rodapé */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- INTRODUÇÃO -->
+        <header>
+            <h1>O Tabuleiro da Nossa Existência</h1>
+            <p class="subtitle">Caderno Interativo de Desenvolvimento Humano</p>
+            
+            <p>Olá! Seja bem-vindo à sua jornada pessoal de autoconhecimento. Este espaço foi desenhado exclusivamente para si. Vamos silenciar o ruído externo e focar no que realmente importa: a compreensão prática e neurobiológica da sua própria vida.</p>
+            
+            <!-- Player de Áudio da Introdução (2m30s) -->
+            <audio controls>
+                <source src="audios/intro.mp3" type="audio/mpeg">
+                O seu navegador não suporta o elemento de áudio.
+            </audio>
+            <small style="color: var(--text-muted);">Ouça a introdução (2m30s) 🎙️</small>
+        </header>
+
+        <!-- SECÇÃO 01 -->
+        <main>
+            <section class="card" id="secao-1">
+                <span class="reference-badge">📚 Livro: Cap. 1 | Aulas: 02 e 03</span>
+                <h2>Secção 01: Epistemologia e Qualidade de Vida</h2>
+                
+                <p>Nesta primeira secção, vamos explorar o conceito central do Desenvolvimento Humano e a ilusão da fragmentação. O estudo científico do homem é sustentado de forma totalmente integrada por três grandes dimensões que interagem o tempo todo: Física, Cognitiva e Psicossocial.</p>
+                <p>Entenda por que um colapso relacional em casa drena imediatamente a sua capacidade cognitiva de resolver problemas no trabalho.</p>
+
+                <!-- Player de Áudio da Secção 01 (5m) -->
+                <audio controls>
+                    <source src="audios/secao1.mp3" type="audio/mpeg">
+                </audio>
+                
+                <!-- Placeholder para o Gráfico Interativo -->
+                <div style="background-color: var(--bg-color); border: 2px dashed var(--border-color); border-radius: 8px; height: 200px; display: flex; align-items: center; justify-content: center; margin: 20px 0;">
+                    <p style="color: var(--text-muted); margin: 0;">📊 [Aqui entrará o Gráfico Interativo do Pentágono da Saúde]</p>
+                </div>
+
+                <!-- Botão de Quiz da Secção -->
+                <button class="btn-quiz">Iniciar Quizzes da Secção 01 🧠</button>
+            </section>
+        </main>
+
+        <!-- CONCLUSÃO -->
+        <footer class="card">
+            <h2>Considerações Finais</h2>
+            <p>O autoconhecimento preventivo é a chave para o governo do seu ecossistema vivente. Repita este processo e celebre cada pequena vitória.</p>
+            <audio controls>
+                <source src="audios/conclusao.mp3" type="audio/mpeg">
+            </audio>
+            <p style="margin-top: 20px;">Desenvolvido com dedicação e inteligência.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
