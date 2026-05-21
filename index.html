@@ -58,7 +58,6 @@
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
-
         .scrollbar-hide {
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -69,38 +68,38 @@
 <body class="h-full flex flex-col font-sans text-slate-800 antialiased overflow-hidden">
 
     <!-- CONTAINER PRINCIPAL -->
-    <div class="flex h-full w-full overflow-hidden">
+    <div class="flex h-full w-full overflow-hidden relative">
 
-        <!-- SIDEBAR DE NAVEGAÇÃO LATERAL ESQUERDA -->
-        <aside
-            class="hidden md:flex md:w-80 md:flex-col bg-slate-900 text-slate-100 flex-shrink-0 border-r border-slate-800">
-            <div class="p-6 border-b border-slate-800 flex items-center space-x-3">
-                <div class="p-2 bg-brand-600 rounded-lg text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                        </path>
-                    </svg>
+        <!-- SIDEBAR DE NAVEGAÇÃO LATERAL ESQUERDA (Com Toggle Mobile) -->
+        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-72 md:w-80 flex flex-col bg-slate-900 text-slate-100 flex-shrink-0 border-r border-slate-800 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out h-full shadow-2xl md:shadow-none">
+            
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-brand-600 rounded-lg text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold tracking-wide uppercase text-brand-500">Pós-Graduação</h1>
+                        <p class="text-base text-slate-400">Comportamento Humano</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-sm font-bold tracking-wide uppercase text-brand-500">Pós-Graduação</h1>
-                    <p class="text-xs text-slate-400">Comportamento Humano</p>
-                </div>
+                <!-- Botão Fechar Sidebar no Mobile -->
+                <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-400 hover:text-white rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
 
             <nav class="flex-1 overflow-y-auto p-4 space-y-2">
-                <button onclick="changeSection(1)" id="btn-sec-1"
-                    class="w-full flex items-center justify-between p-3.5 rounded-xl transition-all duration-200 text-left bg-brand-600 text-white shadow-lg shadow-brand-600/10">
+                <button onclick="changeSection(1)" id="btn-sec-1" class="w-full flex items-center justify-between p-3.5 rounded-xl transition-all duration-200 text-left bg-brand-600 text-white shadow-lg shadow-brand-600/10">
                     <div class="flex items-center space-x-3 min-w-0">
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
                         <div class="min-w-0">
-                            <span class="block text-[9px] font-semibold uppercase tracking-wider opacity-60">Módulo
-                                1</span>
-                            <span class="block text-xs font-bold truncate">Epistemologia e Vida</span>
+                            <span class="block text-[11px] font-semibold uppercase tracking-wider opacity-60">Módulo 1</span>
+                            <span class="block text-base font-bold truncate">Epistemologia e Vida</span>
                         </div>
                     </div>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,14 +107,12 @@
                     </svg>
                 </button>
                 <div class="space-y-2 opacity-50">
-                    <div
-                        class="w-full flex items-center justify-between p-3.5 rounded-xl text-left text-slate-500 cursor-not-allowed">
+                    <div class="w-full flex items-center justify-between p-3.5 rounded-xl text-left text-slate-500 cursor-not-allowed">
                         <div class="flex items-center space-x-3">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
-                            <span class="text-xs font-bold">Módulo 2: Cérebro Trino</span>
+                            <span class="text-base font-bold">Módulo 2: Cérebro Trino</span>
                         </div>
                     </div>
                 </div>
@@ -124,14 +121,13 @@
             <div class="p-4 border-t border-slate-800 bg-slate-950/50">
                 <div class="flex items-center space-x-3 mb-1.5">
                     <div class="w-2 h-2 rounded-full bg-luz-verde"></div>
-                    <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Estágio Cognitivo
-                        (PNL)</span>
+                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Estágio Cognitivo (PNL)</span>
                 </div>
-                <div class="text-xs font-semibold text-slate-200" id="sidebar-stage">Incompetência Consciente</div>
+                <div class="text-base font-semibold text-slate-200" id="sidebar-stage">Incompetência Consciente</div>
                 <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
                     <div id="sidebar-progress" class="bg-brand-500 h-full w-[33%] transition-all duration-500"></div>
                 </div>
-                <p class="text-[9px] text-slate-500 mt-1 text-right" id="sidebar-progress-text">Quiz: Nível 1 de 3</p>
+                <p class="text-[11px] text-slate-500 mt-1 text-right" id="sidebar-progress-text">Quiz: Nível 1 de 3</p>
             </div>
         </aside>
 
@@ -139,35 +135,26 @@
         <main class="flex-1 flex flex-col min-w-0 bg-slate-50 relative overflow-hidden">
 
             <!-- HEADER SUPERIOR CIRÚRGICO (1 Linha no PC, 2 Linhas no Mobile) -->
-            <header
-                class="bg-white border-b border-slate-200 px-4 py-3 sm:px-6 flex flex-col md:flex-row md:items-center justify-between gap-2 z-10 shrink-0 shadow-sm">
+            <header class="bg-white border-b border-slate-200 px-4 py-3 sm:px-6 flex flex-col md:flex-row md:items-center justify-between gap-2 z-10 shrink-0 shadow-sm">
                 <!-- Esquerda: Títulos -->
                 <div class="flex items-center space-x-2 min-w-0 w-full md:w-auto">
-                    <button class="md:hidden text-slate-600 hover:text-slate-900 shrink-0">
+                    <button onclick="toggleSidebar()" class="md:hidden text-slate-600 hover:text-slate-900 shrink-0">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                     <div class="flex items-center space-x-1.5 min-w-0 flex-nowrap overflow-hidden">
-                        <span
-                            class="text-sm sm:text-base font-extrabold text-brand-600 uppercase tracking-wide shrink-0">Módulo
-                            1</span>
+                        <span class="text-lg sm:text-xl font-extrabold text-brand-600 uppercase tracking-wide shrink-0">Módulo 1</span>
                         <span class="text-slate-400 font-bold shrink-0 hidden sm:inline">-</span>
-                        <h2 class="text-sm sm:text-base font-bold text-slate-900 truncate shrink">Epistemologia,
-                            Conceitos Básicos e Qualidade de Vida</h2>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 truncate shrink">Epistemologia, Conceitos Básicos e Qualidade de Vida</h2>
                     </div>
                 </div>
 
-                <!-- Direita (PC) / Linha 2 (Mobile): Atalhos de Navegação Reduzidos -->
-                <div
-                    class="flex items-center space-x-2 text-[11px] sm:text-xs overflow-x-auto scrollbar-hide w-full md:w-auto justify-start md:justify-end shrink-0">
-                    <button onclick="scrollToCard('lecture-card')"
-                        class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Palestra</button>
-                    <button onclick="scrollToCard('graphics-card')"
-                        class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Gráficos</button>
-                    <button onclick="scrollToCard('quiz-card')"
-                        class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Quiz</button>
+                <!-- Direita (PC) / Linha 2 (Mobile): Atalhos de Navegação Reduzidos (Centralizados no Mobile) -->
+                <div class="flex items-center space-x-2 text-[13px] sm:text-sm overflow-x-auto scrollbar-hide w-full md:w-auto justify-center md:justify-end shrink-0">
+                    <button onclick="scrollToCard('lecture-card')" class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Palestra</button>
+                    <button onclick="scrollToCard('graphics-card')" class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Gráficos</button>
+                    <button onclick="scrollToCard('quiz-card')" class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Quiz</button>
                 </div>
             </header>
 
@@ -176,32 +163,28 @@
                 <div class="max-w-4xl mx-auto space-y-8 sm:space-y-12 w-full pb-10">
 
                     <!-- 1. CAIXA UNIFICADA: TEXTO DA PALESTRA E REPRODUTOR DE ÁUDIO -->
-                    <section id="lecture-card"
-                        class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden w-full flex flex-col h-[85vh] md:h-[500px]">
+                    <section id="lecture-card" class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden w-full flex flex-col h-[85vh] md:h-[500px]">
                         <!-- Header do Card da Palestra -->
-                        <div
-                            class="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-slate-50/50">
+                        <div class="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-slate-50/50">
                             <div class="flex items-center space-x-3">
-                                <span
-                                    class="p-2 bg-brand-600 border border-brand-200 rounded-lg text-brand-100 shrink-0">
+                                <!-- Ícone de microfone invertido: Fundo claro, microfone colorido -->
+                                <span class="p-2 bg-brand-100 border border-brand-200 rounded-lg text-brand-600 shrink-0">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
-                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
                                     </svg>
                                 </span>
                                 <div>
-                                    <h4 class="text-[9px] font-bold text-brand-600 uppercase tracking-widest">Estudo
-                                        Multissensorial</h4>
-                                    <h3 class="text-[11px] sm:text-xs font-bold text-slate-800">O Despertar da
-                                        Consciência: Qualidade de Vida</h3>
+                                    <h4 class="text-[11px] font-bold text-brand-600 uppercase tracking-widest">Estudo Multissensorial</h4>
+                                    <h3 class="text-sm sm:text-base font-bold text-slate-800">O Despertar da Consciência: Qualidade de Vida</h3>
                                 </div>
+                            </div>
+                            <div class="text-xs text-slate-400 font-medium hidden sm:block select-none">
+                                Toque em qualquer frase para buscar o áudio
                             </div>
                         </div>
 
                         <!-- Corpo do Texto Rolável com Spans Síncronos -->
-                        <div id="lecture-script"
-                            class="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-700 text-xs sm:text-sm leading-relaxed space-y-4 sm:space-y-5 font-normal select-none">
+                        <div id="lecture-script" class="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-700 text-base sm:text-lg leading-relaxed space-y-4 sm:space-y-5 font-normal select-none">
                             <p>
                                 Olá. Que bom que você está aqui. Eu quero que você puxe o ar profundamente e solte
                                 devagar. Se acomode bem na cadeira e desligue por alguns minutos o barulho do mundo lá
@@ -237,8 +220,7 @@
                                 é um ecossistema integrado.
                             </p>
                             <p>
-                                Logo abaixo desta palestra, eu preparei uma **central unificada de gráficos didáticos**
-                                para ancorar o
+                                Logo abaixo desta palestra, eu preparei uma **central unificada de gráficos didáticos** para ancorar o
                                 seu aprendizado de forma prática. Quero te ensinar a navegar por ela antes
                                 de darmos início ao nosso desafio de fixação.
                             </p>
@@ -246,26 +228,18 @@
                                 A primeira aba é o **Círculo Bioecológico da Qualidade de Vida**. Ele é estruturado no
                                 modelo de Urie Bronfenbrenner. No núcleo está você, o **Indivíduo**, com a sua carga de
                                 hereditariedade, predisposições genéticas e maturação natural do sistema nervoso. Ao
-                                clicar nos anéis, você poderá navegar pelos seus níveis de influência. No
-                                **Microssistema**, você
-                                vai encontrar a sua **Família Nuclear** e a **Família Estendida**, que é de onde nascem
-                                as suas crenças.
-                                No **Exossistema**, estão o seu **Nível Socioeconômico (NSE)** e a segurança da sua
-                                **Vizinhança** — fatores
-                                que determinam se o seu meio protege ou estressa você. No **Macrossistema**, estão os
-                                filtros morais
+                                clicar nos anéis, você poderá navegar pelos seus níveis de influência. No **Microssistema**, você
+                                vai encontrar a sua **Família Nuclear** e a **Família Estendida**, que é de onde nascem as suas crenças. 
+                                No **Exossistema**, estão o seu **Nível Socioeconômico (NSE)** e a segurança da sua **Vizinhança** — fatores
+                                que determinam se o seu meio protege ou estressa você. No **Macrossistema**, estão os filtros morais
                                 invisíveis da sua **Cultura, Grupo Étnico e Raça**. E tudo isso é envelopado pelo
                                 **Cronossistema**, o momento histórico e tecnológico.
                             </p>
                             <p>
-                                A segunda e terceira abas contêm a **Linha do Tempo Vital** e a **Matriz de
-                                Perspectivas**.
-                                Selecione os **Períodos do Ciclo Vital** para analisar o que muda e o que permanece
-                                constante em você em cada fase do
+                                A segunda e terceira abas contêm a **Linha do Tempo Vital** e a **Matriz de Perspectivas**. 
+                                Selecione os **Períodos do Ciclo Vital** para analisar o que muda e o que permanece constante em você em cada fase do
                                 desenvolvimento. Em Perspectivas, você verá como cada corrente científica interpreta os
-                                seus comportamentos: a **Psicanalítica** (conflitos inconscientes), a da
-                                **Aprendizagem** (condicionamentos), a **Cognitiva** (esquemas lógicos), a
-                                **Contextual** (sistemas), e a **Evolucionista** (sobrevivência instintiva).
+                                seus comportamentos: a **Psicanalítica** (conflitos inconscientes), a da **Aprendizagem** (condicionamentos), a **Cognitiva** (esquemas lógicos), a **Contextual** (sistemas), e a **Evolucionista** (sobrevivência instintiva).
                             </p>
                             <p>
                                 Navegue pela central com calma. Toque nas abas, sinta o visual e
@@ -276,61 +250,26 @@
                         </div>
 
                         <!-- Reprodutor de Áudio Compacto -->
-                        <div
-                            class="bg-slate-900 text-slate-100 p-3 sm:p-4 border-t border-slate-800 shrink-0 space-y-2.5">
+                        <div class="bg-slate-900 text-slate-100 p-3 sm:p-4 border-t border-slate-800 shrink-0 space-y-2.5">
                             <div class="flex items-center space-x-3">
-                                <input type="range" id="audio-scrubber" min="0" value="0"
-                                    oninput="scrubAudio(this.value)"
-                                    class="flex-1 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-brand-500 hover:accent-brand-400 transition-all">
-                                <span id="audio-current-time"
-                                    class="text-[9px] font-mono text-slate-400 min-w-[65px] text-right">0 / 0</span>
+                                <input type="range" id="audio-scrubber" min="0" value="0" oninput="scrubAudio(this.value)" class="flex-1 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-brand-500 hover:accent-brand-400 transition-all">
+                                <span id="audio-current-time" class="text-[11px] font-mono text-slate-400 min-w-[65px] text-right">0 / 0</span>
                             </div>
                             <div class="flex flex-row items-center justify-between gap-3 text-xs">
                                 <div class="flex items-center space-x-1 sm:space-x-3 justify-center">
-                                    <button onclick="previousSentence()"
-                                        class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg
-                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4z">
-                                            </path>
-                                        </svg></button>
-                                    <button onclick="toggleAudio()" id="btn-audio-play"
-                                        class="p-2 sm:p-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-full transition transform hover:scale-105">
-                                        <svg id="play-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                                                clip-rule="evenodd"></path>
-                                        </svg>
-                                        <svg id="pause-icon" class="w-5 h-5 hidden" fill="currentColor"
-                                            viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                                clip-rule="evenodd"></path>
-                                        </svg>
+                                    <button onclick="previousSentence()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4z"></path></svg></button>
+                                    <button onclick="toggleAudio()" id="btn-audio-play" class="p-2 sm:p-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-full transition transform hover:scale-105">
+                                        <svg id="play-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                                        <svg id="pause-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                                     </button>
-                                    <button onclick="stopAudio()"
-                                        class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg
-                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z">
-                                            </path>
-                                        </svg></button>
-                                    <button onclick="nextSentence()"
-                                        class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg
-                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M13 5l7 7-7 7"></path>
-                                        </svg></button>
+                                    <button onclick="stopAudio()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg></button>
+                                    <button onclick="nextSentence()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7"></path></svg></button>
                                 </div>
                                 <div class="flex items-center space-x-2 sm:space-x-3 justify-end flex-1 min-w-0">
-                                    <select id="audio-voice"
-                                        class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-[9px] sm:text-[11px] text-slate-200 focus:outline-none w-full max-w-[100px] sm:max-w-[140px] truncate"></select>
+                                    <select id="audio-voice" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-[11px] sm:text-sm text-slate-200 focus:outline-none w-full max-w-[120px] sm:max-w-[150px] truncate"></select>
                                     <div class="flex items-center space-x-1 shrink-0">
-                                        <input type="range" id="audio-speed" min="0.5" max="2.0" step="0.1" value="1.0"
-                                            oninput="updateAudioSpeed()"
-                                            class="w-10 sm:w-12 h-1 bg-slate-700 rounded appearance-none cursor-pointer accent-brand-500">
-                                        <span id="speed-val"
-                                            class="text-[9px] sm:text-[10px] text-slate-300 font-bold min-w-[20px]">1.0x</span>
+                                        <input type="range" id="audio-speed" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateAudioSpeed()" class="w-10 sm:w-12 h-1 bg-slate-700 rounded appearance-none cursor-pointer accent-brand-500">
+                                        <span id="speed-val" class="text-[11px] sm:text-xs text-slate-300 font-bold min-w-[20px]">1.0x</span>
                                     </div>
                                 </div>
                             </div>
@@ -338,94 +277,53 @@
                     </section>
 
                     <!-- 2. CENTRAL UNIFICADA DE GRÁFICOS DIDÁTICOS -->
-                    <section id="graphics-card"
-                        class="bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col w-full h-[85vh] md:h-[500px] overflow-hidden">
-
+                    <section id="graphics-card" class="bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col w-full h-[85vh] md:h-[500px] overflow-hidden">
+                        
                         <!-- Barra de Abas Interna (Tabs) -->
-                        <div
-                            class="flex items-center p-1.5 bg-slate-100 rounded-2xl m-2.5 sm:m-4 shrink-0 shadow-inner overflow-hidden">
-                            <button id="tab-btn-bio" onclick="switchTab('bio')"
-                                class="flex-1 py-1.5 sm:py-2 px-1 text-[9px] sm:text-[11px] font-extrabold rounded-xl transition-all bg-brand-600 text-white shadow-sm truncate">Círculo
-                                Bioecológico</button>
-                            <button id="tab-btn-vital" onclick="switchTab('vital')"
-                                class="flex-1 py-1.5 sm:py-2 px-1 text-[9px] sm:text-[11px] font-extrabold rounded-xl transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 truncate">Linha
-                                do Tempo</button>
-                            <button id="tab-btn-persp" onclick="switchTab('persp')"
-                                class="flex-1 py-1.5 sm:py-2 px-1 text-[9px] sm:text-[11px] font-extrabold rounded-xl transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 truncate">Perspectivas</button>
+                        <div class="flex items-center p-1.5 bg-slate-100 rounded-2xl m-2 sm:m-3 shrink-0 shadow-inner overflow-hidden">
+                            <button id="tab-btn-bio" onclick="switchTab('bio')" class="flex-1 py-1.5 sm:py-2 px-1 text-[11px] sm:text-sm font-extrabold rounded-xl transition-all bg-brand-600 text-white shadow-sm truncate">Círculo Bioecológico</button>
+                            <button id="tab-btn-vital" onclick="switchTab('vital')" class="flex-1 py-1.5 sm:py-2 px-1 text-[11px] sm:text-sm font-extrabold rounded-xl transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 truncate">Linha do Tempo</button>
+                            <button id="tab-btn-persp" onclick="switchTab('persp')" class="flex-1 py-1.5 sm:py-2 px-1 text-[11px] sm:text-sm font-extrabold rounded-xl transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 truncate">Perspectivas</button>
                         </div>
 
                         <!-- Área de Conteúdo das Abas (Sem rolagem) -->
                         <div class="flex-1 relative overflow-hidden px-2.5 pb-2.5 sm:px-4 sm:pb-4 flex flex-col">
-
+                            
                             <!-- CONTEÚDO DA ABA 1: CÍRCULO BIOECOLÓGICO -->
-                            <div id="tab-content-bio"
-                                class="flex flex-col md:flex-row h-full w-full gap-2 sm:gap-4 items-center justify-center">
-                                <!-- Coluna Esquerda: SVG (Otimizado para caber confortavelmente) -->
-                                <div class="shrink-0 flex justify-center w-full md:w-[45%] h-[180px] md:h-[280px]">
-                                    <svg class="h-full w-auto" viewBox="0 0 400 400" id="bio-svg">
-                                        <circle cx="200" cy="200" r="190" fill="transparent" stroke="#f1f5f9"
-                                            stroke-width="1" stroke-dasharray="4" />
-                                        <circle cx="200" cy="200" r="150" fill="transparent" stroke="#f1f5f9"
-                                            stroke-width="1" stroke-dasharray="4" />
-                                        <circle cx="200" cy="200" r="110" fill="transparent" stroke="#f1f5f9"
-                                            stroke-width="1" stroke-dasharray="4" />
-                                        <circle cx="200" cy="200" r="70" fill="transparent" stroke="#f1f5f9"
-                                            stroke-width="1" stroke-dasharray="4" />
+                            <div id="tab-content-bio" class="flex flex-col md:flex-row h-full w-full gap-2 sm:gap-4 items-center justify-center">
+                                <!-- Coluna Esquerda: SVG (Ocupando 90% do espaço no PC e centralizado no Mobile) -->
+                                <div class="shrink-0 flex justify-center w-full md:w-1/2 h-[180px] md:h-[300px]">
+                                    <svg class="h-full w-[90%] md:w-[90%] max-h-full object-contain" viewBox="0 0 400 400" id="bio-svg">
+                                        <circle cx="200" cy="200" r="190" fill="transparent" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
+                                        <circle cx="200" cy="200" r="150" fill="transparent" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
+                                        <circle cx="200" cy="200" r="110" fill="transparent" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
+                                        <circle cx="200" cy="200" r="70" fill="transparent" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
 
-                                        <circle id="ring-crono" cx="200" cy="200" r="180" fill="none" stroke="#e2e8f0"
-                                            stroke-width="18"
-                                            class="cursor-pointer hover:stroke-indigo-100 transition duration-200"
-                                            onclick="selectRing('crono')" />
-                                        <text x="200" y="27" font-size="10" font-weight="bold" fill="#64748b"
-                                            text-anchor="middle" pointer-events="none">CRONOSSISTEMA</text>
+                                        <circle id="ring-crono" cx="200" cy="200" r="180" fill="none" stroke="#e2e8f0" stroke-width="18" class="cursor-pointer hover:stroke-indigo-100 transition duration-200" onclick="selectRing('crono')" />
+                                        <text x="200" y="27" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle" pointer-events="none">CRONOSSISTEMA</text>
 
-                                        <circle id="ring-macro" cx="200" cy="200" r="145" fill="none" stroke="#e2e8f0"
-                                            stroke-width="18"
-                                            class="cursor-pointer hover:stroke-amber-100 transition duration-200"
-                                            onclick="selectRing('macro')" />
-                                        <text x="200" y="62" font-size="10" font-weight="bold" fill="#64748b"
-                                            text-anchor="middle" pointer-events="none">MACROSSISTEMA</text>
+                                        <circle id="ring-macro" cx="200" cy="200" r="145" fill="none" stroke="#e2e8f0" stroke-width="18" class="cursor-pointer hover:stroke-amber-100 transition duration-200" onclick="selectRing('macro')" />
+                                        <text x="200" y="62" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle" pointer-events="none">MACROSSISTEMA</text>
 
-                                        <circle id="ring-exo" cx="200" cy="200" r="110" fill="none" stroke="#e2e8f0"
-                                            stroke-width="18"
-                                            class="cursor-pointer hover:stroke-rose-100 transition duration-200"
-                                            onclick="selectRing('exo')" />
-                                        <text x="200" y="97" font-size="10" font-weight="bold" fill="#64748b"
-                                            text-anchor="middle" pointer-events="none">EXOSSISTEMA</text>
+                                        <circle id="ring-exo" cx="200" cy="200" r="110" fill="none" stroke="#e2e8f0" stroke-width="18" class="cursor-pointer hover:stroke-rose-100 transition duration-200" onclick="selectRing('exo')" />
+                                        <text x="200" y="97" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle" pointer-events="none">EXOSSISTEMA</text>
 
-                                        <circle id="ring-micro" cx="200" cy="200" r="75" fill="none" stroke="#e2e8f0"
-                                            stroke-width="18"
-                                            class="cursor-pointer hover:stroke-emerald-100 transition duration-200"
-                                            onclick="selectRing('micro')" />
-                                        <text x="200" y="132" font-size="10" font-weight="bold" fill="#64748b"
-                                            text-anchor="middle" pointer-events="none">MICROSSISTEMA</text>
+                                        <circle id="ring-micro" cx="200" cy="200" r="75" fill="none" stroke="#e2e8f0" stroke-width="18" class="cursor-pointer hover:stroke-emerald-100 transition duration-200" onclick="selectRing('micro')" />
+                                        <text x="200" y="132" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle" pointer-events="none">MICROSSISTEMA</text>
 
-                                        <circle id="ring-indiv" cx="200" cy="200" r="40" fill="#0284c7"
-                                            class="cursor-pointer hover:fill-brand-700 transition duration-200"
-                                            onclick="selectRing('indiv')" />
-                                        <text x="200" y="203" font-size="10" font-weight="extrabold" fill="#ffffff"
-                                            text-anchor="middle" pointer-events="none">INDIVÍDUO</text>
+                                        <circle id="ring-indiv" cx="200" cy="200" r="40" fill="#0284c7" class="cursor-pointer hover:fill-brand-700 transition duration-200" onclick="selectRing('indiv')" />
+                                        <text x="200" y="203" font-size="12" font-weight="extrabold" fill="#ffffff" text-anchor="middle" pointer-events="none">INDIVÍDUO</text>
                                     </svg>
                                 </div>
                                 <!-- Coluna Direita: Painel Explicativo Limitado -->
-                                <div
-                                    class="flex-1 w-full md:w-[55%] bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center overflow-hidden">
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <span id="ring-badge"
-                                            class="px-2 py-0.5 bg-brand-500 text-white font-extrabold rounded-md text-[8px] sm:text-[9px] uppercase tracking-wider">Módulo
-                                            1</span>
-                                        <span id="ring-reference"
-                                            class="text-[9px] text-slate-400 font-bold truncate"></span>
+                                <div class="flex-1 w-full md:w-1/2 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center overflow-hidden">
+                                    <div class="flex items-center space-x-2 mb-1 justify-center">
+                                        <span id="ring-badge" class="px-2 py-0.5 bg-brand-500 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider">Módulo 1</span>
+                                        <span id="ring-reference" class="text-[11px] text-slate-400 font-bold truncate"></span>
                                     </div>
-                                    <h5 id="ring-title"
-                                        class="text-xs sm:text-sm font-extrabold text-slate-900 mt-1 leading-tight">
-                                        Toque nos anéis</h5>
-                                    <p id="ring-def"
-                                        class="text-[10px] sm:text-xs text-slate-600 mt-1.5 sm:mt-2 leading-snug line-clamp-4">
-                                        Interaja com as camadas do diagrama para carregar as definições ecológicas e
-                                        associações comportamentais do Índice.</p>
-                                    <div id="ring-association-box"
-                                        class="hidden mt-2 pt-2 border-t border-slate-200 text-[9px] sm:text-[11px] text-slate-500 leading-snug line-clamp-3">
+                                    <h5 id="ring-title" class="text-base sm:text-lg font-extrabold text-slate-900 mt-1 leading-tight text-center">Toque nos anéis</h5>
+                                    <p id="ring-def" class="text-xs sm:text-base text-slate-600 mt-1.5 sm:mt-2 leading-snug line-clamp-4 text-center">Interaja com as camadas do diagrama para carregar as definições ecológicas e associações comportamentais do Índice.</p>
+                                    <div id="ring-association-box" class="hidden mt-2 pt-2 border-t border-slate-200 text-[11px] sm:text-sm text-slate-500 leading-snug line-clamp-3 text-center">
                                         <strong>Aplicação:</strong> <span id="ring-association"></span>
                                     </div>
                                 </div>
@@ -434,54 +332,31 @@
                             <!-- CONTEÚDO DA ABA 2: LINHA DO TEMPO VITAL -->
                             <div id="tab-content-vital" class="hidden flex-col h-full w-full gap-2 sm:gap-3">
                                 <!-- 8 Botões sempre em 2 colunas -->
-                                <div class="grid grid-cols-2 gap-1.5 shrink-0" id="vital-buttons-bar">
-                                    <button onclick="selectVitalStage('prenatal')" id="btn-v-prenatal"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-[10px] sm:text-xs font-bold transition">Pré-natal</button>
-                                    <button onclick="selectVitalStage('infancia_1')" id="btn-v-infancia_1"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-[10px] sm:text-xs font-bold transition">Prim.
-                                        Infância</button>
-                                    <button onclick="selectVitalStage('infancia_2')" id="btn-v-infancia_2"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-[10px] sm:text-xs font-bold transition">Segunda
-                                        Infância</button>
-                                    <button onclick="selectVitalStage('infancia_3')" id="btn-v-infancia_3"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-[10px] sm:text-xs font-bold transition">Terceira
-                                        Infância</button>
-                                    <button onclick="selectVitalStage('adolescencia')" id="btn-v-adolescencia"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-[10px] sm:text-xs font-bold transition">Adolescência</button>
-                                    <button onclick="selectVitalStage('adulto_jovem')" id="btn-v-adulto_jovem"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-[10px] sm:text-xs font-bold transition">Adulta
-                                        Jovem</button>
-                                    <button onclick="selectVitalStage('adulto_inter')" id="btn-v-adulto_inter"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-[10px] sm:text-xs font-bold transition">Adulta
-                                        Interm.</button>
-                                    <button onclick="selectVitalStage('adulto_tardio')" id="btn-v-adulto_tardio"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-[10px] sm:text-xs font-bold transition">Adulta
-                                        Tardia</button>
+                                <div class="grid grid-cols-2 gap-1 sm:gap-2 shrink-0" id="vital-buttons-bar">
+                                    <button onclick="selectVitalStage('prenatal')" id="btn-v-prenatal" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Pré-natal</button>
+                                    <button onclick="selectVitalStage('infancia_1')" id="btn-v-infancia_1" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Prim. Infância</button>
+                                    <button onclick="selectVitalStage('infancia_2')" id="btn-v-infancia_2" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Seg. Infância</button>
+                                    <button onclick="selectVitalStage('infancia_3')" id="btn-v-infancia_3" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Terc. Infância</button>
+                                    <button onclick="selectVitalStage('adolescencia')" id="btn-v-adolescencia" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Adolescência</button>
+                                    <button onclick="selectVitalStage('adulto_jovem')" id="btn-v-adulto_jovem" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Adulta Jovem</button>
+                                    <button onclick="selectVitalStage('adulto_inter')" id="btn-v-adulto_inter" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Adulta Interm.</button>
+                                    <button onclick="selectVitalStage('adulto_tardio')" id="btn-v-adulto_tardio" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Adulta Tardia</button>
                                 </div>
                                 <!-- Painel Explicativo -->
-                                <div
-                                    class="flex-1 bg-slate-50 p-2.5 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center overflow-hidden">
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <span id="vital-badge"
-                                            class="px-2 py-0.5 bg-slate-400 text-white font-extrabold rounded-md text-[8px] sm:text-[9px] uppercase tracking-wider">Fases</span>
-                                        <span id="vital-reference"
-                                            class="text-[9px] text-slate-400 font-bold truncate"></span>
+                                <div class="flex-1 bg-slate-50 p-2.5 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center overflow-hidden">
+                                    <div class="flex items-center space-x-2 mb-1 justify-center">
+                                        <span id="vital-badge" class="px-2 py-0.5 bg-slate-400 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider">Fases</span>
+                                        <span id="vital-reference" class="text-[11px] text-slate-400 font-bold truncate"></span>
                                     </div>
-                                    <h5 id="vital-title"
-                                        class="text-xs sm:text-sm font-extrabold text-slate-900 mt-0.5 leading-tight">
-                                        Escolha o Período Vital</h5>
-                                    <p id="vital-def"
-                                        class="text-[10px] sm:text-xs text-slate-600 mt-1 leading-snug line-clamp-3">
-                                        Selecione nos botões acima a fase temporal de desenvolvimento biológico e
-                                        cognitivo para aprofundar.</p>
-
-                                    <div id="vital-details-grid"
-                                        class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mt-2 pt-2 border-t border-slate-200">
-                                        <div class="text-[10px] sm:text-[11px] text-slate-600 leading-snug">
+                                    <h5 id="vital-title" class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5 leading-tight text-center">Escolha o Período Vital</h5>
+                                    <p id="vital-def" class="text-xs sm:text-base text-slate-600 mt-1 leading-snug line-clamp-3 text-center">Selecione nos botões acima a fase temporal de desenvolvimento biológico e cognitivo para aprofundar.</p>
+                                    
+                                    <div id="vital-details-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mt-2 pt-2 border-t border-slate-200 w-full text-center">
+                                        <div class="text-xs sm:text-sm text-slate-600 leading-snug">
                                             <strong id="col-1-title" class="text-brand-700">Mudanças:</strong>
                                             <p id="col-1-text" class="mt-0.5 line-clamp-3 text-slate-500"></p>
                                         </div>
-                                        <div class="text-[10px] sm:text-[11px] text-slate-600 leading-snug">
+                                        <div class="text-xs sm:text-sm text-slate-600 leading-snug">
                                             <strong id="col-2-title" class="text-brand-700">Estabilidade:</strong>
                                             <p id="col-2-text" class="mt-0.5 line-clamp-3 text-slate-500"></p>
                                         </div>
@@ -492,45 +367,28 @@
                             <!-- CONTEÚDO DA ABA 3: MATRIZ DE PERSPECTIVAS -->
                             <div id="tab-content-persp" class="hidden flex-col h-full w-full gap-2 sm:gap-3">
                                 <!-- 5 Botões em 2 colunas -->
-                                <div class="grid grid-cols-2 gap-1.5 shrink-0" id="persp-buttons-bar">
-                                    <button onclick="selectPerspective('psicanalitica')" id="btn-p-psicanalitica"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] sm:text-xs font-bold rounded-lg transition">Psicanalítica</button>
-                                    <button onclick="selectPerspective('aprendizagem')" id="btn-p-aprendizagem"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] sm:text-xs font-bold rounded-lg transition">Aprendizagem</button>
-                                    <button onclick="selectPerspective('cognitiva')" id="btn-p-cognitiva"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] sm:text-xs font-bold rounded-lg transition">Cognitiva</button>
-                                    <button onclick="selectPerspective('contextual')" id="btn-p-contextual"
-                                        class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] sm:text-xs font-bold rounded-lg transition">Contextual</button>
-                                    <button onclick="selectPerspective('evolucionista')" id="btn-p-evolucionista"
-                                        class="col-span-2 py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] sm:text-xs font-bold rounded-lg transition">Evolucionista
-                                        / Biológica</button>
+                                <div class="grid grid-cols-2 gap-1 sm:gap-2 shrink-0" id="persp-buttons-bar">
+                                    <button onclick="selectPerspective('psicanalitica')" id="btn-p-psicanalitica" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Psicanalítica</button>
+                                    <button onclick="selectPerspective('aprendizagem')" id="btn-p-aprendizagem" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Aprendizagem</button>
+                                    <button onclick="selectPerspective('cognitiva')" id="btn-p-cognitiva" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Cognitiva</button>
+                                    <button onclick="selectPerspective('contextual')" id="btn-p-contextual" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Contextual</button>
+                                    <button onclick="selectPerspective('evolucionista')" id="btn-p-evolucionista" class="col-span-2 py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Evolucionista / Biológica</button>
                                 </div>
                                 <!-- Painel Explicativo -->
-                                <div
-                                    class="flex-1 bg-slate-50 p-2.5 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center overflow-hidden">
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <span id="persp-badge"
-                                            class="px-2 py-0.5 bg-indigo-500 text-white font-extrabold rounded-md text-[8px] sm:text-[9px] uppercase tracking-wider">Teorias</span>
-                                        <span id="persp-reference"
-                                            class="text-[9px] text-slate-400 font-bold truncate"></span>
+                                <div class="flex-1 bg-slate-50 p-2.5 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center overflow-hidden">
+                                    <div class="flex items-center space-x-2 mb-1 justify-center">
+                                        <span id="persp-badge" class="px-2 py-0.5 bg-indigo-500 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider">Teorias</span>
+                                        <span id="persp-reference" class="text-[11px] text-slate-400 font-bold truncate"></span>
                                     </div>
-                                    <h5 id="persp-title"
-                                        class="text-xs sm:text-sm font-extrabold text-slate-900 mt-0.5 leading-tight">
-                                        Escolha a Lente Teórica</h5>
-                                    <p id="persp-def"
-                                        class="text-[10px] sm:text-xs text-slate-600 mt-1 leading-snug line-clamp-3">
-                                        Mapeia as origens do comportamento através de filtros científicos específicos.
-                                    </p>
-
-                                    <div id="persp-details-grid"
-                                        class="hidden mt-2 pt-2 border-t border-slate-200 space-y-1.5">
-                                        <div
-                                            class="text-[10px] sm:text-[11px] text-slate-600 leading-snug line-clamp-2">
+                                    <h5 id="persp-title" class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5 leading-tight text-center">Escolha a Lente Teórica</h5>
+                                    <p id="persp-def" class="text-xs sm:text-base text-slate-600 mt-1 leading-snug line-clamp-3 text-center">Mapeia as origens do comportamento através de filtros científicos específicos.</p>
+                                    
+                                    <div id="persp-details-grid" class="hidden mt-2 pt-2 border-t border-slate-200 space-y-1.5 w-full text-center">
+                                        <div class="text-xs sm:text-sm text-slate-600 leading-snug line-clamp-2">
                                             <strong id="persp-col-1-title" class="text-indigo-700">Conceito:</strong>
                                             <span id="persp-col-1-text" class="text-slate-500"></span>
                                         </div>
-                                        <div
-                                            class="text-[10px] sm:text-[11px] text-slate-600 leading-snug line-clamp-2">
+                                        <div class="text-xs sm:text-sm text-slate-600 leading-snug line-clamp-2">
                                             <strong id="persp-col-2-title" class="text-indigo-700">Aplicação:</strong>
                                             <span id="persp-col-2-text" class="text-slate-500"></span>
                                         </div>
@@ -542,36 +400,26 @@
                     </section>
 
                     <!-- 3. QUIZ EVOLUTIVO DE RETENÇÃO SINÁPTICA -->
-                    <section id="quiz-card"
-                        class="bg-white rounded-3xl shadow-sm border border-slate-200 flex flex-col w-full h-[85vh] md:h-[500px] overflow-hidden shrink-0">
-                        <div class="p-4 sm:p-6 bg-brand-900 text-white shrink-0">
+                    <section id="quiz-card" class="bg-white rounded-3xl shadow-sm border border-slate-200 flex flex-col w-full h-[85vh] md:h-[500px] overflow-hidden shrink-0">
+                        <div class="p-4 sm:p-5 bg-brand-900 text-white shrink-0">
                             <div class="flex items-center justify-between mb-1">
-                                <span id="quiz-level-badge"
-                                    class="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-brand-400">Quiz
-                                    • Nível 1 de 3</span>
-                                <span id="quiz-score-indicator"
-                                    class="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full bg-brand-800 text-brand-200 font-extrabold">Q.
-                                    1 de 10</span>
+                                <span id="quiz-level-badge" class="text-xs sm:text-base font-bold tracking-widest uppercase text-brand-400">Quiz • Nível 1 de 3</span>
+                                <span id="quiz-score-indicator" class="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-brand-800 text-brand-200 font-extrabold">Q. 1 de 10</span>
                             </div>
-                            <h3 class="text-sm sm:text-lg font-extrabold leading-tight">Doutrinação Ativa: Hipocampo
-                            </h3>
+                            <h3 class="text-lg sm:text-2xl font-extrabold leading-tight">Doutrinação Ativa: Hipocampo</h3>
                         </div>
 
                         <!-- Corpo do Quiz com rolagem estritamente interna -->
-                        <div class="p-4 sm:p-6 space-y-4 flex-1 overflow-y-auto" id="quiz-container">
+                        <div class="p-3 sm:p-4 space-y-2.5 flex-1 overflow-y-auto" id="quiz-container">
                             <!-- Inserido dinamicamente por JS -->
                         </div>
                     </section>
-
-                    <!-- FOOTER ORIGINAL RESTAURADO -->
-                    <footer
-                        class="py-8 text-center text-[11px] text-slate-400 border-t border-slate-200 space-y-2 mt-8 shrink-0">
-                        <p class="font-semibold uppercase tracking-wider text-slate-500">Desenvolvimento em Coprodução
-                            pelo Comitê de Especialistas</p>
-                        <p>Engenheiro de Conhecimento e Designer Instrucional Avançado • Desenvolvedor Front-End e Líder
-                            Técnico de PWA</p>
-                        <p>© 2026 Plataforma de Estudos Multissensorial "Comportamento Humano". Todos os direitos
-                            reservados.</p>
+                    
+                    <!-- FOOTER -->
+                    <footer class="py-8 text-center text-sm text-slate-400 border-t border-slate-200 space-y-2 mt-8 shrink-0">
+                        <p class="font-semibold uppercase tracking-wider text-slate-500">Desenvolvimento em Coprodução pelo Comitê de Especialistas</p>
+                        <p>Engenheiro de Conhecimento e Designer Instrucional Avançado • Desenvolvedor Front-End e Líder Técnico de PWA</p>
+                        <p>© 2026 Plataforma de Estudos Multissensorial "Comportamento Humano". Todos os direitos reservados.</p>
                     </footer>
 
                 </div>
@@ -579,36 +427,32 @@
         </main>
     </div>
 
-    <!-- TOAST NOTIFICATIONS CONTAINER -->
-    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-3 pointer-events-none"></div>
-
     <!-- CONFETTI CANVAS -->
     <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-40 w-full h-full"></canvas>
 
     <!-- MOTOR LÓGICO E BANCO DE DADOS (JS) -->
     <script>
+        // MENU HAMBURGUER (MOBILE)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
         // LÓGICA DE NAVEGAÇÃO DAS ABAS (TABS) NA CAIXA DE GRÁFICOS
         function switchTab(tabId) {
-            // Arrays de referência
             const tabs = ['bio', 'vital', 'persp'];
-
-            // Oculta todos os conteúdos e reseta estilo dos botões
+            
             tabs.forEach(t => {
                 document.getElementById(`tab-content-${t}`).classList.add('hidden');
                 document.getElementById(`tab-content-${t}`).classList.remove('flex');
-
+                
                 const btn = document.getElementById(`tab-btn-${t}`);
                 btn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
                 btn.classList.add('bg-transparent', 'text-slate-500', 'hover:bg-slate-200/50', 'hover:text-slate-800');
             });
 
-            // Exibe a aba solicitada e ativa seu botão
             document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
-            if (tabId === 'bio') {
-                document.getElementById(`tab-content-${tabId}`).classList.add('flex'); // Bioecológico precisa de flex (row/col)
-            } else {
-                document.getElementById(`tab-content-${tabId}`).classList.add('flex');
-            }
+            document.getElementById(`tab-content-${tabId}`).classList.add('flex');
 
             const activeBtn = document.getElementById(`tab-btn-${tabId}`);
             activeBtn.classList.remove('bg-transparent', 'text-slate-500', 'hover:bg-slate-200/50', 'hover:text-slate-800');
@@ -649,32 +493,32 @@
             psicanalitica: {
                 badge: "Perspectiva", ref: "[Cap. 2]", title: "Psicanalítica",
                 def: "O comportamento humano é impulsionado por forças emocionais profundas inconscientes e crises psicossociais não solucionadas.",
-                col1_title: "Foco:", col1_text: "Conflitos de base e traumas infantis manifestos na vida adulta.",
-                col2_title: "Uso:", col2_text: "Desvendar autodefesas, loops e autossabotagens."
+                col1_title: "Foco", col1_text: "Conflitos de base e traumas infantis manifestos na vida adulta.",
+                col2_title: "Uso", col2_text: "Desvendar autodefesas, loops e autossabotagens."
             },
             aprendizagem: {
                 badge: "Perspectiva", ref: "[Aula 12]", title: "Aprendizagem",
                 def: "O comportamento é moldado por recompensas, punições e pela modelagem social direta (Bandura).",
-                col1_title: "Foco:", col1_text: "Mecânica observável de causa e efeito das respostas aprendidas.",
-                col2_title: "Uso:", col2_text: "Mapear como vícios foram gravados pelo piloto automático."
+                col1_title: "Foco", col1_text: "Mecânica observável de causa e efeito das respostas aprendidas.",
+                col2_title: "Uso", col2_text: "Mapear como vícios foram gravados pelo piloto automático."
             },
             cognitiva: {
                 badge: "Perspectiva", ref: "[Aula 13]", title: "Cognitiva",
                 def: "Estuda o processamento interno de informações lógicas, estruturação do pensamento e esquemas de crenças.",
-                col1_title: "Foco:", col1_text: "Como os esquemas mentais rígidos decodificam a realidade.",
-                col2_title: "Uso:", col2_text: "Explicar névoas mentais e loops obsessivos (Ad) de Ricardo."
+                col1_title: "Foco", col1_text: "Como os esquemas mentais rígidos decodificam a realidade.",
+                col2_title: "Uso", col2_text: "Explicar névoas mentais e loops obsessivos (Ad) de Ricardo."
             },
             contextual: {
                 badge: "Perspectiva", ref: "[Aula 21]", title: "Contextual (Bioecológica)",
                 def: "A teoria (Bronfenbrenner) que estuda o ser humano como reflexo de seu ecossistema vivo e concêntrico de influências mútuas.",
-                col1_title: "Foco:", col1_text: "A retroalimentação contínua dos múltiplos sistemas sociais.",
-                col2_title: "Uso:", col2_text: "Somatização como feedback recursivo às desregulações do ambiente."
+                col1_title: "Foco", col1_text: "A retroalimentação contínua dos múltiplos sistemas sociais.",
+                col2_title: "Uso", col2_text: "Somatização como feedback recursivo às desregulações do ambiente."
             },
             evolucionista: {
                 badge: "Perspectiva", ref: "[Aula 06]", title: "Evolucionista (Darwin)",
                 def: "Analisa o comportamento através do valor adaptativo e de sobrevivência que as respostas orgânicas desempenham para a espécie.",
-                col1_title: "Foco:", col1_text: "Reações reflexas autonômicas e impulsos instintivos.",
-                col2_title: "Uso:", col2_text: "Desvendar os ataques ou fugas (sequestro) do cérebro reptiliano."
+                col1_title: "Foco", col1_text: "Reações reflexas autonômicas e impulsos instintivos.",
+                col2_title: "Uso", col2_text: "Desvendar os ataques ou fugas (sequestro) do cérebro reptiliano."
             }
         };
 
@@ -683,54 +527,53 @@
             prenatal: {
                 badge: "Fase Vital", ref: "[Cap. 1]", title: "Período Pré-natal",
                 def: "A base orgânica inicial sob fortes influências do ambiente uterino e fatores de hereditariedade.",
-                col1_title: "O que Muda:", col1_text: "Crescimento físico acelerado; vulnerabilidade a teratógenos.",
-                col2_title: "Estabilidade:", col2_text: "Predisposições genéticas e os contornos iniciais de temperamento."
+                col1_title: "O que Muda", col1_text: "Crescimento físico acelerado; vulnerabilidade a teratógenos.",
+                col2_title: "Estabilidade", col2_text: "Predisposições genéticas e os contornos iniciais de temperamento."
             },
             infancia_1: {
                 badge: "Fase Vital", ref: "[Aula 10]", title: "Primeira Infância",
                 def: "Transição extrema. O bebê opera por impulsos de sobrevivência do cérebro reptiliano (Incompetência Inconsciente).",
-                col1_title: "O que Muda:", col1_text: "Aperfeiçoamento motor; aquisição básica da linguagem.",
-                col2_title: "Estabilidade:", col2_text: "Vínculos de apego que forjam a segurança emocional do núcleo."
+                col1_title: "O que Muda", col1_text: "Aperfeiçoamento motor; aquisição básica da linguagem.",
+                col2_title: "Estabilidade", col2_text: "Vínculos de apego que forjam a segurança emocional do núcleo."
             },
             infancia_2: {
                 badge: "Fase Vital", ref: "[Cap. 1]", title: "Segunda Infância",
                 def: "Abertura do mundo social, imaginação lúdica e forte exploração de papéis na vizinhança.",
-                col1_title: "O que Muda:", col1_text: "Coordenação motora fina; pensamento representacional e egocêntrico.",
-                col2_title: "Estabilidade:", col2_text: "O temperamento começa a se fixar como personalidade."
+                col1_title: "O que Muda", col1_text: "Coordenação motora fina; pensamento representacional e egocêntrico.",
+                col2_title: "Estabilidade", col2_text: "O temperamento começa a se fixar como personalidade."
             },
             infancia_3: {
                 badge: "Fase Vital", ref: "[Aula 12]", title: "Terceira Infância",
                 def: "Fase marcada pela inserção na escola formal e modelagem social intensa (Bandura) com o grupo de pares.",
-                col1_title: "O que Muda:", col1_text: "Ativação do processamento lógico concreto; autoeficácia em alta.",
-                col2_title: "Estabilidade:", col2_text: "A estruturação duradoura da autoestima e pertença."
+                col1_title: "O que Muda", col1_text: "Ativação do processamento lógico concreto; autoeficácia em alta.",
+                col2_title: "Estabilidade", col2_text: "A estruturação duradoura da autoestima e pertença."
             },
             adolescencia: {
                 badge: "Fase Vital", ref: "[Cap. 1]", title: "Adolescência",
                 def: "Transição e mutações hormonais combinadas com fortes choques de identidade e autonomia no Exossistema.",
-                col1_title: "O que Muda:", col1_text: "Maturação do neocórtex; surgimento do raciocínio formal e complexo.",
-                col2_title: "Estabilidade:", col2_text: "Vulnerabilidade profunda de grupos e valores ético-morais."
+                col1_title: "O que Muda", col1_text: "Maturação do neocórtex; surgimento do raciocínio formal e complexo.",
+                col2_title: "Estabilidade", col2_text: "Vulnerabilidade profunda de grupos e valores ético-morais."
             },
             adulto_jovem: {
                 badge: "Fase Vital", ref: "[Aula 02]", title: "Adulta Jovem",
                 def: "A fase matriz do faturamento, constituição de família e estabelecimento da própria carreira.",
-                col1_title: "O que Muda:", col1_text: "Compromissos cruciais profissionais e afetivos a longo prazo.",
-                col2_title: "Estabilidade:", col2_text: "Personalidade geral e estilo cognitivo se cimentam."
+                col1_title: "O que Muda", col1_text: "Compromissos cruciais profissionais e afetivos a longo prazo.",
+                col2_title: "Estabilidade", col2_text: "Personalidade geral e estilo cognitivo se cimentam."
             },
             adulto_inter: {
                 badge: "Fase Vital", ref: "[Aula 14]", title: "Adulta Intermediária",
                 def: "Estabilidade existencial marcada por dilemas temporais agudos e crises somáticas de carga alostática.",
-                col1_title: "O que Muda:", col1_text: "Declínio físico discreto; revisão e questionamento do próprio propósito.",
-                col2_title: "Estabilidade:", col2_text: "Máxima maturidade do lobo frontal (veto cognitivo) para problemas complexos."
+                col1_title: "O que Muda", col1_text: "Declínio físico discreto; revisão e questionamento do próprio propósito.",
+                col2_title: "Estabilidade", col2_text: "Máxima maturidade do lobo frontal (veto cognitivo) para problemas complexos."
             },
             adulto_tardio: {
                 badge: "Fase Vital", ref: "[Cap. 1]", title: "Adulta Tardia",
                 def: "Fase reflexiva integrativa sobre realizações passadas em confronto direto com os drenos biológicos físicos.",
-                col1_title: "O que Muda:", col1_text: "Perda acentuada em capacidades orgânicas e na velocidade motora.",
-                col2_title: "Estabilidade:", col2_text: "A sabedoria cimentada e a alta blindagem e resiliência psicossocial."
+                col1_title: "O que Muda", col1_text: "Perda acentuada em capacidades orgânicas e na velocidade motora.",
+                col2_title: "Estabilidade", col2_text: "A sabedoria cimentada e a alta blindagem e resiliência psicossocial."
             }
         };
 
-        // BANCO DE DADOS DE 30 QUESTÕES DO QUIZ (Simplificadas para caber sem rolar infinitamente)
         const QUIZ_QUESTIONS = [
             {
                 id: 1, level: 1,
@@ -1099,7 +942,7 @@
         ];
 
         let currentQuestionIndex = 0;
-        let activeQuizLevel = 1;
+        let activeQuizLevel = 1; 
         let currentQuizQuestions = [];
         let sentences = [];
         let currentSentenceIndex = 0;
@@ -1110,14 +953,9 @@
             const container = document.getElementById("content-viewport");
             const element = document.getElementById(cardId);
             if (container && element) {
-                const header = document.querySelector("header");
-                const headerOffset = header ? header.offsetHeight : 0;
-
                 const elementPosition = element.getBoundingClientRect().top;
                 const containerPosition = container.getBoundingClientRect().top;
-
                 const scrollPosition = elementPosition - containerPosition + container.scrollTop - 12;
-
                 container.scrollTo({ top: scrollPosition, behavior: "smooth" });
             }
         }
@@ -1130,7 +968,7 @@
             paragraphs.forEach(p => {
                 const text = p.innerHTML;
                 const rawSentences = text.match(/[^.!?]+[.!?]+(\s|$)/g) || [text];
-                p.innerHTML = "";
+                p.innerHTML = ""; 
 
                 rawSentences.forEach(s => {
                     const cleanText = s.replace(/<[^>]*>/g, "").trim();
@@ -1139,7 +977,7 @@
                         span.id = `s-${globalIndex}`;
                         span.className = "cursor-pointer rounded transition-all duration-150 px-1 hover:bg-slate-100 block sm:inline";
                         span.innerHTML = s;
-
+                        
                         const sentenceId = globalIndex;
                         span.onclick = () => jumpToSentence(sentenceId);
                         p.appendChild(span);
@@ -1160,7 +998,7 @@
             const voiceSelect = document.getElementById("audio-voice");
             if (!voiceSelect) return;
             voiceSelect.innerHTML = "";
-
+            
             const voices = window.speechSynthesis.getVoices();
             const ptVoices = voices.filter(v => v.lang.toLowerCase().startsWith("pt"));
 
@@ -1222,7 +1060,7 @@
             document.getElementById("play-icon").classList.remove("hidden");
             document.getElementById("pause-icon").classList.add("hidden");
             stopSynthesisOnly();
-
+            
             sentences.forEach(s => s.element.classList.remove("bg-brand-50", "border-b-2", "border-brand-500", "text-slate-950", "font-medium"));
             currentSentenceIndex = 0;
             const scrubber = document.getElementById("audio-scrubber");
@@ -1238,7 +1076,6 @@
             if (currentSentenceIndex < 0) currentSentenceIndex = 0;
             if (currentSentenceIndex >= sentences.length) {
                 stopAudio();
-                showToast("Podcast de tutoria concluído!", "success");
                 return;
             }
 
@@ -1248,7 +1085,7 @@
 
             const active = sentences[currentSentenceIndex];
             active.element.classList.add("bg-brand-50", "border-b-2", "border-brand-500", "text-slate-950", "font-medium");
-
+            
             const scriptBox = document.getElementById("lecture-script");
             const relativeOffset = active.element.offsetTop - scriptBox.offsetTop - 40;
             scriptBox.scrollTo({ top: relativeOffset, behavior: "smooth" });
@@ -1285,13 +1122,13 @@
             const scrubber = document.getElementById("audio-scrubber");
             if (scrubber) scrubber.value = index;
             updateTimeDisplay();
-
+            
             if (isPlaying) {
                 speakSentence();
             } else {
                 sentences.forEach(s => s.element.classList.remove("bg-brand-50", "border-b-2", "border-brand-500", "text-slate-950", "font-medium"));
                 sentences[index].element.classList.add("bg-brand-50", "border-b-2", "border-brand-500", "text-slate-950", "font-medium");
-
+                
                 const scriptBox = document.getElementById("lecture-script");
                 const relativeOffset = sentences[index].element.offsetTop - scriptBox.offsetTop - 40;
                 scriptBox.scrollTo({ top: relativeOffset, behavior: "smooth" });
@@ -1310,14 +1147,14 @@
             activeQuizLevel = level;
             currentQuizQuestions = QUIZ_QUESTIONS.filter(q => q.level === level);
             currentQuestionIndex = 0;
-
+            
             const badge = document.getElementById("quiz-level-badge");
-            if (badge) badge.textContent = `Quiz • Nível ${level} de 3`;
-
+            if(badge) badge.textContent = `Quiz • Nível ${level} de 3`;
+            
             const stageText = document.getElementById("sidebar-stage");
             const progress = document.getElementById("sidebar-progress");
             const progressText = document.getElementById("sidebar-progress-text");
-
+            
             if (level === 1) {
                 if (stageText) stageText.textContent = "Incompetência Consciente";
                 if (progress) progress.style.width = "33%";
@@ -1335,26 +1172,26 @@
         }
 
         function renderQuestion() {
-            if (currentQuizQuestions.length === 0) return;
+            if(currentQuizQuestions.length === 0) return;
             const q = currentQuizQuestions[currentQuestionIndex];
             const container = document.getElementById("quiz-container");
             const scoreIndicator = document.getElementById("quiz-score-indicator");
+            
+            if(scoreIndicator) scoreIndicator.textContent = `Q. ${currentQuestionIndex + 1} de 10`;
 
-            if (scoreIndicator) scoreIndicator.textContent = `Q. ${currentQuestionIndex + 1} de 10`;
-
-            if (container) {
+            if(container) {
                 container.innerHTML = `
                     <div class="space-y-4">
-                        <h4 class="text-sm font-bold text-slate-900 leading-relaxed">${q.id}. ${q.question}</h4>
-                        <div class="grid grid-cols-1 gap-2.5" id="quiz-options-grid">
+                        <h4 class="text-lg font-bold text-slate-900 leading-relaxed">${q.id}. ${q.question}</h4>
+                        <div class="grid grid-cols-1 gap-1.5" id="quiz-options-grid">
                             ${q.options.map((opt, i) => `
-                                <button onclick="submitAnswer(${i})" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition duration-150 text-xs font-semibold leading-relaxed flex items-start space-x-3">
-                                    <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center flex-shrink-0 text-[10px] font-extrabold mt-0.5">${String.fromCharCode(65 + i)}</span>
+                                <button onclick="submitAnswer(${i})" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition duration-150 text-base font-semibold leading-relaxed flex items-start space-x-3">
+                                    <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center flex-shrink-0 text-xs font-extrabold mt-0.5">${String.fromCharCode(65 + i)}</span>
                                     <span class="flex-1">${opt}</span>
                                 </button>
                             `).join('')}
                         </div>
-                        <div id="quiz-feedback" class="hidden p-4 rounded-xl transition duration-300 text-xs"></div>
+                        <div id="quiz-feedback" class="hidden p-2.5 rounded-xl transition duration-300 text-base"></div>
                     </div>
                 `;
             }
@@ -1364,37 +1201,36 @@
             const q = currentQuizQuestions[currentQuestionIndex];
             const grid = document.getElementById("quiz-options-grid");
             const feedback = document.getElementById("quiz-feedback");
-
+            
             const buttons = grid.querySelectorAll("button");
             buttons.forEach(btn => btn.disabled = true);
 
             if (selectedIndex === q.correct) {
-                buttons[selectedIndex].className = "w-full text-left p-3.5 rounded-xl border-2 border-luz-verde bg-emerald-50 text-xs font-semibold leading-relaxed flex items-start space-x-3";
-                feedback.className = "p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs space-y-2 block";
+                buttons[selectedIndex].className = "w-full text-left p-3.5 rounded-xl border-2 border-luz-verde bg-emerald-50 text-base font-semibold leading-relaxed flex items-start space-x-3";
+                feedback.className = "p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-base space-y-1 block";
                 feedback.innerHTML = `
                     <div class="flex items-center space-x-2">
                         <span class="font-bold text-emerald-950">Resposta Correta!</span>
-                        <span class="text-[9px] font-bold px-1.5 py-0.5 bg-emerald-200 text-emerald-700 rounded-full">${q.citation}</span>
+                        <span class="text-[11px] font-bold px-1.5 py-0.5 bg-emerald-200 text-emerald-700 rounded-full">${q.citation}</span>
                     </div>
                     <p class="leading-relaxed font-medium">${q.explanation}</p>
-                    <button onclick="advanceQuestion()" class="mt-2 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition text-[11px]">Avançar para Próxima Questão</button>
+                    <button onclick="advanceQuestion()" class="mt-2 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition text-sm">Avançar para Próxima Questão</button>
                 `;
                 triggerDopamineConfetti();
-                showToast("Conexão sináptica fortalecida!", "success");
             } else {
-                buttons[selectedIndex].className = "w-full text-left p-3.5 rounded-xl border-2 border-luz-coral bg-rose-50 text-xs font-semibold leading-relaxed flex items-start space-x-3";
-                buttons[q.correct].className = "w-full text-left p-3.5 rounded-xl border border-luz-verde bg-emerald-50/60 text-xs font-semibold leading-relaxed flex items-start space-x-3";
-                feedback.className = "p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs space-y-2 block";
+                buttons[selectedIndex].className = "w-full text-left p-3.5 rounded-xl border-2 border-luz-coral bg-rose-50 text-base font-semibold leading-relaxed flex items-start space-x-3";
+                buttons[q.correct].className = "w-full text-left p-3.5 rounded-xl border border-luz-verde bg-emerald-50/60 text-base font-semibold leading-relaxed flex items-start space-x-3";
+                feedback.className = "p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-base space-y-1 block";
                 feedback.innerHTML = `
                     <div class="flex items-center space-x-2">
                         <span class="font-bold text-rose-950">Processo Adaptativo Alinhado</span>
-                        <span class="text-[9px] font-bold px-1.5 py-0.5 bg-rose-200 text-rose-700 rounded-full">${q.citation}</span>
+                        <span class="text-[11px] font-bold px-1.5 py-0.5 bg-rose-200 text-rose-700 rounded-full">${q.citation}</span>
                     </div>
                     <p class="leading-relaxed font-medium text-rose-900">${q.explanation}</p>
-                    <button onclick="advanceQuestion(true)" class="mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg transition text-[11px]">Continuar Aprendendo</button>
+                    <p class="text-xs text-rose-600 font-bold italic mt-1">O erro é parte da aprendizagem profunda. Questão realocada para o final.</p>
+                    <button onclick="advanceQuestion(true)" class="mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg transition text-sm">Continuar Aprendendo</button>
                 `;
                 currentQuizQuestions.push(q);
-                showToast("Questão realocada para fixação final.", "info");
             }
         }
 
@@ -1402,7 +1238,6 @@
             if (!wasWrong) currentQuestionIndex++;
             if (currentQuestionIndex >= currentQuizQuestions.length) {
                 if (activeQuizLevel < 3) {
-                    showToast(`Parabéns! Nível ${activeQuizLevel} Concluído. Destravando próximo nível!`, "success");
                     loadQuizLevel(activeQuizLevel + 1);
                 } else renderQuizCelebration();
             } else renderQuestion();
@@ -1411,18 +1246,18 @@
         function renderQuizCelebration() {
             const container = document.getElementById("quiz-container");
             const scoreIndicator = document.getElementById("quiz-score-indicator");
-            if (scoreIndicator) scoreIndicator.textContent = "Concluído";
-            if (container) {
+            if(scoreIndicator) scoreIndicator.textContent = "Concluído";
+            if(container) {
                 container.innerHTML = `
                     <div class="text-center py-6 space-y-3 max-w-sm mx-auto">
                         <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-luz-verde animate-bounce">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <h4 class="text-lg font-extrabold text-slate-900">Vitória Biológica: 100% Retenção</h4>
-                        <p class="text-[11px] text-slate-500 leading-snug">Seu hipocampo registrou as memórias desta Seção de forma subcortical nos Gânglios da Base.</p>
+                        <p class="text-base text-slate-500 leading-snug">Seu hipocampo registrou as memórias desta Seção de forma subcortical nos Gânglios da Base.</p>
                         <div class="p-3 bg-brand-50 border border-brand-100 rounded-xl mt-4">
-                            <p class="text-[9px] font-bold text-brand-700 uppercase tracking-widest">Nível Atendido</p>
-                            <p class="text-sm font-extrabold text-slate-800 mt-0.5">Competência Inconsciente</p>
+                            <p class="text-[11px] font-bold text-brand-700 uppercase tracking-widest">Nível Atendido</p>
+                            <p class="text-base font-extrabold text-slate-800 mt-0.5">Competência Inconsciente</p>
                         </div>
                     </div>
                 `;
@@ -1430,28 +1265,93 @@
             triggerDopamineConfetti();
         }
 
-        // FUNÇÃO DE ROLAGEM COM SELEÇÃO AUTOMÁTICA
-        function scrollToGraphicsAndSelect(tabId) {
-            scrollToCard('graphics-card');
-            setTimeout(() => { switchTab(tabId); }, 300);
+        // INTERAÇÃO DO GRÁFICO 1 (Círculo Bioecológico)
+        function selectRing(ringId) {
+            const data = RING_DATA[ringId];
+            const svg = document.getElementById("bio-svg");
+            
+            if(svg) {
+                svg.querySelectorAll("circle").forEach(circle => {
+                    if (circle.getAttribute("fill") !== "#0284c7") {
+                        circle.setAttribute("stroke", "#e2e8f0");
+                    }
+                });
+            }
+
+            const targetRing = document.getElementById(`ring-${ringId}`);
+            if (targetRing) {
+                targetRing.setAttribute("stroke", "#38bdf8");
+            }
+
+            document.getElementById("ring-badge").textContent = data.badge;
+            document.getElementById("ring-reference").textContent = data.ref;
+            document.getElementById("ring-title").textContent = data.title;
+            document.getElementById("ring-def").textContent = data.def;
+            document.getElementById("ring-association").textContent = data.assoc;
+            document.getElementById("ring-association-box").classList.remove("hidden");
         }
 
-        function showToast(message, type = "success") {
-            const container = document.getElementById("toast-container");
-            const toast = document.createElement("div");
-            const bgClass = type === "success" ? "bg-emerald-600 text-white" : type === "error" ? "bg-rose-600 text-white" : "bg-slate-800 text-slate-100";
-            toast.className = `p-3.5 rounded-xl shadow-xl flex items-center space-x-3 text-[11px] sm:text-xs font-bold transition duration-300 transform translate-y-2 opacity-0 pointer-events-auto ${bgClass}`;
-            toast.innerHTML = `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>${message}</span>`;
-            if (container) {
-                container.appendChild(toast);
-                setTimeout(() => toast.classList.remove("translate-y-2", "opacity-0"), 10);
-                setTimeout(() => { toast.classList.add("translate-y-2", "opacity-0"); setTimeout(() => toast.remove(), 300); }, 3000);
+        // INTERAÇÕES DO GRÁFICO 2 (Perspectivas e Linha Vital)
+        function selectPerspective(pId) {
+            const data = PERSPECTIVE_DATA[pId];
+            
+            const bar = document.getElementById("persp-buttons-bar");
+            if(bar) {
+                bar.querySelectorAll("button").forEach(btn => {
+                    btn.className = "py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition";
+                });
             }
+            const activeBtn = document.getElementById(`btn-p-${pId}`);
+            if(activeBtn) {
+                if (pId === 'evolucionista') {
+                    activeBtn.className = "col-span-2 py-1.5 sm:py-2 px-1 bg-indigo-600 text-white text-xs sm:text-sm font-bold rounded-lg transition shadow-md shadow-indigo-600/10";
+                } else {
+                    activeBtn.className = "py-1.5 sm:py-2 px-1 bg-indigo-600 text-white text-xs sm:text-sm font-bold rounded-lg transition shadow-md shadow-indigo-600/10";
+                }
+            }
+
+            document.getElementById("persp-badge").textContent = data.badge;
+            document.getElementById("persp-badge").className = "px-2 py-0.5 bg-indigo-500 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider";
+            document.getElementById("persp-reference").textContent = data.ref;
+            document.getElementById("persp-title").textContent = data.title;
+            document.getElementById("persp-def").textContent = data.def;
+
+            document.getElementById("persp-col-1-title").textContent = data.col1_title + ":";
+            document.getElementById("persp-col-1-text").textContent = data.col1_text;
+            document.getElementById("persp-col-2-title").textContent = data.col2_title + ":";
+            document.getElementById("persp-col-2-text").textContent = data.col2_text;
+            document.getElementById("persp-details-grid").classList.remove("hidden");
+        }
+
+        function selectVitalStage(vId) {
+            const data = VITAL_STAGE_DATA[vId];
+            const bar = document.getElementById("vital-buttons-bar");
+            if(bar) {
+                bar.querySelectorAll("button").forEach(btn => {
+                    btn.className = "py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition";
+                });
+            }
+            const activeBtn = document.getElementById(`btn-v-${vId}`);
+            if(activeBtn) {
+                activeBtn.className = "py-1.5 sm:py-2 px-1 bg-brand-600 text-white rounded-lg text-center text-xs sm:text-sm font-bold transition shadow-md shadow-brand-600/10";
+            }
+
+            document.getElementById("vital-badge").textContent = data.badge;
+            document.getElementById("vital-badge").className = "px-2 py-0.5 bg-brand-500 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider";
+            document.getElementById("vital-reference").textContent = data.ref;
+            document.getElementById("vital-title").textContent = data.title;
+            document.getElementById("vital-def").textContent = data.def;
+
+            document.getElementById("col-1-title").textContent = data.col1_title + ":";
+            document.getElementById("col-1-text").textContent = data.col1_text;
+            document.getElementById("col-2-title").textContent = data.col2_title + ":";
+            document.getElementById("col-2-text").textContent = data.col2_text;
+            document.getElementById("vital-details-grid").classList.remove("hidden");
         }
 
         function triggerDopamineConfetti() {
             const canvas = document.getElementById("confetti-canvas");
-            if (!canvas) return;
+            if(!canvas) return;
             const ctx = canvas.getContext("2d");
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             const confetis = []; const cores = ["#0ea5e9", "#10b981", "#f59e0b", "#f43f5e", "#a855f7"];
