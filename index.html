@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="h-full bg-slate-50">
+<html lang="pt-PT" class="h-full bg-slate-50">
 
 <head>
     <meta charset="UTF-8">
@@ -58,9 +58,39 @@
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
+
         .scrollbar-hide {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+
+        /* Controlo de estado ativo e interações dos anéis do Gráfico 1 */
+        circle.cursor-pointer {
+            transition: stroke 0.2s ease, fill 0.2s ease;
+        }
+
+        circle.cursor-pointer:hover {
+            stroke: #cbd5e1;
+            /* Tom neutro suave para o hover */
+        }
+
+        circle.active-ring {
+            stroke: #0ea5e9 !important;
+            /* Tom azul firme e consistente da marca */
+        }
+
+        circle.active-ring:hover {
+            stroke: #0ea5e9 !important;
+            /* Garante que não oscila no hover quando ativo */
+        }
+
+        #ring-indiv:hover {
+            fill: #0369a1;
+        }
+
+        #ring-indiv.active-ring {
+            fill: #0c4a6e !important;
+            /* Destaque azul firme para o núcleo */
         }
     </style>
 </head>
@@ -70,14 +100,17 @@
     <!-- CONTAINER PRINCIPAL -->
     <div class="flex h-full w-full overflow-hidden relative">
 
-        <!-- SIDEBAR DE NAVEGAÇÃO LATERAL ESQUERDA (Com Toggle Mobile) -->
-        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-72 md:w-80 flex flex-col bg-slate-900 text-slate-100 flex-shrink-0 border-r border-slate-800 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out h-full shadow-2xl md:shadow-none">
-            
+        <!-- SIDEBAR DE NAVEGAÇÃO LATERAL ESQUERDA -->
+        <aside id="sidebar"
+            class="fixed md:static inset-y-0 left-0 z-40 w-72 md:w-80 flex flex-col bg-slate-900 text-slate-100 flex-shrink-0 border-r border-slate-800 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out h-full shadow-2xl md:shadow-none">
+
             <div class="p-6 border-b border-slate-800 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div class="p-2 bg-brand-600 rounded-lg text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
                         </svg>
                     </div>
                     <div>
@@ -85,20 +118,27 @@
                         <p class="text-base text-slate-400">Comportamento Humano</p>
                     </div>
                 </div>
-                <!-- Botão Fechar Sidebar no Mobile -->
+                <!-- Botão Fechar Sidebar no Telemóvel -->
                 <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-400 hover:text-white rounded-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
                 </button>
             </div>
 
             <nav class="flex-1 overflow-y-auto p-4 space-y-2">
-                <button onclick="changeSection(1)" id="btn-sec-1" class="w-full flex items-center justify-between p-3.5 rounded-xl transition-all duration-200 text-left bg-brand-600 text-white shadow-lg shadow-brand-600/10">
+                <button onclick="changeSection(1)" id="btn-sec-1"
+                    class="w-full flex items-center justify-between p-3.5 rounded-xl transition-all duration-200 text-left bg-brand-600 text-white shadow-lg shadow-brand-600/10">
                     <div class="flex items-center space-x-3 min-w-0">
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
                         </svg>
                         <div class="min-w-0">
-                            <span class="block text-[11px] font-semibold uppercase tracking-wider opacity-60">Módulo 1</span>
+                            <span class="block text-[11px] font-semibold uppercase tracking-wider opacity-60">Módulo
+                                1</span>
                             <span class="block text-base font-bold truncate">Epistemologia e Vida</span>
                         </div>
                     </div>
@@ -107,10 +147,12 @@
                     </svg>
                 </button>
                 <div class="space-y-2 opacity-50">
-                    <div class="w-full flex items-center justify-between p-3.5 rounded-xl text-left text-slate-500 cursor-not-allowed">
+                    <div
+                        class="w-full flex items-center justify-between p-3.5 rounded-xl text-left text-slate-500 cursor-not-allowed">
                         <div class="flex items-center space-x-3">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
                             <span class="text-base font-bold">Módulo 2: Cérebro Trino</span>
                         </div>
@@ -121,7 +163,8 @@
             <div class="p-4 border-t border-slate-800 bg-slate-950/50">
                 <div class="flex items-center space-x-3 mb-1.5">
                     <div class="w-2 h-2 rounded-full bg-luz-verde"></div>
-                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Estágio Cognitivo (PNL)</span>
+                    <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Estágio Cognitivo
+                        (PNL)</span>
                 </div>
                 <div class="text-base font-semibold text-slate-200" id="sidebar-stage">Incompetência Consciente</div>
                 <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
@@ -134,27 +177,36 @@
         <!-- ÁREA CENTRAL DE CONTEÚDO -->
         <main class="flex-1 flex flex-col min-w-0 bg-slate-50 relative overflow-hidden">
 
-            <!-- HEADER SUPERIOR CIRÚRGICO (1 Linha no PC, 2 Linhas no Mobile) -->
-            <header class="bg-white border-b border-slate-200 px-4 py-3 sm:px-6 flex flex-col md:flex-row md:items-center justify-between gap-2 z-10 shrink-0 shadow-sm">
+            <!-- HEADER SUPERIOR -->
+            <header
+                class="bg-white border-b border-slate-200 px-4 py-3 sm:px-6 flex flex-col md:flex-row md:items-center justify-between gap-2 z-10 shrink-0 shadow-sm">
                 <!-- Esquerda: Títulos -->
                 <div class="flex items-center space-x-2 min-w-0 w-full md:w-auto">
                     <button onclick="toggleSidebar()" class="md:hidden text-slate-600 hover:text-slate-900 shrink-0">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                     <div class="flex items-center space-x-1.5 min-w-0 flex-nowrap overflow-hidden">
-                        <span class="text-lg sm:text-xl font-extrabold text-brand-600 uppercase tracking-wide shrink-0">Módulo 1</span>
+                        <span
+                            class="text-lg sm:text-xl font-extrabold text-brand-600 uppercase tracking-wide shrink-0">Módulo
+                            1</span>
                         <span class="text-slate-400 font-bold shrink-0 hidden sm:inline">-</span>
-                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 truncate shrink">Epistemologia, Conceitos Básicos e Qualidade de Vida</h2>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 truncate shrink">Epistemologia e Vida
+                        </h2>
                     </div>
                 </div>
 
-                <!-- Direita (PC) / Linha 2 (Mobile): Atalhos de Navegação Reduzidos (Centralizados no Mobile) -->
-                <div class="flex items-center space-x-2 text-[13px] sm:text-sm overflow-x-auto scrollbar-hide w-full md:w-auto justify-center md:justify-end shrink-0">
-                    <button onclick="scrollToCard('lecture-card')" class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Palestra</button>
-                    <button onclick="scrollToCard('graphics-card')" class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Gráficos</button>
-                    <button onclick="scrollToCard('quiz-card')" class="px-3 py-1.5 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap">Quiz</button>
+                <!--/ Direita: Atalhos de Navegação -->
+                <div
+                    class="flex items-center space-x-2 text-base sm:text-lg md:text-xl overflow-x-auto scrollbar-hide w-full md:w-auto justify-center md:justify-end shrink-0">
+                    <button onclick="scrollToCard('lecture-card')"
+                        class="px-4 py-2 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap shadow-sm">Palestra</button>
+                    <button onclick="scrollToCard('graphics-card')"
+                        class="px-4 py-2 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap shadow-sm">Gráficos</button>
+                    <button onclick="scrollToCard('quiz-card')"
+                        class="px-4 py-2 bg-slate-100 hover:bg-brand-50 text-brand-700 rounded-lg transition font-extrabold whitespace-nowrap shadow-sm">Quiz</button>
                 </div>
             </header>
 
@@ -162,114 +214,149 @@
             <div id="content-viewport" class="flex-1 overflow-y-auto px-2 sm:px-6 py-4 space-y-8 sm:space-y-12">
                 <div class="max-w-4xl mx-auto space-y-8 sm:space-y-12 w-full pb-10">
 
-                    <!-- 1. CAIXA UNIFICADA: TEXTO DA PALESTRA E REPRODUTOR DE ÁUDIO -->
-                    <section id="lecture-card" class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden w-full flex flex-col h-[85vh] md:h-[500px]">
+                    <!-- 1. TEXTO DA PALESTRA E REPRODUTOR DE ÁUDIO -->
+                    <section id="lecture-card"
+                        class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden w-full flex flex-col h-[85vh] md:h-[500px]">
                         <!-- Header do Card da Palestra -->
-                        <div class="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-slate-50/50">
+                        <div
+                            class="px-4 py-3 sm:px-6 sm:py-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-slate-50/50">
                             <div class="flex items-center space-x-3">
-                                <!-- Ícone de microfone invertido: Fundo claro, microfone colorido -->
-                                <span class="p-2 bg-brand-100 border border-brand-200 rounded-lg text-brand-600 shrink-0">
+                                <span
+                                    class="p-2 bg-brand-100 border border-brand-200 rounded-lg text-brand-600 shrink-0">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
+                                        </path>
                                     </svg>
                                 </span>
                                 <div>
-                                    <h4 class="text-[11px] font-bold text-brand-600 uppercase tracking-widest">Estudo Multissensorial</h4>
-                                    <h3 class="text-sm sm:text-base font-bold text-slate-800">O Despertar da Consciência: Qualidade de Vida</h3>
+                                    <h4 class="text-sm font-extrabold text-brand-600 uppercase tracking-widest">Estudo
+                                        Multissensorial</h4>
+                                    <h3 class="text-base sm:text-lg font-bold text-slate-800">O Despertar da
+                                        Consciência: Qualidade de Vida</h3>
                                 </div>
                             </div>
-                            <div class="text-xs text-slate-400 font-medium hidden sm:block select-none">
-                                Toque em qualquer frase para buscar o áudio
+                            <div class="text-sm text-slate-400 font-medium hidden sm:block select-none">
+                                Toque em qualquer frase para reproduzir o áudio
                             </div>
                         </div>
 
-                        <!-- Corpo do Texto Rolável com Spans Síncronos -->
-                        <div id="lecture-script" class="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-700 text-base sm:text-lg leading-relaxed space-y-4 sm:space-y-5 font-normal select-none">
+                        <!-- Corpo do Texto Rolável (Fontes ajustadas: PC reduzido em 2 números, telemóvel mantido. Parênteses e asteriscos removidos. Cada sentença em sua própria linha para leitura fluida) -->
+                        <div id="lecture-script"
+                            class="p-4 sm:p-6 overflow-y-auto flex-1 text-slate-700 text-lg sm:text-xl md:text-lg leading-relaxed space-y-4 sm:space-y-5 font-normal select-none font-sans">
                             <p>
-                                Olá. Que bom que você está aqui. Eu quero que você puxe o ar profundamente e solte
-                                devagar. Se acomode bem na cadeira e desligue por alguns minutos o barulho do mundo lá
-                                fora. Esqueça as notificações, os prazos e essa cobrança invisível que nos diz que só
-                                temos valor se estivermos produzindo de forma mecânica em Cronos. Hoje, a nossa conversa
-                                é de um para um. É sobre você, sobre a sua vida e sobre como você funciona de verdade.
+                                Olá.
+                                Neste primeiro módulo vamos tratar de compreender as forças profundas que moldam quem nós somos ao longo de toda a existência.
+                                Olhamos primeiro para os processos de mudança e estabilidade ao longo do tempo.
+                                Esse campo estuda o que se transforma, seja por mudança quantitativa ou qualitativa, e o que permanece constante, como a estabilidade e os traços de personalidade.
+                                Isso é a base para diagnosticar se uma crise é padrão fixo ou oscilação de fase.
                             </p>
                             <p>
-                                Se você olhar para a história da nossa sociedade, vai perceber que desde a revolução
-                                industrial nós fomos educados para acreditar que qualidade de vida é sinônimo de
-                                produtividade industrial, faturamento e acúmulo financeiro. Fomos treinados para tratar
-                                o corpo como uma máquina a ser explorada até o limite extremo. Mas isso é um grande
-                                erro. Um erro sistêmico que adoece e drena a nossa vitalidade básica. Em 1990, o
-                                Programa das Nações Unidas para o Desenvolvimento (PNUD) propôs uma quebra de paradigma
-                                revolucionária com a criação do Índice de Desenvolvimento Humano (IDH). Ele provou que o
-                                progresso real de uma nação não se mede pela rentabilidade bruta de suas indústrias, mas
-                                sim pela expansão das liberdades reais que as pessoas desfrutam para liderar a vida que
-                                verdadeiramente valorizam. O IDH unificou três dimensões fundamentais através de uma
-                                média geométrica: a saúde e longevidade, o acesso ao conhecimento pela educação e o
-                                padrão de vida real.
+                               Em seguida, avançamos para as dimensões do desenvolvimento.
+                               Elas representam uma divisão metodológica e indissociável das áreas de evolução humana, englobando os aspectos físicos, cognitivos e psicossociais do indivíduo.
+                               Compreender essa integração explica claramente por que um dreno severo ocorrido em uma dimensão, como uma dor física crônica, acaba por impedir por completo o funcionamento pleno e saudável das outras duas dimensões restantes.
                             </p>
                             <p>
-                                Na nossa jornada, nós expandimos essa perspectiva do IDH para as <strong>Três Dimensões
-                                    Indissociáveis do Desenvolvimento Humano: Física, Cognitiva e Psicossocial</strong>.
-                                Quero que você entenda que elas não operam de forma isolada. Elas são como os fios de
-                                uma mesma teia biológica. Se um dreno ocorre na sua dimensão psicossocial — como uma
-                                crise relacional grave ou um litígio familiar no seu lar —, seu sistema límbico entra em
-                                alerta, bombardeia a amígdala e força o seu hipotálamo a desregular o seu corpo físico.
-                                O resultado imediato são palpitações, azias e distúrbios de sono na dimensão física.
-                                Isso drena o oxigênio e a glicose do seu Neocórtex pré-frontal na dimensão cognitiva,
-                                impedindo você de tomar decisões lógicas, gerando paralisia por análise e nos empurrando
-                                para o desamparo aprendido. Entende a mecânica cíclica e sistêmica de adoecimento? Você
-                                é um ecossistema integrado.
+                                Outro aspecto fundamental envolve os períodos do ciclo vital.
+                                Trata-se da divisão cronológica e socialmente construída das fases de vida humanas, que se estendem desde o momento da concepção até a idade adulta tardia e a morte.
+                                Esse mapeamento serve especificamente para contextualizar todas as expectativas comportamentais típicas de cada faixa etária nos estudos de caso, permitindo entender o que é comum e esperado em cada idade.
                             </p>
                             <p>
-                                Logo abaixo desta palestra, eu preparei uma **central unificada de gráficos didáticos** para ancorar o
-                                seu aprendizado de forma prática. Quero te ensinar a navegar por ela antes
-                                de darmos início ao nosso desafio de fixação.
+                                Também devemos analisar a hereditariedade, o ambiente e a maturação. 
+                                A hereditariedade é a herança genética, o ambiente representa as influências externas e a maturação é o desabrochar natural de padrões físicos e neurológicos.
+                                Essa dinâmica conjunta mostra com clareza que o comportamento humano é sempre o resultado direto de predisposições biológicas, que acabam sendo ativadas, ou então inibidas, pelas condições específicas do meio que nos cerca.
                             </p>
                             <p>
-                                A primeira aba é o **Círculo Bioecológico da Qualidade de Vida**. Ele é estruturado no
-                                modelo de Urie Bronfenbrenner. No núcleo está você, o **Indivíduo**, com a sua carga de
-                                hereditariedade, predisposições genéticas e maturação natural do sistema nervoso. Ao
-                                clicar nos anéis, você poderá navegar pelos seus níveis de influência. No **Microssistema**, você
-                                vai encontrar a sua **Família Nuclear** e a **Família Estendida**, que é de onde nascem as suas crenças. 
-                                No **Exossistema**, estão o seu **Nível Socioeconômico (NSE)** e a segurança da sua **Vizinhança** — fatores
-                                que determinam se o seu meio protege ou estressa você. No **Macrossistema**, estão os filtros morais
-                                invisíveis da sua **Cultura, Grupo Étnico e Raça**. E tudo isso é envelopado pelo
-                                **Cronossistema**, o momento histórico e tecnológico.
+                               Para aprofundar o entendimento social, olhamos para a família nuclear e a família estendida.
+                               A família nuclear é constituída pelo núcleo familiar imediato, formado por pais e filhos. Já a família estendida representa toda a rede de parentesco multigeracional e colateral, incluindo avós, tios e primos.
+                               Essa divisão e análise mapeia a estrutura de apoio relacional primária do sujeito e revela as origens exatas de suas regras e crenças invisíveis.
                             </p>
                             <p>
-                                A segunda e terceira abas contêm a **Linha do Tempo Vital** e a **Matriz de Perspectivas**. 
-                                Selecione os **Períodos do Ciclo Vital** para analisar o que muda e o que permanece constante em você em cada fase do
-                                desenvolvimento. Em Perspectivas, você verá como cada corrente científica interpreta os
-                                seus comportamentos: a **Psicanalítica** (conflitos inconscientes), a da **Aprendizagem** (condicionamentos), a **Cognitiva** (esquemas lógicos), a **Contextual** (sistemas), e a **Evolucionista** (sobrevivência instintiva).
+                               Outro fator essencial é o nível socioeconômico e a vizinhança.
+                               Essa classificação é baseada nos pilares de renda, educação e ocupação profissional, somados de forma direta ao ambiente físico e social onde o indivíduo reside no seu dia a dia.
+                               Esse panorama analítico serve para examinar os fatores de risco ou de proteção ambiental, que moldam as escolhas individuais, e também as principais fontes geradoras de estresse crônico de um sujeito.
                             </p>
                             <p>
-                                Navegue pela central com calma. Toque nas abas, sinta o visual e
-                                faça suas conexões neurais. O que será exigido em nossos quizzes está todo
-                                ilustrado ali. Quando você se sentir seguro, role a página para o
-                                final e vamos encarar o nosso Desafio de Retenção. Boa caminhada!
+                              Completando esse cenário, estudamos a cultura, o grupo étnico e a raça.
+                              A cultura é o modo de vida de uma sociedade, a etnia é a identidade ligada à ancestralidade e língua comum, e a raça funciona como um construto social baseado em traços físicos.
+                              A união desses conceitos explica com profundidade os filtros ético-morais e também os preconceitos subconscientes, que os sujeitos carregam e manifestam em seu comportamento diário e social.
+                            </p>
+                             <p>
+                              Por fim, encerramos com o contexto histórico do desenvolvimento.
+                              Esse ponto analisa o impacto real do momento temporal, das crises geracionais marcantes como as pandemias e das intensas transições tecnológicas na evolução das pessoas.
+                              O estudo desse cenário demonstra que o comportamento de um jovem hoje em dia é inteiramente moldado por forças históricas, muito diferentes daquelas forças que afetaram diretamente os seus pais no passado.
+                            </p>
+                            <p>
+                               Logo abaixo, há uma central unificada de gráficos didáticos.
+                               A aba do Ecossistema mapeia os círculos concêntricos de influência ambiental que cercam o indivíduo.
+                               O gráfico da Linha do Tempo detalha os períodos do ciclo vital, mostrando tudo o que se transforma e o que permanece estável em cada fase da nossa vida.
+                               E no painel de Perspectivas revela as principais teorias científicas que explicam o comportamento.
+                            </p>
+                            <p>
+                                Navegue pela central com calma.
+                                Toque nas abas, sinta o visual e faça suas conexões neurais.
+                                O que será exigido em nosso quiz está todo ilustrado ali.
+                                Quando você se sentir seguro, clique no botão "Quiz" e vamos encarar o nosso Desafio de Retenção.
+                                Bons estudos!
                             </p>
                         </div>
 
                         <!-- Reprodutor de Áudio Compacto -->
-                        <div class="bg-slate-900 text-slate-100 p-3 sm:p-4 border-t border-slate-800 shrink-0 space-y-2.5">
+                        <div
+                            class="bg-slate-900 text-slate-100 p-3 sm:p-4 border-t border-slate-800 shrink-0 space-y-2.5">
                             <div class="flex items-center space-x-3">
-                                <input type="range" id="audio-scrubber" min="0" value="0" oninput="scrubAudio(this.value)" class="flex-1 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-brand-500 hover:accent-brand-400 transition-all">
-                                <span id="audio-current-time" class="text-[11px] font-mono text-slate-400 min-w-[65px] text-right">0 / 0</span>
+                                <input type="range" id="audio-scrubber" min="0" value="0"
+                                    oninput="scrubAudio(this.value)"
+                                    class="flex-1 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-brand-500 hover:accent-brand-400 transition-all">
+                                <span id="audio-current-time"
+                                    class="text-sm font-mono text-slate-400 min-w-[65px] text-right">0 / 0</span>
                             </div>
-                            <div class="flex flex-row items-center justify-between gap-3 text-xs">
+                            <div class="flex flex-row items-center justify-between gap-3 text-sm">
                                 <div class="flex items-center space-x-1 sm:space-x-3 justify-center">
-                                    <button onclick="previousSentence()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4z"></path></svg></button>
-                                    <button onclick="toggleAudio()" id="btn-audio-play" class="p-2 sm:p-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-full transition transform hover:scale-105">
-                                        <svg id="play-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                                        <svg id="pause-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                    <button onclick="previousSentence()"
+                                        class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4z">
+                                            </path>
+                                        </svg></button>
+                                    <button onclick="toggleAudio()" id="btn-audio-play"
+                                        class="p-2 sm:p-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-full transition transform hover:scale-105">
+                                        <svg id="play-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <svg id="pause-icon" class="w-5 h-5 hidden" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
                                     </button>
-                                    <button onclick="stopAudio()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg></button>
-                                    <button onclick="nextSentence()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7"></path></svg></button>
+                                    <button onclick="stopAudio()"
+                                        class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z">
+                                            </path>
+                                        </svg></button>
+                                    <button onclick="nextSentence()"
+                                        class="p-1.5 text-slate-400 hover:text-white rounded-lg transition"><svg
+                                            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 5l7 7-7 7"></path>
+                                        </svg></button>
                                 </div>
                                 <div class="flex items-center space-x-2 sm:space-x-3 justify-end flex-1 min-w-0">
-                                    <select id="audio-voice" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-[11px] sm:text-sm text-slate-200 focus:outline-none w-full max-w-[120px] sm:max-w-[150px] truncate"></select>
+                                    <select id="audio-voice"
+                                        class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs sm:text-sm text-slate-200 focus:outline-none w-full max-w-[120px] sm:max-w-[150px] truncate"></select>
                                     <div class="flex items-center space-x-1 shrink-0">
-                                        <input type="range" id="audio-speed" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateAudioSpeed()" class="w-10 sm:w-12 h-1 bg-slate-700 rounded appearance-none cursor-pointer accent-brand-500">
-                                        <span id="speed-val" class="text-[11px] sm:text-xs text-slate-300 font-bold min-w-[20px]">1.0x</span>
+                                        <input type="range" id="audio-speed" min="0.5" max="2.0" step="0.1" value="1.0"
+                                            oninput="updateAudioSpeed()"
+                                            class="w-10 sm:w-12 h-1 bg-slate-700 rounded appearance-none cursor-pointer accent-brand-500">
+                                        <span id="speed-val"
+                                            class="text-[11px] sm:text-xs text-slate-300 font-bold min-w-[20px]">1.0x</span>
                                     </div>
                                 </div>
                             </div>
@@ -277,120 +364,204 @@
                     </section>
 
                     <!-- 2. CENTRAL UNIFICADA DE GRÁFICOS DIDÁTICOS -->
-                    <section id="graphics-card" class="bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col w-full h-[85vh] md:h-[500px] overflow-hidden">
-                        
-                        <!-- Barra de Abas Interna (Tabs) -->
-                        <div class="flex items-center p-1.5 bg-slate-100 rounded-2xl m-2 sm:m-3 shrink-0 shadow-inner overflow-hidden">
-                            <button id="tab-btn-bio" onclick="switchTab('bio')" class="flex-1 py-1.5 sm:py-2 px-1 text-[11px] sm:text-sm font-extrabold rounded-xl transition-all bg-brand-600 text-white shadow-sm truncate">Círculo Bioecológico</button>
-                            <button id="tab-btn-vital" onclick="switchTab('vital')" class="flex-1 py-1.5 sm:py-2 px-1 text-[11px] sm:text-sm font-extrabold rounded-xl transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 truncate">Linha do Tempo</button>
-                            <button id="tab-btn-persp" onclick="switchTab('persp')" class="flex-1 py-1.5 sm:py-2 px-1 text-[11px] sm:text-sm font-extrabold rounded-xl transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 truncate">Perspectivas</button>
+                    <section id="graphics-card"
+                        class="bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col w-full h-[85vh] md:h-[500px] overflow-hidden">
+
+                        <!-- Barra de Separadores Internos -->
+                        <div
+                            class="flex items-center p-1.5 bg-slate-100 rounded-2xl m-2 sm:m-3 shrink-0 shadow-inner overflow-hidden">
+                            <button id="tab-btn-bio" onclick="switchTab('bio')"
+                                class="flex-1 py-1.5 sm:py-2 px-1 text-sm sm:text-base md:text-lg font-extrabold rounded-xl transition-all bg-brand-600 text-white shadow-sm truncate">Ecossistema</button>
+                            <button id="tab-btn-vital" onclick="switchTab('vital')"
+                                class="flex-1 py-1.5 sm:py-2 px-1 text-sm sm:text-base md:text-lg font-extrabold rounded-xl transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 truncate">Linha
+                                do Tempo</button>
+                            <button id="tab-btn-persp" onclick="switchTab('persp')"
+                                class="flex-1 py-1.5 sm:py-2 px-1 text-sm sm:text-base md:text-lg font-extrabold rounded-xl transition-all text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 truncate">Perspectivas</button>
                         </div>
 
-                        <!-- Área de Conteúdo das Abas (Sem rolagem) -->
-                        <div class="flex-1 relative overflow-hidden px-2.5 pb-2.5 sm:px-4 sm:pb-4 flex flex-col">
-                            
-                            <!-- CONTEÚDO DA ABA 1: CÍRCULO BIOECOLÓGICO -->
-                            <div id="tab-content-bio" class="flex flex-col md:flex-row h-full w-full gap-2 sm:gap-4 items-center justify-center">
-                                <!-- Coluna Esquerda: SVG (Ocupando 90% do espaço no PC e centralizado no Mobile) -->
-                                <div class="shrink-0 flex justify-center w-full md:w-1/2 h-[180px] md:h-[300px]">
-                                    <svg class="h-full w-[90%] md:w-[90%] max-h-full object-contain" viewBox="0 0 400 400" id="bio-svg">
-                                        <circle cx="200" cy="200" r="190" fill="transparent" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
-                                        <circle cx="200" cy="200" r="150" fill="transparent" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
-                                        <circle cx="200" cy="200" r="110" fill="transparent" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
-                                        <circle cx="200" cy="200" r="70" fill="transparent" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
+                        <!-- Área de Conteúdo das Abas -->
+                        <div class="flex-1 relative overflow-hidden px-2 pb-2 sm:px-4 sm:pb-4 flex flex-col">
 
-                                        <circle id="ring-crono" cx="200" cy="200" r="180" fill="none" stroke="#e2e8f0" stroke-width="18" class="cursor-pointer hover:stroke-indigo-100 transition duration-200" onclick="selectRing('crono')" />
-                                        <text x="200" y="27" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle" pointer-events="none">CRONOSSISTEMA</text>
+                            <!-- CONTEÚDO DA ABA 1: ECOSSISTEMA -->
+                            <div id="tab-content-bio"
+                                class="flex flex-col md:flex-row h-full w-full gap-1 md:gap-4 items-center justify-center overflow-hidden">
+                                <!-- Coluna Esquerda: SVG Maximizado (PC ligeiramente reduzido para md:h-[400px]) -->
+                                <div
+                                    class="shrink-0 flex justify-center items-center w-full md:w-1/2 h-[325px] md:h-[400px] overflow-hidden p-0">
+                                    <svg class="w-[98%] h-[98%] max-w-full max-h-full object-contain mx-auto"
+                                        viewBox="0 0 400 400" id="bio-svg">
+                                        <!-- Círculos de fundo estendidos -->
+                                        <circle cx="200" cy="200" r="195" fill="transparent" stroke="#f1f5f9"
+                                            stroke-width="1" stroke-dasharray="4" />
+                                        <circle cx="200" cy="200" r="155" fill="transparent" stroke="#f1f5f9"
+                                            stroke-width="1" stroke-dasharray="4" />
+                                        <circle cx="200" cy="200" r="115" fill="transparent" stroke="#f1f5f9"
+                                            stroke-width="1" stroke-dasharray="4" />
+                                        <circle cx="200" cy="200" r="75" fill="transparent" stroke="#f1f5f9"
+                                            stroke-width="1" stroke-dasharray="4" />
 
-                                        <circle id="ring-macro" cx="200" cy="200" r="145" fill="none" stroke="#e2e8f0" stroke-width="18" class="cursor-pointer hover:stroke-amber-100 transition duration-200" onclick="selectRing('macro')" />
-                                        <text x="200" y="62" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle" pointer-events="none">MACROSSISTEMA</text>
+                                        <!-- Anéis redimensionados e maximizados (Realces geridos por CSS ativo unificado) -->
+                                        <circle id="ring-crono" cx="200" cy="200" r="185" fill="none" stroke="#e2e8f0"
+                                            stroke-width="26" class="cursor-pointer" onclick="selectRing('crono')" />
+                                        <text x="200" y="23" font-size="20" font-weight="extrabold" fill="#64748b"
+                                            text-anchor="middle" pointer-events="none">CRONOSSISTEMA</text>
 
-                                        <circle id="ring-exo" cx="200" cy="200" r="110" fill="none" stroke="#e2e8f0" stroke-width="18" class="cursor-pointer hover:stroke-rose-100 transition duration-200" onclick="selectRing('exo')" />
-                                        <text x="200" y="97" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle" pointer-events="none">EXOSSISTEMA</text>
+                                        <circle id="ring-macro" cx="200" cy="200" r="150" fill="none" stroke="#e2e8f0"
+                                            stroke-width="26" class="cursor-pointer" onclick="selectRing('macro')" />
+                                        <text x="200" y="58" font-size="20" font-weight="extrabold" fill="#64748b"
+                                            text-anchor="middle" pointer-events="none">MACROSSISTEMA</text>
 
-                                        <circle id="ring-micro" cx="200" cy="200" r="75" fill="none" stroke="#e2e8f0" stroke-width="18" class="cursor-pointer hover:stroke-emerald-100 transition duration-200" onclick="selectRing('micro')" />
-                                        <text x="200" y="132" font-size="12" font-weight="bold" fill="#64748b" text-anchor="middle" pointer-events="none">MICROSSISTEMA</text>
+                                        <circle id="ring-exo" cx="200" cy="200" r="115" fill="none" stroke="#e2e8f0"
+                                            stroke-width="26" class="cursor-pointer" onclick="selectRing('exo')" />
+                                        <text x="200" y="93" font-size="20" font-weight="extrabold" fill="#64748b"
+                                            text-anchor="middle" pointer-events="none">EXOSSISTEMA</text>
 
-                                        <circle id="ring-indiv" cx="200" cy="200" r="40" fill="#0284c7" class="cursor-pointer hover:fill-brand-700 transition duration-200" onclick="selectRing('indiv')" />
-                                        <text x="200" y="203" font-size="12" font-weight="extrabold" fill="#ffffff" text-anchor="middle" pointer-events="none">INDIVÍDUO</text>
+                                        <circle id="ring-micro" cx="200" cy="200" r="80" fill="none" stroke="#e2e8f0"
+                                            stroke-width="26" class="cursor-pointer" onclick="selectRing('micro')" />
+                                        <text x="200" y="128" font-size="20" font-weight="extrabold" fill="#64748b"
+                                            text-anchor="middle" pointer-events="none">MICROSSISTEMA</text>
+
+                                        <circle id="ring-indiv" cx="200" cy="200" r="45" fill="#0284c7"
+                                            class="cursor-pointer" onclick="selectRing('indiv')" />
+                                        <text x="200" y="205" font-size="18" font-weight="extrabold" fill="#ffffff"
+                                            text-anchor="middle" pointer-events="none">INDIVÍDUO</text>
                                     </svg>
                                 </div>
-                                <!-- Coluna Direita: Painel Explicativo Limitado -->
-                                <div class="flex-1 w-full md:w-1/2 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center overflow-hidden">
+                                <!-- Coluna Direita: Painel Explicativo Compacto (Ajustado no telemóvel: space-y-0.5) -->
+                                <div
+                                    class="flex-1 w-full md:w-1/2 bg-slate-50 p-2 md:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center overflow-hidden space-y-0.5 md:space-y-2">
                                     <div class="flex items-center space-x-2 mb-1 justify-center">
-                                        <span id="ring-badge" class="px-2 py-0.5 bg-brand-500 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider">Módulo 1</span>
-                                        <span id="ring-reference" class="text-[11px] text-slate-400 font-bold truncate"></span>
+                                        <span id="ring-badge"
+                                            class="px-3 py-1 bg-brand-600 text-white font-extrabold rounded-md text-sm sm:text-base uppercase tracking-wider">Influências ambientais</span>
+                                        <span id="ring-reference"
+                                            class="text-sm sm:text-base text-slate-400 font-bold truncate"></span>
                                     </div>
-                                    <h5 id="ring-title" class="text-base sm:text-lg font-extrabold text-slate-900 mt-1 leading-tight text-center">Toque nos anéis</h5>
-                                    <p id="ring-def" class="text-xs sm:text-base text-slate-600 mt-1.5 sm:mt-2 leading-snug line-clamp-4 text-center">Interaja com as camadas do diagrama para carregar as definições ecológicas e associações comportamentais do Índice.</p>
-                                    <div id="ring-association-box" class="hidden mt-2 pt-2 border-t border-slate-200 text-[11px] sm:text-sm text-slate-500 leading-snug line-clamp-3 text-center">
+                                    <!-- Fontes ajustadas no telemóvel (-1 escala) -->
+                                    <h5 id="ring-title"
+                                        class="text-lg sm:text-3xl font-extrabold text-slate-900 mt-1 leading-tight text-center">
+                                        Toque nos anéis</h5>
+                                    <p id="ring-def"
+                                        class="text-sm sm:text-xl text-slate-600 leading-relaxed text-center line-clamp-4">
+                                        Interaja com as camadas do diagrama para carregar as definições ecológicas e
+                                        associações comportamentais do Índice.</p>
+                                    <div id="ring-association-box"
+                                        class="hidden pt-2 border-t border-slate-200 text-sm sm:text-lg text-slate-500 leading-snug line-clamp-3 text-center w-full">
                                         <strong>Aplicação:</strong> <span id="ring-association"></span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- CONTEÚDO DA ABA 2: LINHA DO TEMPO VITAL -->
-                            <div id="tab-content-vital" class="hidden flex-col h-full w-full gap-2 sm:gap-3">
-                                <!-- 8 Botões sempre em 2 colunas -->
-                                <div class="grid grid-cols-2 gap-1 sm:gap-2 shrink-0" id="vital-buttons-bar">
-                                    <button onclick="selectVitalStage('prenatal')" id="btn-v-prenatal" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Pré-natal</button>
-                                    <button onclick="selectVitalStage('infancia_1')" id="btn-v-infancia_1" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Prim. Infância</button>
-                                    <button onclick="selectVitalStage('infancia_2')" id="btn-v-infancia_2" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Seg. Infância</button>
-                                    <button onclick="selectVitalStage('infancia_3')" id="btn-v-infancia_3" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Terc. Infância</button>
-                                    <button onclick="selectVitalStage('adolescencia')" id="btn-v-adolescencia" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Adolescência</button>
-                                    <button onclick="selectVitalStage('adulto_jovem')" id="btn-v-adulto_jovem" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Adulta Jovem</button>
-                                    <button onclick="selectVitalStage('adulto_inter')" id="btn-v-adulto_inter" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Adulta Interm.</button>
-                                    <button onclick="selectVitalStage('adulto_tardio')" id="btn-v-adulto_tardio" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition">Adulta Tardia</button>
+                            <div id="tab-content-vital"
+                                class="hidden flex-col h-full w-full gap-3 justify-between py-1 overflow-hidden">
+                                <!-- Botões compactados em 60% apenas no PC (md:py-1) -->
+                                <div class="grid grid-cols-2 gap-1.5 sm:gap-2 shrink-0" id="vital-buttons-bar">
+                                    <button onclick="selectVitalStage('prenatal')" id="btn-v-prenatal"
+                                        class="py-2.5 md:py-1 px-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Pré-natal</button>
+                                    <button onclick="selectVitalStage('infancia_1')" id="btn-v-infancia_1"
+                                        class="py-2.5 md:py-1 px-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Prim.
+                                        Infância</button>
+                                    <button onclick="selectVitalStage('infancia_2')" id="btn-v-infancia_2"
+                                        class="py-2.5 md:py-1 px-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Seg.
+                                        Infância</button>
+                                    <button onclick="selectVitalStage('infancia_3')" id="btn-v-infancia_3"
+                                        class="py-2.5 md:py-1 px-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Terc.
+                                        Infância</button>
+                                    <button onclick="selectVitalStage('adolescencia')" id="btn-v-adolescencia"
+                                        class="py-2.5 md:py-1 px-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Adolescência</button>
+                                    <button onclick="selectVitalStage('adulto_jovem')" id="btn-v-adulto_jovem"
+                                        class="py-2.5 md:py-1 px-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Adulta
+                                        Jovem</button>
+                                    <button onclick="selectVitalStage('adulto_inter')" id="btn-v-adulto_inter"
+                                        class="py-2.5 md:py-1 px-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Adulta
+                                        Interm.</button>
+                                    <button onclick="selectVitalStage('adulto_tardio')" id="btn-v-adulto_tardio"
+                                        class="py-2.5 md:py-1 px-3 bg-slate-100 hover:bg-slate-200 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Adulta
+                                        Tardia</button>
                                 </div>
-                                <!-- Painel Explicativo -->
-                                <div class="flex-1 bg-slate-50 p-2.5 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center overflow-hidden">
-                                    <div class="flex items-center space-x-2 mb-1 justify-center">
-                                        <span id="vital-badge" class="px-2 py-0.5 bg-slate-400 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider">Fases</span>
-                                        <span id="vital-reference" class="text-[11px] text-slate-400 font-bold truncate"></span>
+                                <!-- Painel Explicativo (Compactado no PC com fonte reduzida md:text-sm e entrelinha md:leading-tight) -->
+                                <div
+                                    class="flex-1 bg-slate-50 p-4 md:py-2 md:px-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center space-y-3 md:space-y-1.5 overflow-hidden">
+                                    <div class="flex items-center space-x-2 mb-1 justify-center w-full">
+                                        <span id="vital-badge"
+                                            class="px-3 py-1 bg-brand-600 text-white font-extrabold rounded-md text-sm sm:text-base uppercase tracking-wider">Fases</span>
+                                        <span id="vital-reference"
+                                            class="text-sm sm:text-base text-slate-400 font-bold truncate"></span>
                                     </div>
-                                    <h5 id="vital-title" class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5 leading-tight text-center">Escolha o Período Vital</h5>
-                                    <p id="vital-def" class="text-xs sm:text-base text-slate-600 mt-1 leading-snug line-clamp-3 text-center">Selecione nos botões acima a fase temporal de desenvolvimento biológico e cognitivo para aprofundar.</p>
-                                    
-                                    <div id="vital-details-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mt-2 pt-2 border-t border-slate-200 w-full text-center">
-                                        <div class="text-xs sm:text-sm text-slate-600 leading-snug">
-                                            <strong id="col-1-title" class="text-brand-700">Mudanças:</strong>
-                                            <p id="col-1-text" class="mt-0.5 line-clamp-3 text-slate-500"></p>
+                                    <h5 id="vital-title"
+                                        class="text-xl sm:text-3xl md:text-2xl font-extrabold text-slate-900 mt-0.5 leading-tight text-center">
+                                        Escolha o Período Vital</h5>
+                                    <p id="vital-def"
+                                        class="text-base sm:text-xl md:text-base text-slate-600 leading-relaxed md:leading-tight text-center line-clamp-3 md:line-clamp-2">
+                                        Selecione nos botões acima a fase temporal de desenvolvimento biológico e
+                                        cognitivo para aprofundar.</p>
+
+                                    <!-- Área Detalhada Ajustada (Aumentado em +1 escala no PC: md:text-base e md:text-sm) -->
+                                    <div id="vital-details-grid"
+                                        class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mt-2 md:mt-1.5 pt-2 md:pt-1.5 border-t border-slate-200 w-full text-center">
+                                        <div
+                                            class="text-sm sm:text-base md:text-sm text-slate-600 leading-snug md:leading-tight">
+                                            <strong id="col-1-title"
+                                                class="text-brand-700 md:text-base">Mudanças:</strong>
+                                            <p id="col-1-text"
+                                                class="mt-0.5 line-clamp-3 text-slate-500 font-medium md:text-sm"></p>
                                         </div>
-                                        <div class="text-xs sm:text-sm text-slate-600 leading-snug">
-                                            <strong id="col-2-title" class="text-brand-700">Estabilidade:</strong>
-                                            <p id="col-2-text" class="mt-0.5 line-clamp-3 text-slate-500"></p>
+                                        <div
+                                            class="text-sm sm:text-base md:text-sm text-slate-600 leading-snug md:leading-tight">
+                                            <strong id="col-2-title"
+                                                class="text-brand-700 md:text-base">Estabilidade:</strong>
+                                            <p id="col-2-text"
+                                                class="mt-0.5 line-clamp-3 text-slate-500 font-medium md:text-sm"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- CONTEÚDO DA ABA 3: MATRIZ DE PERSPECTIVAS -->
-                            <div id="tab-content-persp" class="hidden flex-col h-full w-full gap-2 sm:gap-3">
-                                <!-- 5 Botões em 2 colunas -->
-                                <div class="grid grid-cols-2 gap-1 sm:gap-2 shrink-0" id="persp-buttons-bar">
-                                    <button onclick="selectPerspective('psicanalitica')" id="btn-p-psicanalitica" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Psicanalítica</button>
-                                    <button onclick="selectPerspective('aprendizagem')" id="btn-p-aprendizagem" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Aprendizagem</button>
-                                    <button onclick="selectPerspective('cognitiva')" id="btn-p-cognitiva" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Cognitiva</button>
-                                    <button onclick="selectPerspective('contextual')" id="btn-p-contextual" class="py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Contextual</button>
-                                    <button onclick="selectPerspective('evolucionista')" id="btn-p-evolucionista" class="col-span-2 py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition">Evolucionista / Biológica</button>
+                            <div id="tab-content-persp"
+                                class="hidden flex-col h-full w-full gap-3 justify-between py-1 overflow-hidden">
+                                <div class="grid grid-cols-2 gap-1.5 sm:gap-2 shrink-0" id="persp-buttons-bar">
+                                    <button onclick="selectPerspective('psicanalitica')" id="btn-p-psicanalitica"
+                                        class="py-2.5 sm:py-3.5 md:py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm sm:text-base font-extrabold rounded-xl transition shadow-sm truncate">Psicanalítica</button>
+                                    <button onclick="selectPerspective('aprendizagem')" id="btn-p-aprendizagem"
+                                        class="py-2.5 sm:py-3.5 md:py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm sm:text-base font-extrabold rounded-xl transition shadow-sm truncate">Aprendizagem</button>
+                                    <button onclick="selectPerspective('cognitiva')" id="btn-p-cognitiva"
+                                        class="py-2.5 sm:py-3.5 md:py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm sm:text-base font-extrabold rounded-xl transition shadow-sm truncate">Cognitiva</button>
+                                    <button onclick="selectPerspective('contextual')" id="btn-p-contextual"
+                                        class="py-2.5 sm:py-3.5 md:py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm sm:text-base font-extrabold rounded-xl transition shadow-sm truncate">Contextual</button>
+                                    <button onclick="selectPerspective('evolucionista')" id="btn-p-evolucionista"
+                                        class="col-span-2 py-2.5 sm:py-3.5 md:py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm sm:text-base font-extrabold rounded-xl transition shadow-sm truncate whitespace-nowrap">Evolucionista
+                                        / Biológica</button>
                                 </div>
-                                <!-- Painel Explicativo -->
-                                <div class="flex-1 bg-slate-50 p-2.5 sm:p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center overflow-hidden">
-                                    <div class="flex items-center space-x-2 mb-1 justify-center">
-                                        <span id="persp-badge" class="px-2 py-0.5 bg-indigo-500 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider">Teorias</span>
-                                        <span id="persp-reference" class="text-[11px] text-slate-400 font-bold truncate"></span>
+                                <!-- Painel Explicativo com alinhamento vertical e horizontal centrado perfeito -->
+                                <div
+                                    class="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center space-y-3 overflow-hidden text-center">
+                                    <div class="flex items-center space-x-2 mb-1 justify-center w-full">
+                                        <span id="persp-badge"
+                                            class="px-3 py-1 bg-brand-600 text-white font-extrabold rounded-md text-sm sm:text-base uppercase tracking-wider">Teorias</span>
+                                        <span id="persp-reference"
+                                            class="text-sm sm:text-base text-slate-400 font-bold truncate"></span>
                                     </div>
-                                    <h5 id="persp-title" class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5 leading-tight text-center">Escolha a Lente Teórica</h5>
-                                    <p id="persp-def" class="text-xs sm:text-base text-slate-600 mt-1 leading-snug line-clamp-3 text-center">Mapeia as origens do comportamento através de filtros científicos específicos.</p>
-                                    
-                                    <div id="persp-details-grid" class="hidden mt-2 pt-2 border-t border-slate-200 space-y-1.5 w-full text-center">
-                                        <div class="text-xs sm:text-sm text-slate-600 leading-snug line-clamp-2">
-                                            <strong id="persp-col-1-title" class="text-indigo-700">Conceito:</strong>
-                                            <span id="persp-col-1-text" class="text-slate-500"></span>
+                                    <h5 id="persp-title"
+                                        class="text-xl sm:text-3xl md:text-2xl font-extrabold text-slate-900 mt-0.5 leading-tight text-center">
+                                        Escolha a Lente Teórica</h5>
+                                    <p id="persp-def"
+                                        class="text-base sm:text-xl text-slate-600 leading-relaxed text-center line-clamp-3">
+                                        Mapeia as origens do comportamento através de filtros científicos específicos.
+                                    </p>
+
+                                    <!-- Detalhes inferiores com alinhamento flexível e centralizado vertical e horizontalmente -->
+                                    <div id="persp-details-grid"
+                                        class="hidden mt-2 pt-2 border-t border-slate-200 w-full flex flex-col justify-center items-center space-y-1.5 text-center">
+                                        <div
+                                            class="text-sm sm:text-base md:text-lg text-slate-600 leading-snug flex flex-col sm:flex-row items-center justify-center gap-1">
+                                            <strong id="persp-col-1-title" class="text-brand-700">Conceito:</strong>
+                                            <span id="persp-col-1-text" class="text-slate-500 font-medium"></span>
                                         </div>
-                                        <div class="text-xs sm:text-sm text-slate-600 leading-snug line-clamp-2">
-                                            <strong id="persp-col-2-title" class="text-indigo-700">Aplicação:</strong>
-                                            <span id="persp-col-2-text" class="text-slate-500"></span>
+                                        <div
+                                            class="text-sm sm:text-base md:text-lg text-slate-600 leading-snug flex flex-col sm:flex-row items-center justify-center gap-1">
+                                            <strong id="persp-col-2-title" class="text-brand-700">Aplicação:</strong>
+                                            <span id="persp-col-2-text" class="text-slate-500 font-medium"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -400,26 +571,37 @@
                     </section>
 
                     <!-- 3. QUIZ EVOLUTIVO DE RETENÇÃO SINÁPTICA -->
-                    <section id="quiz-card" class="bg-white rounded-3xl shadow-sm border border-slate-200 flex flex-col w-full h-[85vh] md:h-[500px] overflow-hidden shrink-0">
+                    <section id="quiz-card"
+                        class="bg-white rounded-3xl shadow-sm border border-slate-200 flex flex-col w-full h-[85vh] md:h-[500px] overflow-hidden shrink-0">
                         <div class="p-4 sm:p-5 bg-brand-900 text-white shrink-0">
                             <div class="flex items-center justify-between mb-1">
-                                <span id="quiz-level-badge" class="text-xs sm:text-base font-bold tracking-widest uppercase text-brand-400">Quiz • Nível 1 de 3</span>
-                                <span id="quiz-score-indicator" class="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-brand-800 text-brand-200 font-extrabold">Q. 1 de 10</span>
+                                <span id="quiz-level-badge"
+                                    class="text-sm sm:text-lg font-bold tracking-widest uppercase text-brand-400">Quiz •
+                                    Nível 1 de 3</span>
+                                <span id="quiz-score-indicator"
+                                    class="text-xs sm:text-sm px-2 py-0.5 rounded-full bg-brand-800 text-brand-200 font-extrabold">Q.
+                                    1 de 10</span>
                             </div>
-                            <h3 class="text-lg sm:text-2xl font-extrabold leading-tight">Doutrinação Ativa: Hipocampo</h3>
+                            <h3 class="text-xl sm:text-3xl font-extrabold leading-tight">Doutrinação Ativa: Hipocampo
+                            </h3>
                         </div>
 
-                        <!-- Corpo do Quiz com rolagem estritamente interna -->
-                        <div class="p-3 sm:p-4 space-y-2.5 flex-1 overflow-y-auto" id="quiz-container">
+                        <!-- Corpo do Quiz com posicionamento relativo de controlo estrito -->
+                        <div class="pt-2 sm:pt-3 pb-4 sm:pb-5 px-4 sm:px-6 flex-1 relative overflow-hidden flex flex-col h-full justify-between"
+                            id="quiz-container">
                             <!-- Inserido dinamicamente por JS -->
                         </div>
                     </section>
-                    
+
                     <!-- FOOTER -->
-                    <footer class="py-8 text-center text-sm text-slate-400 border-t border-slate-200 space-y-2 mt-8 shrink-0">
-                        <p class="font-semibold uppercase tracking-wider text-slate-500">Desenvolvimento em Coprodução pelo Comitê de Especialistas</p>
-                        <p>Engenheiro de Conhecimento e Designer Instrucional Avançado • Desenvolvedor Front-End e Líder Técnico de PWA</p>
-                        <p>© 2026 Plataforma de Estudos Multissensorial "Comportamento Humano". Todos os direitos reservados.</p>
+                    <footer
+                        class="py-8 text-center text-sm text-slate-400 border-t border-slate-200 space-y-2 mt-8 shrink-0">
+                        <p class="font-semibold uppercase tracking-wider text-slate-500">Desenvolvimento em Coprodução
+                            pelo Comitê de Especialistas</p>
+                        <p>Engenheiro de Conhecimento e Designer Instrucional Avançado • Desenvolvedor Front-End e Líder
+                            Técnico de PWA</p>
+                        <p>© 2026 Plataforma de Estudos Multissensorial "Comportamento Humano". Todos os direitos
+                            reservados.</p>
                     </footer>
 
                 </div>
@@ -427,25 +609,46 @@
         </main>
     </div>
 
-    <!-- CONFETTI CANVAS -->
-    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-40 w-full h-full"></canvas>
+    <!-- CONFETTI CANVAS (Sobreposto em z-[60] para sobrepor de forma vitoriosa o ecrã de feedback do quiz) -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-[60] w-full h-full"></canvas>
 
     <!-- MOTOR LÓGICO E BANCO DE DADOS (JS) -->
     <script>
-        // MENU HAMBURGUER (MOBILE)
+        // MENU HAMBÚRGUER (TELEMÓVEL)
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('-translate-x-full');
         }
 
-        // LÓGICA DE NAVEGAÇÃO DAS ABAS (TABS) NA CAIXA DE GRÁFICOS
+        // ROLAGEM SUAVE INTEGRADA E SELETIVA PARA TELEMÓVEL (Centralização Confortável)
+        function scrollToCard(cardId) {
+            const container = document.getElementById("content-viewport");
+            const element = document.getElementById(cardId);
+            if (container && element) {
+                const elementPosition = element.getBoundingClientRect().top;
+                const containerPosition = container.getBoundingClientRect().top;
+                let scrollPosition;
+                if (window.innerWidth < 768) {
+                    // Centraliza dinamicamente a caixa verticalmente no visor do telemóvel
+                    const viewportHeight = container.clientHeight;
+                    const elementHeight = element.clientHeight;
+                    const offset = (viewportHeight - elementHeight) / 2;
+                    scrollPosition = elementPosition - containerPosition + container.scrollTop - offset;
+                } else {
+                    scrollPosition = elementPosition - containerPosition + container.scrollTop - 12;
+                }
+                container.scrollTo({ top: scrollPosition, behavior: "smooth" });
+            }
+        }
+
+        // LÓGICA DE NAVEGAÇÃO INTERNA DOS GRÁFICOS (ABAS)
         function switchTab(tabId) {
             const tabs = ['bio', 'vital', 'persp'];
-            
+
             tabs.forEach(t => {
                 document.getElementById(`tab-content-${t}`).classList.add('hidden');
                 document.getElementById(`tab-content-${t}`).classList.remove('flex');
-                
+
                 const btn = document.getElementById(`tab-btn-${t}`);
                 btn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
                 btn.classList.add('bg-transparent', 'text-slate-500', 'hover:bg-slate-200/50', 'hover:text-slate-800');
@@ -463,7 +666,7 @@
         const RING_DATA = {
             indiv: {
                 badge: "Indivíduo", ref: "[Cap. 1]", title: "Dimensões e Maturação",
-                def: "Você no núcleo. A base apoia-se na hereditariedade (genética) e maturação (desabrochar neural do cérebro). Dimensões: Física, Cognitiva e Psicossocial.",
+                def: "A base apoia-se na hereditariedade (genética) e maturação (desabrochar neural do cérebro). Dimensões: Física, Cognitiva e Psicossocial.",
                 assoc: "Mostra que o comportamento do sujeito é o resultado de predisposições ativadas pela dinâmica do meio."
             },
             micro: {
@@ -484,7 +687,7 @@
             crono: {
                 badge: "Cronossistema", ref: "[Cap. 1]", title: "Contexto Histórico",
                 def: "Insere a dimensão temporal. Refere-se às influências do momento histórico, como pandemias, guerras e a transição da era digital.",
-                assoc: "Prova que o comportamento de um sujeito hoje é modelado por contextos díspares das de seus pais."
+                assoc: "Prova que o comportamento de um sujeito hoje é modelado por contextos díspares dos de seus pais."
             }
         };
 
@@ -533,7 +736,7 @@
             infancia_1: {
                 badge: "Fase Vital", ref: "[Aula 10]", title: "Primeira Infância",
                 def: "Transição extrema. O bebê opera por impulsos de sobrevivência do cérebro reptiliano (Incompetência Inconsciente).",
-                col1_title: "O que Muda", col1_text: "Aperfeiçoamento motor; aquisição básica da linguagem.",
+                col1_title: "O que Muda", col1_text: "Aperfeiçoamento motor; aquisição básica de linguagem.",
                 col2_title: "Estabilidade", col2_text: "Vínculos de apego que forjam a segurança emocional do núcleo."
             },
             infancia_2: {
@@ -557,7 +760,7 @@
             adulto_jovem: {
                 badge: "Fase Vital", ref: "[Aula 02]", title: "Adulta Jovem",
                 def: "A fase matriz do faturamento, constituição de família e estabelecimento da própria carreira.",
-                col1_title: "O que Muda", col1_text: "Compromissos cruciais profissionais e afetivos a longo prazo.",
+                col1_title: "O que Muda", col1_text: "Os compromissos cruciais profissionais e afetivos a longo prazo.",
                 col2_title: "Estabilidade", col2_text: "Personalidade geral e estilo cognitivo se cimentam."
             },
             adulto_inter: {
@@ -577,415 +780,191 @@
         const QUIZ_QUESTIONS = [
             {
                 id: 1, level: 1,
-                question: "Como o estudo científico define a diferença entre 'Mudança Quantitativa' e 'Qualitativa'?",
+                question: "Como o estudo do Desenvolvimento Humano diferencia os Processos de Mudança Quantitativa e Qualitativa da Estabilidade dos Traços de Personalidade?",
                 options: [
-                    "A quantitativa altera cromossomos; a qualitativa altera faturamento de Cronos.",
-                    "A quantitativa mede quantidade (peso/vocabulário); a qualitativa é uma alteração profunda na estrutura (lógica do raciocínio).",
-                    "Representam impulsos do Cérebro Reptiliano sob sequestro amigdalar.",
-                    "Ambas são exclusivas da regulação térmica do sistema parassimpático."
+                    "A estabilidade dita a regulação térmica do Bulbo e do Tronco Encefálico.",
+                    "Mudanças quantitativas são numéricas e qualitativas mudam a estrutura; a estabilidade foca na constância de traços centrais ao longo do ciclo vital.",
+                    "Ambas dependem do preenchimento imediato de Kairós e das Linguagens do Amor.",
+                    "Sendo processos mecânicos isolados e gerados no período da Adulta Tardia."
                 ],
                 correct: 1, citation: "[Livro: Cap. 1]",
-                explanation: "Mudança quantitativa envolve acréscimos numéricos. A qualitativa exige alteração estrutural no funcionamento global."
+                explanation: "Mudanças quantitativas envolvem acréscimos numéricos. A qualitativa exige alteração estrutural no funcionamento global."
             },
             {
                 id: 2, level: 1,
-                question: "O conceito de 'Estabilidade' no desenvolvimento humano refere-se a quê?",
+                question: "Por que as Dimensões do Desenvolvimento (Física ou Fisiológica, Cognitiva e Psicossocial ou Relacional) são consideradas estruturalmente indissociáveis?",
                 options: [
-                    "A ausência absoluta de dor física.",
-                    "À constância de traços centrais de personalidade e comportamento que persistem no tempo biológico.",
-                    "A inibição da síntese de dopamina pelas redes sociais.",
-                    "À manutenção do fluxo financeiro linear sem variações de NSE."
+                    "Porque o dreno ou colapso severo em uma dimensão consome a energia do organismo e prejudica diretamente o funcionamento pleno das outras duas áreas vitais.",
+                    "Pois operam em Cronos e impedem de forma absoluta o avanço da maturação genética.",
+                    "Devido ao isolamento completo exigido pelos esquemas do Cérebro Reptiliano.",
+                    "Porque pertencem unicamente à esfera Circunstancial da Tríade do Tempo."
                 ],
-                correct: 1, citation: "[Livro: Cap. 1]",
-                explanation: "Estabilidade mapeia o que permanece igual (traços fixos) e não as oscilações de contexto ou crises passageiras."
+                correct: 0, citation: "[Aula 03]",
+                explanation: "O ser humano opera como um ecossistema integrado; problemas físicos drena a energia pré-frontal, afetando cognição e relações."
             },
             {
                 id: 3, level: 1,
-                question: "Quais são as três 'Dimensões do Desenvolvimento' indissociáveis?",
+                question: "Na dinâmica do ciclo biológico, como interagem os fatores de Hereditariedade, Ambiente e Maturação para moldar as ações e o comportamento humano?",
                 options: [
-                    "Reptiliana, Límbica, Neocortical.",
-                    "Física (Fisiológica), Cognitiva e Psicossocial.",
-                    "Importância, Urgência e Circunstancial.",
-                    "Sustentabilidade, Produtividade, Faturamento."
+                    "A Hereditariedade zera o Microssistema e isola o Cronossistema do sujeito.",
+                    "O comportamento resulta de predisposições genéticas (hereditariedade) ativadas ou inibidas pelo meio (ambiente) conforme o desabrochar neural (maturação).",
+                    "A maturação depende puramente do Nível Socioeconômico e da Vizinhança local.",
+                    "São instintos fixos e imutáveis gerados no momento inicial do período Pré-natal."
                 ],
-                correct: 1, citation: "[Aula 03]",
-                explanation: "O corpo físico, o cérebro pensante e as relações afetuosas compõem o ecossistema integrado que garante a sua homeostase."
+                correct: 1, citation: "[Livro: Cap. 1]",
+                explanation: "A maturação dita o cronograma neurológico, enquanto a hereditariedade traz o mapa genético que interage com o ambiente."
             },
             {
                 id: 4, level: 1,
-                question: "Qual a definição clínica de 'Maturação' no contexto do desenvolvimento?",
+                question: "Qual a importância de mapear a Família Nuclear, a Família Estendida, o Nível Socioeconômico (NSE) e a Vizinhança sob a perspectiva do desenvolvimento?",
                 options: [
-                    "Evolução financeira e hierárquica baseada unicamente no Exossistema.",
-                    "O desabrochar progressivo de padrões físicos e comportamentais herdados biologicamente, independentes do ambiente externo.",
-                    "Dreno contínuo das funções executivas do Neocórtex provocado pelo silêncio de Kairós.",
-                    "A capacidade de espelhar hábitos por meio dos neurônios-espelho."
+                    "Serve para desativar a Plasticidade Neural e focar na reatividade do bulbo.",
+                    "Permite analisar a estrutura relacional de apoio, as origens de crenças invisíveis e os fatores de risco ou proteção ambiental que disparam estresse crônico.",
+                    "Mapeia as submodalidades sensoriais VAKD exclusivas do perfil Auditivo Digital.",
+                    "Isola os filtros morais da Cultura e da Raça nas tomadas de decisão lógicas."
                 ],
-                correct: 1, citation: "[Livro: Cap. 1]",
-                explanation: "O cérebro possui um cronograma de abertura fisiológica biológica (o crescimento motor, a puberdade) impossível de ser ensinado sem o preparo físico."
+                correct: 1, citation: "[Livro: Cap. 1 / Aula 21]",
+                explanation: "O microssistema familiar e o exossistema (NSE, vizinhança) moldam as escolhas e determinam a carga de estresse do sujeito."
             },
             {
                 id: 5, level: 1,
-                question: "A diferença técnica entre Família Nuclear e Família Estendida é:",
+                question: "No Modelo Bioecológico, como interagem as forças do Macrossistema (Cultura, Grupo Étnico, Raça) com a dimensão temporal e geracional do Cronossistema?",
                 options: [
-                    "Nuclear é o local corporativo; a estendida mapeia o Chronos de viagem.",
-                    "A nuclear envolve apenas relações bi geracionais imediatas de convívio (pais e filhos); a estendida capta o multigeracional completo periférico.",
-                    "Família nuclear atua sem Intenção Positiva; Família Estendida possui os 4 estágios de PNL completos.",
-                    "Família nuclear é o exossistema do indivíduo adulto no modelo de Bandura."
+                    "O Macrossistema dita filtros morais e preconceitos subconscientes, envelopados pelo contexto histórico do Cronossistema que diferencia gerações.",
+                    "Eles bloqueiam a Neurogênese do Hipocampo e acionam o Tronco Encefálico.",
+                    "Focam exclusivamente na divisão cronológica linear dos Períodos do Ciclo Vital.",
+                    "Fazem o indivíduo regredir para o estágio de Incompetência Inconsciente da PNL."
                 ],
-                correct: 1, citation: "[Aula 21]",
-                explanation: "O núcleo imediato dita as crenças centrais base; o círculo estendido consolida a segurança do suporte coletivo e raízes sistêmicas estendidas."
+                correct: 0, citation: "[Livro: Cap. 1 / Aula 21]",
+                explanation: "O macrossistema traz ideologias profundas, enquanto o cronossistema introduz o impacto do momento histórico e tecnológico."
             },
             {
                 id: 6, level: 1,
-                question: "O Nível Socioeconômico (NSE) no Exossistema mensura precisamente:",
+                question: "Como o Neocórtex (Lobo Frontal) exerce as Funções Executivas e o Poder de Veto sobre a reatividade do Sistema Límbico (Amígdala) e Cérebro Reptiliano?",
                 options: [
-                    "Filtros éticos reativos e o canal sensorial digital Ad dominante de Ricardo.",
-                    "Renda, nível de escolaridade acumulado e ocupação formal do trabalhador.",
-                    "Quantidade cronológica exata de milésimos poupados pelas vias subcorticais de Cronos.",
-                    "A intensidade quantitativa de submodalidades VAK."
+                    "O Lobo Frontal desliga o Bulbo e impede de forma eferente a Plasticidade Neural.",
+                    "O Controle Inibitório descendente pré-frontal freia os alarmes emocionais da Amígdala e os impulsos basais, acalmando a secreção de estresse do Hipotálamo.",
+                    "Ativando loops do perfil Auditivo Digital que geram Paralisia por Análise.",
+                    "Filtrando dados olfativos através do Tálamo para estagnar a homeostase somática."
                 ],
-                correct: 1, citation: "[Livro: Cap. 1]",
-                explanation: "A renda, instrução e o acesso ao mercado mapeiam o nível real das facilidades e dos fatores estressores de risco contra o indivíduo."
+                correct: 1, citation: "[Aula 04 / Aula 05]",
+                explanation: "O córtex pré-frontal gerencia as funções executivas; seu poder de veto envia feixes descendentes que modulam o sequestro amigdalar."
             },
             {
                 id: 7, level: 1,
-                question: "O Cronossistema de Bronfenbrenner analisa o comportamento como:",
+                question: "Qual mecanismo neurobiológico valida a Perspectiva da Aprendizagem Social de Bandura, demonstrando que a modelagem ocorre por imitação observacional?",
                 options: [
-                    "O resultado de loops amigdalares e somatizações de curto prazo baseadas na paralisia Ad de análise.",
-                    "Um produto em mutação contínua impulsionado por crises históricas e transições geracionais.",
-                    "A consequência da hereditariedade biológica desprovida de contatos no microssistema de convivência diária.",
-                    "O acúmulo genético autonômico da dimensão anatômica física exclusivamente."
+                    "A ativação de esquemas lógicos imutáveis herdados na fase de Primeira Infância.",
+                    "A ação dos Neurônios-espelho, que disparam em sincronia simulando internamente as ações, atitudes e comportamentos observados no ecossistema social.",
+                    "Os conflitos emocionais profundos inconscientes da corrente Psicanalítica.",
+                    "O declínio biológico inevitável mapeado na fase de Idade Adulta Tardia."
                 ],
-                correct: 1, citation: "[Aula 21]",
-                explanation: "Ele ensina que os jovens absorvem estressores e crenças moldadas pelas transições tecnológicas, impossíveis de serem comparadas em isonomia cronológica com a realidade de seus pais."
+                correct: 1, citation: "[Aula 07 / Aula 12]",
+                explanation: "Os neurônios-espelho são a base física da modelagem; eles emulam de forma sináptica o comportamento do modelo observado."
             },
             {
                 id: 8, level: 1,
-                question: "Segundo a Perspectiva Contextual, um sintoma comportamental destrutivo isolado de um colaborador de faturamento significa o quê?",
+                question: "Sob a ótica das Abordagens Sistêmicas e do Princípio da Intenção Positiva, como se interpreta um sintoma prejudicial ou o Desamparo Aprendido do sujeito?",
                 options: [
-                    "Desejo maligno amigdalar desprovido de Intenção Positiva.",
-                    "É um reflexo sintomático do desequilíbrio e dreno de todo o seu complexo ecossistema físico e de saúde familiar de apoio.",
-                    "Ausência completa dos canais de submodalidades sinestésicas Kairós.",
-                    "A manifestação de cromossomos recessivos de base hereditária."
+                    "Como uma falha moral crônica desprovida de qualquer função biológica adaptativa.",
+                    "Como uma manobra subconsciente protetora orientada a um Ganho Secundário, visando poupar energia celular somática ou afastar o indivíduo de uma dor maior.",
+                    "Um loop obsessivo disparado pela ativação voluntária das Funções Executivas.",
+                    "A manifestação eferente pura de heranças cromossômicas da vida Pré-natal."
                 ],
-                correct: 1, citation: "[Aula 03 / Aula 21]",
-                explanation: "Na teoria bioecológica não existe um erro solto no vácuo; a somatização de um executivo é uma explosão das rachaduras no sistema ao redor dele."
+                correct: 1, citation: "[Aula 06 / Aula 21]",
+                explanation: "A intenção positiva postula que todo sintoma ou desvio visa proteção subconsciente, autopreservação ou poupança de energia celular."
             },
             {
                 id: 9, level: 1,
-                question: "A Perspectiva Cognitiva (Piaget) defende de maneira inabalável que:",
+                question: "Na gestão da Tríade do Tempo, qual a armadilha do perfil Auditivo Digital (Ad) em Cronos e como a Psicologia Positiva orienta a sua reabilitação?",
                 options: [
-                    "O processamento visual espelhado na tela bloqueia os Gânglios de faturamento em Cronos.",
-                    "O homem decodifica a realidade moldando ativamente as lógicas em seus esquemas de pensamento, que se tornam rígidos para garantir a autopreservação psíquica.",
-                    "O analfabetismo relacional destrói organicamente a hereditariedade do córtex pré-motor.",
-                    "Os canais auditivos possuem mais energia de fluxo que os canais analíticos digitais Ad."
+                    "O esvaziamento imediato da Esfera da Urgência através do Toque Físico familiar.",
+                    "O diálogo interno Ad obsessivo gera Paralisia por Análise; a reabilitação exige focar na Esfera da Importância em Kairós para alcançar o estado de Flow.",
+                    "A regressão autonômica direta para os esquemas lógicos da Terceira Infância.",
+                    "O aumento inflamatório do cortisol provocado pelo silêncio das Ondas Alfa."
                 ],
-                correct: 1, citation: "[Livro: Cap. 2]",
-                explanation: "Quando um indivíduo apresenta crenças muito fechadas ou é polarizado, é uma defesa do cérebro racional contra o colapso e o desconhecido (defesa de esquemas)."
+                correct: 1, citation: "[Aula 13 / Aula 14 / Aula 18]",
+                explanation: "Indivíduos com dominância Ad superprocessam dados e caem em paralisia por análise. Alocar tempo para a importância constrói o Flow."
             },
             {
                 id: 10, level: 1,
-                question: "O Princípio de Bandura da Aprendizagem Social afirma fundamentalmente que:",
+                question: "Para transicionar da Incompetência Consciente para a Competência Inconsciente, como o Rapport e a Escuta Empática atuam nas Barreiras Psíquicas de Lozanov?",
                 options: [
-                    "O aprendizado reativo amigdalar é anulado pela sugestopedia barroca (Barreiras de Lozanov) sem Veto Cognitivo.",
-                    "O comportamento é lapidado pela imitação observacional do meio. O ambiente altera o homem e a atitude do homem altera o ambiente no determinismo recíproco.",
-                    "A genética domina plenamente os Gânglios da Base de faturamento na fase Pré-Natal do indivíduo de forma passiva.",
-                    "A neurogênese somática só se instaura em Kairós digital de repouso absoluto Ad."
+                    "Eles reparam de forma linear a atrofia cinzenta do Tronco Encefálico basal.",
+                    "Desarmam os filtros afetivo-lógicos de Lozanov, reduzindo o cortisol e ativando a Plasticidade Neural e a Neurogênese para consolidar o novo aprendizado.",
+                    "Bloqueiam os picos bioquímicos estáveis de ocitocina e as Linguagens do Amor.",
+                    "Forçam a mente a se fixar permanentemente na Esfera da Circunstancialidade."
                 ],
-                correct: 1, citation: "[Aula 12]",
-                explanation: "Bandura comprovou a força absurda do sistema espelho. Copiamos hábitos só de observar modelos de faturamento atuando em nosso Exossistema corporativo."
+                correct: 1, citation: "[Aula 08 / Aula 10 / Aula 11]",
+                explanation: "A segurança relacional desativa as barreiras de Lozanov. Isso reduz o estresse, abrindo caminho para a plasticidade e neurogênese."
             },
-
-            // FASE 2: ANÁLISE DE PROCESSOS E CAUSA E EFEITO
-            {
-                id: 11, level: 2,
-                question: "Na engrenagem do IDH e nas Três Dimensões, se Patrícia vive uma crise conjugal intensa com seu marido, o que ocorrerá sistematicamente com ela?",
-                options: [
-                    "Por serem independentes, as três dimensões permanecem seladas pelo Tálamo e blindadas por Cronos.",
-                    "A sobrecarga límbica Psicossocial disparará excesso de cortisol, exaurindo o corpo Físico com insônias e drenando o Neocórtex Cognitivo que perde sua capacidade de faturamento lógico corporativo.",
-                    "O Neocórtex desligará por completo o Cérebro Reptiliano para impedir fuga simpática ou somatizações no Tálamo sensorial.",
-                    "O estresse bloqueará a maturação genética e causará uma paralisia na linha temporal adulta intermediária de Cronos."
-                ],
-                correct: 1, citation: "[Aula 03]",
-                explanation: "Somos ecossistemas biológicos conectados. O estresse nas relações sociais drena de imediato a energia racional, impossibilitando o corpo somático de performar no mercado de trabalho e nas escolhas do cotidiano."
-            },
-            {
-                id: 12, level: 2,
-                question: "Explique como os 'neurônios-espelho' justificam de forma material que conviver com pessoas agressivas em um escritório arruína as nossas células.",
-                options: [
-                    "O humor ácido destrói ativamente a maturação das vias auditivas Ad por contato direto.",
-                    "Mesmo contra a vontade, os nossos neurônios simulam os microcomportamentos nervosos dos agressivos ao redor, alterando forçosamente a nossa própria química interna de saúde.",
-                    "Pela redução do dreno cognitivo Ad, as Ondas Alfa dominam os lobos frontais sob amígdalas exaustas de forma definitiva e paralisante.",
-                    "Ocorre a ativação forçada das Barreiras de Lozanov de forma benéfica em Kairós de relaxamento prolongado da dimensão temporal."
-                ],
-                correct: 1, citation: "[Aula 07 / Aula 12]",
-                explanation: "Espelhar significa imitar e codificar emoções passivamente no seu interior biológico; a convivência reativa tóxica é perfeitamente contagiante de forma sináptica, sem demandar nenhum contato corporal direto."
-            },
-            {
-                id: 13, level: 2,
-                question: "Uma mulher não consegue quebrar a rotina perniciosa e viciosa de consumo de açúcares no final do expediente corporativo. Como a Perspectiva da Aprendizagem entende a mecânica deste problema em Cronos?",
-                options: [
-                    "Como um dreno de hereditariedade biológica consolidado nos esquemas mentais da vida Pré-natal impossíveis de reconfigurar no período adulto tardio.",
-                    "Ela busca o 'prazer' como fuga anestésica do excesso da carga alostática de estresse do dia; o pico imediato dopaminérgico reforça fisicamente esse canal sináptico nos Gânglios da Base.",
-                    "Como o desarmamento intencional do Veto Cognitivo do lobo temporal associado ao Quarto Caminho de Abnegação instintiva de Lozanov de relaxamento passivo.",
-                    "Como a ausência absoluta de preenchimento dos canais Sensoriais Auditivos Melódicos de Chapman sob estresse corporativo isolado de Kairós."
-                ],
-                correct: 1, citation: "[Livro: Cap. 2 / Aula 14]",
-                explanation: "Os instintos límbicos e reptilianos visam compensação energética passiva e automática de alívio rápido de dor. O vício é apenas o caminho neurológico de menor resistência."
-            },
-            {
-                id: 14, level: 2,
-                question: "Na Síndrome do 'Desamparo Aprendido' de Martin Seligman (cães do Grupo 3), por que o organismo não agia mais para evitar as dores?",
-                options: [
-                    "Porque os cães de faturamento da amostra de Seligman espelharam e modelaram comportamentos passivos através da via de Lozanov de faturamento rápido em Cronos de observação.",
-                    "A crença brutal da inescapabilidade (convicção biológica de que lutar era inútil) se fixou em redes do sistema límbico; o cérebro desligou e abandonou a esperança preventiva do lobo frontal (paralisia).",
-                    "A exaustão de amígdala paralisou de forma irreversível e biológica o tronco encefálico sem Intenção Positiva gerando o coma estático da PNL.",
-                    "Porque eles regrediram biologicamente ao nível crônico de Competência Inconsciente Estágio 4 de faturamento de Cronos sem vetos pré-frontais da dimensão analítica."
-                ],
-                correct: 1, citation: "[Aula 06]",
-                explanation: "É o retrato agudo e violento da depressão e apatia clínica: ao assimilar de modo contínuo que nenhuma das tentativas produz alívio efetivo, o ser humano abdica passivamente da própria agência mental."
-            },
-            {
-                id: 15, level: 2,
-                question: "O conceito da Intenção Positiva das abordagens sistêmicas argumenta que a agressividade verbal repentina de uma esposa extenuada atua com qual finalidade oculta?",
-                options: [
-                    "Exclusivamente o dreno dos estoques energéticos da glia para aumentar as ondas Alfa do lobo cognitivo pré-frontal sem modelagem observacional direta.",
-                    "Uma manobra biológica protetiva da mente subconsciente para rechaçar uma agressão psíquica, poupar recursos orgânicos e assegurar a autopreservação territorial límbica do indivíduo (dor de grito contra dor crônica oculta).",
-                    "A execução consciente neocortical premeditada pelo diálogo interno hiper-racional com viés puramente genético analítico de Cronos contra o microssistema estendido da Família.",
-                    "Porque a fase do Ciclo Vital correspondente à primeira infância foi suprimida gerando o choque da matriz psicanalítica passiva estática de Vygotsky na vida adulta jovem de rotina corporativa."
-                ],
-                correct: 1, citation: "[Aula 21]",
-                explanation: "Um sintoma violento e nocivo não ocorre livremente pelo desejo sombrio de prejudicar; ele age estritamente como instinto subcortical rudimentar para se proteger do acúmulo esmagador de dor prévia somatizada."
-            },
-            {
-                id: 16, level: 2,
-                question: "O perfil de comportamento Auditivo Digital (Ad) — caracterizado por pensar ativamente demais e por focar de modo reativo nos números em Cronos — frequentemente adoece por conta de:",
-                options: [
-                    "Loops contínuos agressivos de vozes e julgamentos na mente (diálogos internos paralisantes), drenando a glicose do neocórtex e exaurindo totalmente a capacidade prática de tomar decisões reais na empresa.",
-                    "Esvaziamento precoce do canal Sinestésico límbico por toque excessivo indesejado no macroecossistema comunitário sob modelagem espelho ativa.",
-                    "Ausência de Cronossistema ativo na vida adulta temporária com excesso atencional das Barreiras psíquicas de Lozanov na dimensão física autonômica simpática do hipotálamo.",
-                    "Excesso de Competências Inconscientes gravadas nos Gânglios da Base, forçando a reatividade do sistema de luta e fuga límbico do indivíduo passivo de Bandura."
-                ],
-                correct: 1, citation: "[Aula 13]",
-                explanation: "O fluxo de processamento de falas analíticas intermitente cansa o córtex motor. A mente exaurida desiste e recusa-se a executar atitudes simples do mundo físico de forma efetiva."
-            },
-            {
-                id: 17, level: 2,
-                question: "Pela Perspectiva Contextual (Microssistema e Exossistema), por que transferir culpas de performance estritamente aos indivíduos oprimidos na linha de frente não funciona clinicamente?",
-                options: [
-                    "Porque a modelagem neural eferente só ocorre em layouts espaciais auditivos de PNL analógica passiva com o Veto Cognitivo do Hipocampo desligado permanentemente de forma anatômica na dimensão biológica reativa.",
-                    "O estresse do colaborador é fruto das forças ambientais coercitivas crônicas da Vizinhança ou do faturamento cobrado em níveis socioeconômicos brutais da empresa (Veto Ambiental Esmagador).",
-                    "Pela ativação do Quarto Caminho da Resolução Pacífica de forma involuntária nos circuitos de recompensa dos Gânglios da Base em pacientes auditivos digitais crônicos de faturamento da matriz estática de Vygotsky ativa.",
-                    "Porque a hereditariedade e a maturação orgânica impedem a adaptação a qualquer novo formato educacional neocortical na terceira infância de PNL relacional da Tríade de Cronos somática passiva de Bandura."
-                ],
-                correct: 1, citation: "[Aula 21]",
-                explanation: "Se a infraestrutura orgânica (Exossistema e a liderança macro) despeja sobrecargas contínuas eferentes de estresse reativo e faturamento asfixiante, adoecer passa a ser o único caminho previsível da mente reptiliana."
-            },
-            {
-                id: 18, level: 2,
-                question: "Como o 'Poder de Veto' neocortical acalma e inibe de forma estrutural a sinalização autônoma descontrolada de estresse no organismo relacional de um executivo sob choque crônico?",
-                options: [
-                    "Pela via do Veto Cortical Descendente Frontal inibitório: A tomada de foco analítica serena suprime de forma passiva a inflamação da Amígdala e acalma ativamente o fluxo eferente de toxinas do Hipotálamo reativo.",
-                    "Substituindo ativamente o oxigênio biológico pelo dreno passivo do Cronossistema em 4 fases espaciais idênticas ao desamparo reptiliano passivo da PNL.",
-                    "O Veto Cognitivo extirpa cirurgicamente a sinalização do lobo parietal analógico digital isolando a Família Nuclear do Exossistema financeiro reativo simpático parasimpático passivo de Lozanov atencional sistêmico.",
-                    "Ao impor rigidez analógica no Tálamo sensorial auditivo bloqueando todas as memórias consolidadas de longa duração ativas no Hipocampo relacional crônico passivo biológico estático eferente cognitivo isolado da base PNL."
-                ],
-                correct: 1, citation: "[Aula 04]",
-                explanation: "Ao focar e parar com firmeza para analisar (Poder Inibitório Cortical Descendente), os feixes nervosos freiam o caos eferente do estresse basal, permitindo o restabelecimento clínico lógico pleno da sua homeostase interior biológica."
-            },
-            {
-                id: 19, level: 2,
-                question: "Como as defesas e Barreiras psíquicas de Lozanov boicotam o seu progresso de retenção clínica profunda em treinamentos corporativos de alta performance relacional na vida adulta crônica corporativa?",
-                options: [
-                    "As barreiras de desconfiança e os estigmas passados erguem um paredão amigdalar reativo defensivo eferente denso, vetando o processo cognitivo de aquisição química de memória no seu hipocampo anatômico relacional sistêmico clínico prático.",
-                    "Ao desarmarem instintivamente o Veto neocortical suprimindo o dreno passivo crônico dos neurônios espelho da Família Estendida em 3 submodalidades sistêmicas de Rapport clínico passivo somático em estado de fluxo temporal crônico passivo relacional ativo sistêmico isolado de PNL Vygotsky estático.",
-                    "Isolando o indivíduo da sua carga hereditária de longo prazo convertendo Kairós estático passivo analógico auditivo límbico somático na fase de infância tardia crônica de forma definitiva isolada da Dimensão Fisiológica relacional da Intenção reativa psíquica de base Bandura de PNL relacional em Cronos estático passivo.",
-                    "Gerando a extinção da glia no Tronco Encefálico reptiliano de forma ativa em 4 fases."
-                ],
-                correct: 1, citation: "[Aula 08]",
-                explanation: "Ambientes desprovidos de segurança relacional (ameaçadores) acionam alarmes psíquicos de fuga do sistema nervoso límbico que cortam e asfixiam completamente o foco neurológico pré-frontal e impossibilitam a mielinização dos estímulos didáticos na base eferente celular do seu paciente clínico adulto."
-            },
-            {
-                id: 20, level: 2,
-                question: "Por que as atitudes instintivas primitivas das crianças na primeira fase limítrofe biológica são estritamente consideradas 'Incompetência Inconsciente' clínica profunda pelo modelo neural ontogenético da PNL relacional de Bandura?",
-                options: [
-                    "O Cérebro reptiliano não reflete sobre a inépcia analítica passiva. A criança chora por alimento de forma mecânica autonômica, livre da auto-crítica biológica passiva analítica de sua incompetência relacional em Cronos reativo sistêmico de base passiva.",
-                    "A Maturação cognitiva isolada eferente límbica impede o desenvolvimento crônico fisiológico autônomo passivo da Fase do Ciclo Estático PNL passiva reativa analítica eferente sistêmica do Veto de base reptiliana relacional de longo prazo no Macro sistema passivo estático analítico da Intenção Crônica biológica passiva de faturamento temporal isolada sistêmica.",
-                    "A carga cromossômica eferente passiva reativa elimina a capacidade do Hipotálamo isolado estático anatômico analítico da Via Cortical Inibitória biológica límbica de base relacional ativa de longo prazo sistêmico.",
-                    "Elas ativam o Quarto Caminho de Percepção."
-                ],
-                correct: 1, citation: "[Aula 10]",
-                explanation: "No início rudimentar da sobrevivência da vida analítica do seu cérebro, nós nem sabemos ativamente relacionalmente que falhamos em atividades complexas corporativas de faturamento."
-            },
-
-            // FASE 3: CASOS REAIS
-            {
-                id: 21, level: 3,
-                question: "Caso Clínico de Roberto (Infarto aos 45 anos). Qual a correlação entre as Esferas de Tempo na sua empresa de faturamento e o colapso do Corpo Físico?",
-                options: [
-                    "O bloqueio isolado passivo da hereditariedade límbica sistêmica de base analógica estática crônica passiva.",
-                    "Negligenciar Kairós e os Blocos da Importância (saúde/afetos protetivos eferentes clínicos), cedendo às Urgências extenuantes de faturamento hiperativo estressante corporativo, provocou esgotamento alostático das artérias (a Dimensão Psicossocial abandonada drena a Dimensão Orgânica Física).",
-                    "A neurogênese somática gerou hiperplasia do neocórtex provocando dreno coronariano de base passiva límbica.",
-                    "Porque Roberto operava estritamente pelo conceito evolucionista instintivo amigdalar de Darwin isolado estático no Microssistema passivo reativo eferente."
-                ],
-                correct: 1, citation: "[Aula 05 / Aula 16]",
-                explanation: "O desleixo da vida relacional e da pausa saudável cria picos letais constantes de adrenalina em Cronos eferente, rasgando o equilíbrio coronário somático biológico do paciente."
-            },
-            {
-                id: 22, level: 3,
-                question: "Caso de Cláudio e Patrícia (Dissolução conjugal e Analfabetismo relacional passivo de faturamento eferente). Qual a mecânica do resgate e reconstrução de empatia deste casal em crise somática?",
-                options: [
-                    "Preencher ativamente a métrica de Gary Chapman e exercer Escuta Empática sistêmica ativa de Kairós neutralizam a toxicidade relacional amigdalar eferente defensiva do parceiro, recuperando de forma biológica a saúde e estabilidade da Dimensão Psicossocial e Orgânica Física sistêmica do lar estendido do indivíduo passivo de base.",
-                    "O Veto Frontal cortou o acesso à Vizinhança do Exossistema de base passiva límbica eferente sistêmica anatômica.",
-                    "Ao desarmar o Tronco Encefálico com música de relaxamento de Lozanov no Quarto Caminho de Cronos.",
-                    "Por meio de punições diretas analíticas estáticas de PNL."
-                ],
-                correct: 1, citation: "[Aula 17]",
-                explanation: "Restabelecer laços profundos reverte as hostilidades amigdalares sistêmicas biológicas corporativas de dor. Dimensão Afetiva curada desinflama a mente passiva do parceiro doente crônico."
-            },
-            {
-                id: 23, level: 3,
-                question: "No teste crônico laboratorial do Desamparo Aprendido (Seligman), o dreno e paralisia dos cães comprova de forma biológica sistêmica de base analítica que:",
-                options: [
-                    "Cães operam por canais sensoriais auditivos melódicos digitais (Ad) de Bandura de PNL relacional em Kairós de base sistêmica crônica.",
-                    "O aprendizado reativo subcortical clínico da total ausência de vias de controle e autonomia sobre as dores repetidas asfixia o ímpeto eferente voluntário orgânico de escape racional, originando as raízes da depressão apática profunda e clínica do indivíduo passivo estático relacional sistêmico da vida.",
-                    "As Barreiras Lógicas impedem a Neurogênese estática límbica de base relacional biológica crônica de faturamento analítica isolada.",
-                    "A amígdala é inibida ativamente pelos Neurônios-Espelho de base eferente sistêmica passiva de faturamento temporal analítica crônica isolada relacional do cérebro primitivo reativo."
-                ],
-                correct: 1, citation: "[Aula 06]",
-                explanation: "Ao sentirmos constantemente ausência de poder e faturamento isolado, a nossa mente adormece a autonomia existencial relacional em apatia clínica."
-            },
-            {
-                id: 24, level: 3,
-                question: "Você adentra em um escritório relacional analítico em Cronos e sente a sua carga de estresse biológico e irritação disparar instantaneamente sem nenhuma agressão verbal direta. A neurociência do comportamento explica isso biológicamente pela ação dos:",
-                options: [
-                    "Vetos cognitivos estáticos descendentes.",
-                    "Neurônios-espelho ativados de forma involuntária analógica passiva sistêmica de faturamento, simulando e absorvendo a atmosfera agressiva das pessoas ao seu redor (Contágio Fisiológico Biológico Emocional eferente sistêmico crônico de faturamento do Quarto Caminho do Cérebro Emocional passivo).",
-                    "Do Cronossistema ativo da vida uterina biológica passiva.",
-                    "Do Exossistema eferente analítico límbico passivo estático de faturamento analítico de PNL."
-                ],
-                correct: 1, citation: "[Aula 07 / Aula 12]",
-                explanation: "Mesmo sem notar relacionalmente, sua mente emula e absorve a carga psíquica de base agressiva passiva do ambiente em milissegundos."
-            },
-            {
-                id: 25, level: 3,
-                question: "Como o 'Layout em U' ou semicírculo de faturamento sistêmico eferente em uma reunião gerencial corporativa analítica de Cronos desativa hostilidades límbicas de base biológica passiva relacional?",
-                options: [
-                    "Drenando a plasticidade hipocampal eferente estática do Neocórtex de forma passiva clínica biológica de base relacional em faturamento analítico de Cronos estático.",
-                    "Pela equivalência territorial biológica relacional: Ele remove os vértices e picos de hierarquia vertical eferente predatória amigdalar de perigo, inserindo os executivos em visão ocular igualitária de proteção sistêmica, o que engaja e desativa medos ocultos subcorticais de forma orgânica eferente ativa de PNL de base passiva.",
-                    "Exaurindo Kairós no Microssistema passivo da vida Adulta Jovem de faturamento biológico crônico estático passivo.",
-                    "Inibindo ativamente o Veto Cognitivo do Quarto Caminho de faturamento."
-                ],
-                correct: 1, citation: "[Aula 12]",
-                explanation: "Retirar as barricadas e pontas angulares da sala de faturamento aproxima a visão e quebra hierarquias crônicas perigosas."
-            },
-            {
-                id: 26, level: 3,
-                question: "Um colaborador procrastina em Cronos e foca em games online crônicos na empresa. Como o mediador relacional de faturamento com base no Princípio da Intenção Positiva avalia essa conduta destrutiva passiva?",
-                options: [
-                    "Como dreno de hereditariedade biológica somática de base relacional crônica isolada sistêmica.",
-                    "Não há ganho moral, mas a intenção profunda amigdalar de faturamento é fugir anestesicamente da dor crônica do trabalho eferente opressor da empresa e poupar ativamente recursos somáticos biológicos sistêmicos de sua Mente sob perigo estático reativo passivo analítico de base crônica.",
-                    "Falta de Inteligência Comportamental Visual estática analítica passiva límbica.",
-                    "Abolição dos Gânglios da Base de faturamento relacional estático clínico passivo do Exossistema de Cronos eferente sistêmico analítico passivo reativo crônico da amígdala da vida adulta passiva."
-                ],
-                correct: 1, citation: "[Aula 21]",
-                explanation: "Sempre analisamos a fuga ou procrastinação do sujeito no escritório como via primária reptiliana protetiva de poupar recursos internos de forma biológica."
-            },
-            {
-                id: 27, level: 3,
-                question: "Seu parceiro no casamento demonstra um nível de Analfabetismo Emocional eferente passivo reativo agudo e não processa diálogos com empatia clínica relacional. Pela dinâmica da Plasticidade Neural biológica, qual o remédio para este problema de Cronos?",
-                options: [
-                    "A extirpação do Tálamo sensorial sistêmico da vida adulta tardia crônica analítica passiva biológica de Bandura de PNL relacional em Cronos estático passivo.",
-                    "Reconhecer de forma clínica que as capacidades afetivas eferentes subcorticais relacionais não são genéticas fixas biológicas (dons), mas feixes de conexões passíveis de serem mielinizados ativamente por faturamento orgânico de rotinas empáticas e Veto Consciente de repetição em Cronos.",
-                    "Bloquear o Cronossistema do Exossistema relacional estático clínico biológico de base límbica somática passiva de faturamento temporal em Kairós estático isolado sistêmico.",
-                    "Destruir as Barreiras de Lozanov do cérebro reptiliano estático analítico de PNL passivo."
-                ],
-                correct: 1, citation: "[Aula 07]",
-                explanation: "Plasticidade codifica de forma científica rigorosa: empatia de Kairós relacional pode ser treinada incansavelmente a qualquer momento do Ciclo temporal de Cronos."
-            },
-            {
-                id: 28, level: 3,
-                question: "Ricardo adquire um livro de Comportamento Humano eferente passivo para dominar Inteligência Emocional sistêmica analítica. Apenas ler o material teórico biológico relacional em silêncio ativo garantirá a Competência Inconsciente Estágio 4 de faturamento de Cronos dele?",
-                options: [
-                    "Sim, porque o lobo temporal analítico isolado biológico de Cronos estático preenche ativamente o Hipocampo clínico de PNL relacional passivo de faturamento eferente límbico.",
-                    "Não. Apenas ler os livros cria uma teia frágil hipocampal passiva estática. É a repetição motora social relacional e o treinamento prático eferente ativo que constroem a mielina espessa biológica de Hebb permanente nos Gânglios da Base analítica profunda de Cronos.",
-                    "Sim, ao inativar as 3 Barreiras Psíquicas estáticas de Lozanov em Kairós estático passivo relacional crônico biológico sistêmico de PNL eferente do Microssistema de faturamento passivo reativo de Cronos.",
-                    "Sim, graças ao Veto Congênito do Quarto Caminho de faturamento."
-                ],
-                correct: 1, citation: "[Aula 10 / Aula 11]",
-                explanation: "Saber os conceitos teóricos do escritório de Cronos é apenas a entrada. Aprender de verdade é gravar nos Gânglios ativamente via suor e prática social orgânica biológica profunda."
-            },
-            {
-                id: 29, level: 3,
-                question: "Como a Teoria Evolucionista instintiva analítica base passiva de Darwin justifica biologicamente a paralisia motora clínica e a 'brancura' de um estudante em uma prova de faturamento de Cronos vitalícia?",
-                options: [
-                    "Por excesso de Kairós sistêmico de base passiva.",
-                    "As Barreiras Psíquicas atencionais interpretam a avaliação severa de Cronos como ameaça letal ao ego do estudante. O cérebro Reptiliano assume a fisiologia, drena ativamente a oxigenação biológica pré-frontal e executa a resposta instintiva passiva estática sistêmica analítica crônica de Fuga ou Paralisia de base de longo prazo.",
-                    "É um dreno cronológico isolado de faturamento amigdalar de base analógica estática crônica passiva de PNL reativa do lobo frontal estático do hipocampo da vida adulta eferente passiva.",
-                    "Pela ausência de Vizinhança do Microssistema relacional estático clínico biológico de base límbica passivo estático de Bandura de faturamento analítico de Cronos estático passivo reativo."
-                ],
-                correct: 1, citation: "[Livro: Cap. 2 / Aula 06]",
-                explanation: "O branco orgânico de Cronos não é burrice ou déficit. É o instinto primitivo basal defensivo reptiliano blindando recursos em caso de ataque letal emocional somático de longo prazo."
-            },
-            {
-                id: 30, level: 3,
-                question: "Em uma intervenção relacional corporativa analítica de Cronos, uma equipe passa de 80% de urgências de faturamento para rotinas de Importância sistêmica ativa de Kairós em 3 meses de treinamento. O que os exames biométricos eferentes passivos crônicos registrarão?",
-                options: [
-                    "A atrofia do hipocampo relacional crônico passivo biológico estático eferente cognitivo do sistema nervoso autonômico eferente.",
-                    "Uma normalização contundente da química interna. Redução passiva eferente severa da pressão arterial clínica somática biológica e aumento da qualidade de sono profundo restaurador sistêmico por causa do alívio direto da carga simpática estática do Tálamo e da Amígdala de base orgânica ativa.",
-                    "A hiperplasia genética do lobo parietal analítico isolado biológico da fase de infância tardia crônica de forma definitiva isolada da Dimensão Fisiológica.",
-                    "Isolamento do indivíduo de sua carga hereditária de longo prazo da vida uterina biológica passiva de base relacional analítica de Bandura de PNL relacional em Cronos."
-                ],
-                correct: 1, citation: "[Aula 14 / Aula 16]",
-                explanation: "Controlar Cronos salva o coração. Sem o desespero diário das chamas e urgências, o corpo desinflama instantaneamente recuperando a biologia completa clínica relacional de base sistêmica."
-            }
         ];
 
         let currentQuestionIndex = 0;
-        let activeQuizLevel = 1; 
+        let activeQuizLevel = 1;
         let currentQuizQuestions = [];
         let sentences = [];
         let currentSentenceIndex = 0;
         let isPlaying = false;
         let activeUtterance = null;
 
-        function scrollToCard(cardId) {
-            const container = document.getElementById("content-viewport");
-            const element = document.getElementById(cardId);
-            if (container && element) {
-                const elementPosition = element.getBoundingClientRect().top;
-                const containerPosition = container.getBoundingClientRect().top;
-                const scrollPosition = elementPosition - containerPosition + container.scrollTop - 12;
-                container.scrollTo({ top: scrollPosition, behavior: "smooth" });
-            }
-        }
-
+        // NOVO ALGORITMO DE AGRUPAMENTO (BLOCOS DE EXATAMENTE 420 A 460 CARACTERES)
         function initAudioPlayer() {
             const scriptContainer = document.getElementById("lecture-script");
             const paragraphs = scriptContainer.querySelectorAll("p");
             let globalIndex = 0;
+            sentences = []; // Limpa o vetor global de sentenças
 
             paragraphs.forEach(p => {
                 const text = p.innerHTML;
+                // Divide o parágrafo pelas terminações típicas preservando a pontuação
                 const rawSentences = text.match(/[^.!?]+[.!?]+(\s|$)/g) || [text];
-                p.innerHTML = ""; 
+                p.innerHTML = "";
 
-                rawSentences.forEach(s => {
-                    const cleanText = s.replace(/<[^>]*>/g, "").trim();
-                    if (cleanText.length > 0) {
-                        const span = document.createElement("span");
-                        span.id = `s-${globalIndex}`;
-                        span.className = "cursor-pointer rounded transition-all duration-150 px-1 hover:bg-slate-100 block sm:inline";
-                        span.innerHTML = s;
-                        
-                        const sentenceId = globalIndex;
-                        span.onclick = () => jumpToSentence(sentenceId);
-                        p.appendChild(span);
+                let currentBlockText = "";
+                let currentBlockHTML = "";
 
-                        sentences.push({ index: globalIndex, text: cleanText, element: span });
-                        globalIndex++;
+                rawSentences.forEach((s, idx) => {
+                    const sClean = s.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+                    const sHTML = s.replace(/\s+/g, " ").trim();
+                    if (sClean.length === 0) return;
+
+                    // Agrupamento guloso até ao limite estrito de 460 caracteres
+                    if (currentBlockText.length === 0) {
+                        currentBlockText = sClean;
+                        currentBlockHTML = sHTML;
+                    } else if (currentBlockText.length + sClean.length + 1 <= 460) {
+                        currentBlockText += " " + sClean;
+                        currentBlockHTML += " " + sHTML;
+                    } else {
+                        // Cria o bloco acumulado
+                        createSpan(currentBlockHTML, currentBlockText);
+                        currentBlockText = sClean;
+                        currentBlockHTML = sHTML;
+                    }
+
+                    // Limpeza de fim de parágrafo
+                    if (idx === rawSentences.length - 1) {
+                        createSpan(currentBlockHTML, currentBlockText);
                     }
                 });
+
+                function createSpan(html, clean) {
+                    const trimmedClean = clean.trim();
+                    if (trimmedClean.length === 0) return;
+
+                    const span = document.createElement("span");
+                    span.id = `s-${globalIndex}`;
+                    span.className = "cursor-pointer rounded transition-all duration-150 px-1 hover:bg-slate-100 block sm:inline";
+                    span.innerHTML = html + " ";
+
+                    const sentenceId = globalIndex;
+                    span.onclick = () => jumpToSentence(sentenceId);
+                    p.appendChild(span);
+
+                    sentences.push({ index: globalIndex, text: trimmedClean, element: span });
+                    globalIndex++;
+                }
             });
 
             const scrubber = document.getElementById("audio-scrubber");
@@ -993,34 +972,62 @@
             updateTimeDisplay();
         }
 
+        // CARREGA E SELECIONA A MELHOR VOZ DO SISTEMA (Heuristic Scoring - Apenas Português do Brasil pt-BR)
         function populateVoices() {
             if (!window.speechSynthesis) return;
             const voiceSelect = document.getElementById("audio-voice");
             if (!voiceSelect) return;
             voiceSelect.innerHTML = "";
-            
-            const voices = window.speechSynthesis.getVoices();
-            const ptVoices = voices.filter(v => v.lang.toLowerCase().startsWith("pt"));
+
+            let voices = [];
+            try {
+                voices = window.speechSynthesis.getVoices() || [];
+            } catch (e) {
+                console.warn("Erro ao obter vozes do navegador:", e);
+            }
+
+            // Filtra as vozes disponíveis APENAS para Português do Brasil (pt-BR), eliminando pt-PT
+            const ptVoices = voices.filter(v => {
+                const lang = (v.lang || "").toLowerCase();
+                return lang === "pt-br" || lang.startsWith("pt-br") || lang.replace("-", "_") === "pt_br";
+            });
 
             if (ptVoices.length === 0) {
                 const opt = document.createElement("option");
                 opt.value = "";
-                opt.textContent = "Voz padrão do sistema";
+                opt.textContent = "Voz padrão do sistema (Brasil)";
                 voiceSelect.appendChild(opt);
                 return;
             }
 
+            // Sistema de pontuação para selecionar as vozes mais realistas e de ótima qualidade
+            function getVoiceScore(v) {
+                let score = 0;
+                const name = (v.name || "").toLowerCase();
+
+                if (name.includes("natural")) score += 100;
+                if (name.includes("neural")) score += 80;
+                if (name.includes("online") || !v.localService) score += 50;
+                if (name.includes("siri")) score += 40;
+                if (name.includes("google")) score += 30;
+                if (name.includes("microsoft")) score += 20;
+                return score;
+            }
+
+            // Ordena as vozes pela pontuação de qualidade descendente
+            ptVoices.sort((a, b) => getVoiceScore(b) - getVoiceScore(a));
+
             ptVoices.forEach(v => {
                 const opt = document.createElement("option");
-                opt.value = v.name;
-                let displayName = v.name.replace("Microsoft", "MS").replace("Google", "Google").replace("português", "PT");
-                opt.textContent = `${displayName} (${v.lang})`;
+                opt.value = v.name || "";
+                let displayName = (v.name || "").replace("Microsoft", "MS").replace("Google", "Google").replace("português", "PT");
+                opt.textContent = `${displayName} (${v.lang || "pt-BR"})`;
                 voiceSelect.appendChild(opt);
             });
 
-            const preferred = ptVoices.find(v => v.name.includes("Google") || v.name.includes("Natural") || v.name.includes("Maria"));
-            if (preferred) {
-                voiceSelect.value = preferred.name;
+            // Autoseleciona a voz com a melhor pontuação de qualidade brasileira
+            if (ptVoices[0]) {
+                voiceSelect.value = ptVoices[0].name || "";
             }
         }
 
@@ -1035,32 +1042,34 @@
             }
         }
 
+        // LÓGICA DO REPRODUTOR MULTIMÉDIA
         function toggleAudio() {
             if (sentences.length === 0) return;
             if (isPlaying) pauseAudio();
             else playAudio();
         }
 
+        // CONTROLADOR DE REPRODUÇÃO SÍNCRONA
         function playAudio() {
             isPlaying = true;
-            document.getElementById("play-icon").classList.add("hidden");
-            document.getElementById("pause-icon").classList.remove("hidden");
+            document.getElementById("play-icon").className = "w-5 h-5 hidden";
+            document.getElementById("pause-icon").className = "w-5 h-5";
             speakSentence();
         }
 
         function pauseAudio() {
             isPlaying = false;
-            document.getElementById("play-icon").classList.remove("hidden");
-            document.getElementById("pause-icon").classList.add("hidden");
+            document.getElementById("play-icon").className = "w-5 h-5";
+            document.getElementById("pause-icon").className = "w-5 h-5 hidden";
             stopSynthesisOnly();
         }
 
         function stopAudio() {
             isPlaying = false;
-            document.getElementById("play-icon").classList.remove("hidden");
-            document.getElementById("pause-icon").classList.add("hidden");
+            document.getElementById("play-icon").className = "w-5 h-5";
+            document.getElementById("pause-icon").className = "w-5 h-5 hidden";
             stopSynthesisOnly();
-            
+
             sentences.forEach(s => s.element.classList.remove("bg-brand-50", "border-b-2", "border-brand-500", "text-slate-950", "font-medium"));
             currentSentenceIndex = 0;
             const scrubber = document.getElementById("audio-scrubber");
@@ -1085,7 +1094,7 @@
 
             const active = sentences[currentSentenceIndex];
             active.element.classList.add("bg-brand-50", "border-b-2", "border-brand-500", "text-slate-950", "font-medium");
-            
+
             const scriptBox = document.getElementById("lecture-script");
             const relativeOffset = active.element.offsetTop - scriptBox.offsetTop - 40;
             scriptBox.scrollTo({ top: relativeOffset, behavior: "smooth" });
@@ -1109,26 +1118,23 @@
                 }
             };
 
-            activeUtterance.onerror = () => { console.warn("TTS cancelado ou suspenso."); };
+            activeUtterance.onerror = () => { console.warn("Sintetizador de áudio interrompido com sucesso."); };
             window.speechSynthesis.speak(activeUtterance);
         }
 
-        function scrubAudio(value) {
-            jumpToSentence(parseInt(value));
-        }
-
+        // ROLAGEM SÍNCRONA
         function jumpToSentence(index) {
             currentSentenceIndex = index;
             const scrubber = document.getElementById("audio-scrubber");
             if (scrubber) scrubber.value = index;
             updateTimeDisplay();
-            
+
             if (isPlaying) {
                 speakSentence();
             } else {
                 sentences.forEach(s => s.element.classList.remove("bg-brand-50", "border-b-2", "border-brand-500", "text-slate-950", "font-medium"));
                 sentences[index].element.classList.add("bg-brand-50", "border-b-2", "border-brand-500", "text-slate-950", "font-medium");
-                
+
                 const scriptBox = document.getElementById("lecture-script");
                 const relativeOffset = sentences[index].element.offsetTop - scriptBox.offsetTop - 40;
                 scriptBox.scrollTo({ top: relativeOffset, behavior: "smooth" });
@@ -1143,18 +1149,19 @@
             if (display) display.textContent = `${currentSentenceIndex + 1} / ${sentences.length}`;
         }
 
+        // GESTÃO DE QUIZ
         function loadQuizLevel(level) {
             activeQuizLevel = level;
-            currentQuizQuestions = QUIZ_QUESTIONS.filter(q => q.level === level);
+            currentQuizQuestions = [...QUIZ_QUESTIONS.filter(q => q.level === level)];
             currentQuestionIndex = 0;
-            
+
             const badge = document.getElementById("quiz-level-badge");
-            if(badge) badge.textContent = `Quiz • Nível ${level} de 3`;
-            
+            if (badge) badge.textContent = `Quiz • Nível ${level} de 3`;
+
             const stageText = document.getElementById("sidebar-stage");
             const progress = document.getElementById("sidebar-progress");
             const progressText = document.getElementById("sidebar-progress-text");
-            
+
             if (level === 1) {
                 if (stageText) stageText.textContent = "Incompetência Consciente";
                 if (progress) progress.style.width = "33%";
@@ -1171,83 +1178,116 @@
             renderQuestion();
         }
 
+        // RENDERIZADOR DO QUIZ COM COBERTURA TOTAL DE FEEDBACK DE EXTREMIDADE A EXTREMIDADE
         function renderQuestion() {
-            if(currentQuizQuestions.length === 0) return;
+            if (currentQuizQuestions.length === 0) return;
             const q = currentQuizQuestions[currentQuestionIndex];
             const container = document.getElementById("quiz-container");
             const scoreIndicator = document.getElementById("quiz-score-indicator");
-            
-            if(scoreIndicator) scoreIndicator.textContent = `Q. ${currentQuestionIndex + 1} de 10`;
 
-            if(container) {
+            if (scoreIndicator) scoreIndicator.textContent = `Q. ${currentQuestionIndex + 1} de ${currentQuizQuestions.length}`;
+
+            if (container) {
                 container.innerHTML = `
-                    <div class="space-y-4">
-                        <h4 class="text-lg font-bold text-slate-900 leading-relaxed">${q.id}. ${q.question}</h4>
-                        <div class="grid grid-cols-1 gap-1.5" id="quiz-options-grid">
+                    <div class="flex flex-col h-full justify-between space-y-1.5 sm:space-y-3">
+                        <!-- Enunciado com fonte legível adaptada ao tamanho exato das alternativas de respostas -->
+                        <h4 class="text-sm sm:text-base md:text-lg font-extrabold text-slate-900 leading-snug shrink-0">${q.id}. ${q.question}</h4>
+                        
+                        <!-- Opções compactas sem cortar o texto -->
+                        <div class="flex-grow grid grid-cols-1 gap-2 my-1" id="quiz-options-grid">
                             ${q.options.map((opt, i) => `
-                                <button onclick="submitAnswer(${i})" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition duration-150 text-base font-semibold leading-relaxed flex items-start space-x-3">
-                                    <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center flex-shrink-0 text-xs font-extrabold mt-0.5">${String.fromCharCode(65 + i)}</span>
+                                <button onclick="submitAnswer(${i})" class="w-full text-left py-1.5 sm:py-2 px-4 sm:px-5 rounded-2xl border-2 border-slate-200 hover:border-brand-500 hover:bg-slate-50 transition duration-150 text-sm sm:text-base md:text-lg font-bold leading-normal flex items-center space-x-3.5 shadow-sm min-h-[50px] overflow-hidden">
+                                    <span class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center flex-shrink-0 text-xs sm:text-sm font-extrabold">${String.fromCharCode(65 + i)}</span>
                                     <span class="flex-1">${opt}</span>
                                 </button>
                             `).join('')}
                         </div>
-                        <div id="quiz-feedback" class="hidden p-2.5 rounded-xl transition duration-300 text-base"></div>
                     </div>
+                    
+                    <!-- Overlay de Feedback posicionado de ponta a ponta no contentor principal para cobrir tudo -->
+                    <div id="quiz-feedback" class="absolute inset-0 bg-white flex flex-col justify-between p-5 sm:p-7 z-50 transition-all duration-300 rounded-2xl border border-slate-200 hidden"></div>
                 `;
             }
         }
 
         function submitAnswer(selectedIndex) {
             const q = currentQuizQuestions[currentQuestionIndex];
-            const grid = document.getElementById("quiz-options-grid");
             const feedback = document.getElementById("quiz-feedback");
-            
+            if (!feedback) return;
+
+            const grid = document.getElementById("quiz-options-grid");
             const buttons = grid.querySelectorAll("button");
             buttons.forEach(btn => btn.disabled = true);
 
-            if (selectedIndex === q.correct) {
-                buttons[selectedIndex].className = "w-full text-left p-3.5 rounded-xl border-2 border-luz-verde bg-emerald-50 text-base font-semibold leading-relaxed flex items-start space-x-3";
-                feedback.className = "p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-base space-y-1 block";
-                feedback.innerHTML = `
-                    <div class="flex items-center space-x-2">
-                        <span class="font-bold text-emerald-950">Resposta Correta!</span>
-                        <span class="text-[11px] font-bold px-1.5 py-0.5 bg-emerald-200 text-emerald-700 rounded-full">${q.citation}</span>
+            let isCorrect = selectedIndex === q.correct;
+            let feedbackHTML = "";
+
+            if (isCorrect) {
+                feedbackHTML = `
+                    <div class="flex flex-col h-full justify-between space-y-4">
+                        <div class="space-y-3 flex-1 overflow-y-auto pr-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-lg text-sm sm:text-lg uppercase tracking-wider">Resposta Correta!</span>
+                                <span class="text-sm font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">${q.citation}</span>
+                            </div>
+                            <h5 class="text-xl sm:text-3xl font-extrabold text-emerald-950 leading-tight">Excelente reflexão!</h5>
+                            <p class="text-lg sm:text-2xl text-slate-700 leading-relaxed font-semibold">${q.explanation}</p>
+                        </div>
+                        <div class="shrink-0 pt-2 border-t border-slate-100">
+                            <button onclick="advanceQuestion(false)" class="w-full py-3.5 sm:py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl transition text-lg sm:text-2xl shadow-lg shadow-emerald-600/20">Avançar para a próxima questão</button>
+                        </div>
                     </div>
-                    <p class="leading-relaxed font-medium">${q.explanation}</p>
-                    <button onclick="advanceQuestion()" class="mt-2 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition text-sm">Avançar para Próxima Questão</button>
                 `;
                 triggerDopamineConfetti();
             } else {
-                buttons[selectedIndex].className = "w-full text-left p-3.5 rounded-xl border-2 border-luz-coral bg-rose-50 text-base font-semibold leading-relaxed flex items-start space-x-3";
-                buttons[q.correct].className = "w-full text-left p-3.5 rounded-xl border border-luz-verde bg-emerald-50/60 text-base font-semibold leading-relaxed flex items-start space-x-3";
-                feedback.className = "p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-base space-y-1 block";
-                feedback.innerHTML = `
-                    <div class="flex items-center space-x-2">
-                        <span class="font-bold text-rose-950">Processo Adaptativo Alinhado</span>
-                        <span class="text-[11px] font-bold px-1.5 py-0.5 bg-rose-200 text-rose-700 rounded-full">${q.citation}</span>
+                feedbackHTML = `
+                    <div class="flex flex-col h-full justify-between space-y-4">
+                        <div class="space-y-3 flex-1 overflow-y-auto pr-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-3 py-1 bg-rose-100 text-rose-800 font-extrabold rounded-lg text-sm sm:text-lg uppercase tracking-wider">Tente Novamente</span>
+                                <span class="text-sm font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">${q.citation}</span>
+                            </div>
+                            <h5 class="text-xl sm:text-3xl font-extrabold text-rose-950 leading-tight">Explicação:</h5>
+                            <p class="text-lg sm:text-2xl text-slate-700 leading-relaxed font-semibold">${q.explanation}</p>
+                            <p class="text-sm sm:text-base text-rose-600 font-bold italic">O erro faz parte da aprendizagem. Esta pergunta foi reorganizada para o final da fila.</p>
+                        </div>
+                        <div class="shrink-0 pt-2 border-t border-slate-100">
+                            <button onclick="advanceQuestion(true)" class="w-full py-3.5 sm:py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-2xl transition text-lg sm:text-2xl shadow-lg shadow-rose-600/20">Continuar a aprender</button>
+                        </div>
                     </div>
-                    <p class="leading-relaxed font-medium text-rose-900">${q.explanation}</p>
-                    <p class="text-xs text-rose-600 font-bold italic mt-1">O erro é parte da aprendizagem profunda. Questão realocada para o final.</p>
-                    <button onclick="advanceQuestion(true)" class="mt-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg transition text-sm">Continuar Aprendendo</button>
                 `;
-                currentQuizQuestions.push(q);
             }
+
+            feedback.innerHTML = feedbackHTML;
+            feedback.className = "absolute inset-0 bg-white flex flex-col justify-between p-5 sm:p-7 z-50 transition-all duration-300 rounded-3xl border border-slate-200 flex";
         }
 
         function advanceQuestion(wasWrong = false) {
-            if (!wasWrong) currentQuestionIndex++;
+            if (wasWrong) {
+                // Move a questão atual para o final do array correspondente ao nível ativo
+                const currentQuestion = currentQuizQuestions.splice(currentQuestionIndex, 1)[0];
+                currentQuizQuestions.push(currentQuestion);
+                // Como removemos a questão corrente, o próximo elemento assume o índice atual. Portanto, não incrementamos 'currentQuestionIndex'.
+            } else {
+                currentQuestionIndex++;
+            }
+
             if (currentQuestionIndex >= currentQuizQuestions.length) {
                 if (activeQuizLevel < 3) {
                     loadQuizLevel(activeQuizLevel + 1);
-                } else renderQuizCelebration();
-            } else renderQuestion();
+                } else {
+                    renderQuizCelebration();
+                }
+            } else {
+                renderQuestion();
+            }
         }
 
         function renderQuizCelebration() {
             const container = document.getElementById("quiz-container");
             const scoreIndicator = document.getElementById("quiz-score-indicator");
-            if(scoreIndicator) scoreIndicator.textContent = "Concluído";
-            if(container) {
+            if (scoreIndicator) scoreIndicator.textContent = "Concluído";
+            if (container) {
                 container.innerHTML = `
                     <div class="text-center py-6 space-y-3 max-w-sm mx-auto">
                         <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-luz-verde animate-bounce">
@@ -1265,22 +1305,28 @@
             triggerDopamineConfetti();
         }
 
-        // INTERAÇÃO DO GRÁFICO 1 (Círculo Bioecológico)
+        function changeSection(id) {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+            }
+            scrollToCard('lecture-card');
+        }
+
+        // INTERAÇÃO DO GRÁFICO 1 (Anéis do Círculo Bioecológico unificados)
         function selectRing(ringId) {
             const data = RING_DATA[ringId];
             const svg = document.getElementById("bio-svg");
-            
-            if(svg) {
+
+            if (svg) {
                 svg.querySelectorAll("circle").forEach(circle => {
-                    if (circle.getAttribute("fill") !== "#0284c7") {
-                        circle.setAttribute("stroke", "#e2e8f0");
-                    }
+                    circle.classList.remove("active-ring");
                 });
             }
 
             const targetRing = document.getElementById(`ring-${ringId}`);
             if (targetRing) {
-                targetRing.setAttribute("stroke", "#38bdf8");
+                targetRing.classList.add("active-ring");
             }
 
             document.getElementById("ring-badge").textContent = data.badge;
@@ -1291,33 +1337,31 @@
             document.getElementById("ring-association-box").classList.remove("hidden");
         }
 
-        // INTERAÇÕES DO GRÁFICO 2 (Perspectivas e Linha Vital)
+        // INTERAÇÕES DOS GRÁFICOS 2 E 3 (Unificados com as cores da identidade visual, protegendo grids e classes)
         function selectPerspective(pId) {
             const data = PERSPECTIVE_DATA[pId];
-            
+
             const bar = document.getElementById("persp-buttons-bar");
-            if(bar) {
+            if (bar) {
                 bar.querySelectorAll("button").forEach(btn => {
-                    btn.className = "py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold rounded-lg transition";
+                    btn.className = "py-2.5 sm:py-3.5 md:py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm sm:text-base font-extrabold rounded-xl transition shadow-sm truncate";
                 });
             }
             const activeBtn = document.getElementById(`btn-p-${pId}`);
-            if(activeBtn) {
-                if (pId === 'evolucionista') {
-                    activeBtn.className = "col-span-2 py-1.5 sm:py-2 px-1 bg-indigo-600 text-white text-xs sm:text-sm font-bold rounded-lg transition shadow-md shadow-indigo-600/10";
-                } else {
-                    activeBtn.className = "py-1.5 sm:py-2 px-1 bg-indigo-600 text-white text-xs sm:text-sm font-bold rounded-lg transition shadow-md shadow-indigo-600/10";
-                }
+            if (activeBtn) {
+                activeBtn.className = "py-2.5 sm:py-3.5 md:py-1 px-2 bg-brand-600 text-white text-sm sm:text-base font-extrabold rounded-xl transition shadow-md shadow-brand-600/10 truncate";
             }
 
             document.getElementById("persp-badge").textContent = data.badge;
-            document.getElementById("persp-badge").className = "px-2 py-0.5 bg-indigo-500 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider";
+            document.getElementById("persp-badge").className = "px-3 py-1 bg-brand-600 text-white font-extrabold rounded-md text-sm sm:text-base uppercase tracking-wider";
             document.getElementById("persp-reference").textContent = data.ref;
             document.getElementById("persp-title").textContent = data.title;
             document.getElementById("persp-def").textContent = data.def;
 
+            document.getElementById("persp-col-1-title").className = "text-brand-700 md:text-base";
             document.getElementById("persp-col-1-title").textContent = data.col1_title + ":";
             document.getElementById("persp-col-1-text").textContent = data.col1_text;
+            document.getElementById("persp-col-2-title").className = "text-brand-700 md:text-base";
             document.getElementById("persp-col-2-title").textContent = data.col2_title + ":";
             document.getElementById("persp-col-2-text").textContent = data.col2_text;
             document.getElementById("persp-details-grid").classList.remove("hidden");
@@ -1326,18 +1370,20 @@
         function selectVitalStage(vId) {
             const data = VITAL_STAGE_DATA[vId];
             const bar = document.getElementById("vital-buttons-bar");
-            if(bar) {
+            if (bar) {
                 bar.querySelectorAll("button").forEach(btn => {
-                    btn.className = "py-1.5 sm:py-2 px-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-center text-xs sm:text-sm font-bold transition";
+                    btn.classList.remove("bg-brand-600", "text-white", "shadow-md", "shadow-brand-600/10");
+                    btn.classList.add("bg-slate-100", "hover:bg-slate-200", "text-slate-700", "shadow-sm");
                 });
             }
             const activeBtn = document.getElementById(`btn-v-${vId}`);
-            if(activeBtn) {
-                activeBtn.className = "py-1.5 sm:py-2 px-1 bg-brand-600 text-white rounded-lg text-center text-xs sm:text-sm font-bold transition shadow-md shadow-brand-600/10";
+            if (activeBtn) {
+                activeBtn.classList.remove("bg-slate-100", "hover:bg-slate-200", "text-slate-700", "shadow-sm");
+                activeBtn.classList.add("bg-brand-600", "text-white", "shadow-md", "shadow-brand-600/10");
             }
 
             document.getElementById("vital-badge").textContent = data.badge;
-            document.getElementById("vital-badge").className = "px-2 py-0.5 bg-brand-500 text-white font-extrabold rounded-md text-[10px] sm:text-[11px] uppercase tracking-wider";
+            document.getElementById("vital-badge").className = "px-3 py-1 bg-brand-600 text-white font-extrabold rounded-md text-sm sm:text-base uppercase tracking-wider";
             document.getElementById("vital-reference").textContent = data.ref;
             document.getElementById("vital-title").textContent = data.title;
             document.getElementById("vital-def").textContent = data.def;
@@ -1351,7 +1397,7 @@
 
         function triggerDopamineConfetti() {
             const canvas = document.getElementById("confetti-canvas");
-            if(!canvas) return;
+            if (!canvas) return;
             const ctx = canvas.getContext("2d");
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             const confetis = []; const cores = ["#0ea5e9", "#10b981", "#f59e0b", "#f43f5e", "#a855f7"];
