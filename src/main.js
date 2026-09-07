@@ -1,14 +1,14 @@
 import { dadosModulos } from '../conteudo/modulos-index.js';
 import { initQuiz } from './quiz-engine.js';
 // O Vite vai resolver as funções expostas no window pelos módulos abaixo
-import './controle-voz.js'; 
+import './controle-voz.js';
 import './ui-interacoes.js';
 
 let currentModule = 1;
 let currentTab = 'intro';
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // Carrega as vozes do navegador após um pequeno delay para garantir que a API carregou
     setTimeout(() => {
         if (window.populateVoices) window.populateVoices();
@@ -44,12 +44,12 @@ function loadModule(modId) {
     }
 
     currentModule = modId;
-    
+
     // Atualiza o estado visual dos botões na Sidebar (suas classes exatas)
     document.querySelectorAll('.modulo-btn').forEach(btn => {
         btn.className = 'modulo-btn w-full flex items-center justify-between p-3.5 rounded-xl transition-all duration-200 text-left text-slate-400 hover:bg-slate-800';
     });
-    
+
     const activeBtn = document.querySelector(`.modulo-btn[data-modulo="${modId}"]`);
     if (activeBtn) {
         activeBtn.className = 'modulo-btn w-full flex items-center justify-between p-3.5 rounded-xl transition-all duration-200 text-left bg-brand-700 text-slate-200 shadow-lg shadow-brand-700/10';
@@ -60,14 +60,14 @@ function loadModule(modId) {
         1: "Epistemologia e Vida",
         // Pode adicionar os próximos aqui: 2: "Cérebro Trino", etc.
     };
-    
+
     document.getElementById('header-modulo-badge').textContent = `Módulo ${modId}`;
     document.getElementById('header-modulo-title').textContent = titulos[modId] || "Em construção";
 
     // Para qualquer narração que esteja rodando e carrega a aba
     if (window.stopSynthesisOnly) window.stopSynthesisOnly();
     loadTab(currentTab);
-    
+
     // Fecha o menu lateral automaticamente em telas mobile
     const sidebar = document.getElementById('sidebar');
     if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
@@ -94,10 +94,10 @@ async function loadTab(tabId) {
     if (window.stopSynthesisOnly) window.stopSynthesisOnly();
 
     const target = document.getElementById('view-target');
-    
+
     try {
         // 1. Busca a "Casca" HTML da respectiva pasta de componentes
-        const response = await fetch(`/src/componentes/aba-${tabId}.html`);
+        const response = await fetch(`/componentes/aba-${tabId}.html`);
         if (!response.ok) throw new Error('Erro ao buscar o layout da aba.');
         const html = await response.text();
         target.innerHTML = html; // Injeta a casca na tela
@@ -122,8 +122,8 @@ async function loadTab(tabId) {
                     window.populateVoices();
                 });
             }
-        } 
-        
+        }
+
         else if (tabId === 'analise') {
             const scriptContainer = document.getElementById('analysis-script');
             if (scriptContainer) {
@@ -133,18 +133,18 @@ async function loadTab(tabId) {
                     scriptContainer.appendChild(p);
                 });
                 import('./controle-voz.js').then(module => {
-                    module.sentencesA.length = 0; 
+                    module.sentencesA.length = 0;
                     window.initPlayer('analysis-script', module.sentencesA, 'analysis-scrubber', 'analysis-current-time');
                     window.populateVoices();
                 });
             }
         }
-        
+
         else if (tabId === 'graficos') {
             // Se abrir a aba de gráficos, força o carregamento do Gráfico 1 do módulo atual
             window.loadGrafico(1);
         }
-        
+
         else if (tabId === 'quiz') {
             // Dispara o motor de inteligência do Quiz, passando as perguntas do módulo
             initQuiz(dados.quiz);
@@ -158,7 +158,7 @@ async function loadTab(tabId) {
 // ==========================================
 // FUNÇÃO GLOBAL: BUSCAR GRÁFICOS
 // ==========================================
-window.loadGrafico = async function(graficoId) {
+window.loadGrafico = async function (graficoId) {
     const container = document.getElementById('grafico-container');
     if (!container) return;
 
@@ -175,9 +175,9 @@ window.loadGrafico = async function(graficoId) {
         const response = await fetch(`/conteudo/grafico${currentModule}-${graficoId}.html`);
         if (!response.ok) throw new Error();
         const html = await response.text();
-        
+
         container.innerHTML = html;
-        
+
         // REAQUECIMENTO DE SCRIPT: Para que os arrays internos dos gráficos (RING_DATA, etc) funcionem via Fetch
         const scripts = container.querySelectorAll('script');
         scripts.forEach(oldScript => {
