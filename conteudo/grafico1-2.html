@@ -1,0 +1,93 @@
+<div class="flex flex-col h-full w-full gap-3 justify-between py-1 overflow-hidden">
+    <div id="vital-buttons-bar"
+        class="flex flex-wrap md:flex-nowrap justify-center gap-1 sm:gap-2 px-1 w-full shrink-0">
+        <button onclick="selectVitalStage('prenatal')" id="btn-v-prenatal"
+            class="py-2.5 md:py-1 px-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Pré-natal</button>
+        <button onclick="selectVitalStage('infancia_1')" id="btn-v-infancia_1"
+            class="py-2.5 md:py-1 px-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">1ª
+            Infância</button>
+        <button onclick="selectVitalStage('infancia_2')" id="btn-v-infancia_2"
+            class="py-2.5 md:py-1 px-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">2ª
+            Infância</button>
+        <button onclick="selectVitalStage('infancia_3')" id="btn-v-infancia_3"
+            class="py-2.5 md:py-1 px-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">3ª
+            Infância</button>
+        <button onclick="selectVitalStage('adolescencia')" id="btn-v-adolescencia"
+            class="py-2.5 md:py-1 px-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Adolescência</button>
+        <button onclick="selectVitalStage('adulto_jovem')" id="btn-v-adulto_jovem"
+            class="py-2.5 md:py-1 px-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Adulta
+            Jovem</button>
+        <button onclick="selectVitalStage('adulto_inter')" id="btn-v-adulto_inter"
+            class="py-2.5 md:py-1 px-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Adulta
+            Intermediária</button>
+        <button onclick="selectVitalStage('adulto_tardio')" id="btn-v-adulto_tardio"
+            class="py-2.5 md:py-1 px-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-center text-sm sm:text-base font-extrabold transition shadow-sm">Adulta
+            Tardia</button>
+    </div>
+
+    <div
+        class="flex-1 bg-slate-900/50 p-4 md:py-2 md:px-4 rounded-2xl border border-slate-700 flex flex-col justify-center items-center space-y-3 md:space-y-1.5 overflow-hidden">
+        <div class="flex justify-center items-center gap-2 mb-1">
+            <span id="vital-badge"
+                class="px-3 py-1 bg-brand-600 text-slate-300 font-extrabold rounded-md text-sm sm:text-base uppercase tracking-wider">Fases</span>
+            <span id="vital-reference" class="text-sm sm:text-base text-slate-400 font-bold truncate"></span>
+        </div>
+        <h3 id="vital-title"
+            class="text-xl sm:text-3xl md:text-2xl font-extrabold text-slate-300 mt-0.5 leading-tight text-center">
+            Escolha o Período Vital</h3>
+        <p id="vital-def"
+            class="text-base sm:text-xl md:text-base text-slate-400 leading-relaxed md:leading-tight text-center line-clamp-3 md:line-clamp-2">
+            Selecione nos botões acima a fase temporal de desenvolvimento biológico e cognitivo para aprofundar.</p>
+
+        <div id="vital-details-grid"
+            class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mt-2 md:mt-1.5 pt-2 md:pt-1.5 border-t border-slate-700 w-full text-center">
+            <div class="text-sm sm:text-base md:text-sm text-slate-300 leading-snug md:leading-tight">
+                <strong id="col-1-title" class="text-brand-400 md:text-base">Mudanças:</strong>
+                <p id="col-1-text" class="mt-0.5 line-clamp-3 text-slate-400 font-medium md:text-sm"></p>
+            </div>
+            <div class="text-sm sm:text-base md:text-sm text-slate-300 leading-snug md:leading-tight">
+                <strong id="col-2-title" class="text-brand-400 md:text-base">Estabilidade:</strong>
+                <p id="col-2-text" class="mt-0.5 line-clamp-3 text-slate-400 font-medium md:text-sm"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const VITAL_STAGE_DATA = {
+        prenatal: { badge: "Fase Vital", ref: "[Cap. 1]", title: "Período Pré-natal", def: "A base orgânica inicial sob fortes influências do ambiente uterino e fatores de hereditariedade.", col1_title: "O que Muda", col1_text: "Crescimento físico acelerado; vulnerabilidade a teratógenos.", col2_title: "Estabilidade", col2_text: "Predisposições genéticas e os contornos iniciais de temperamento." },
+        infancia_1: { badge: "Fase Vital", ref: "[Aula 10]", title: "Primeira Infância", def: "Transição extrema. O bebê opera por impulsos de sobrevivência do cérebro reptiliano (Incompetência Inconsciente).", col1_title: "O que Muda", col1_text: "Aperfeiçoamento motor; aquisição básica de linguagem.", col2_title: "Estabilidade", col2_text: "Vínculos de apego que forjam a segurança emocional do núcleo." },
+        infancia_2: { badge: "Fase Vital", ref: "[Cap. 1]", title: "Segunda Infância", def: "Abertura do mundo social, imaginação lúdica e forte exploração de papéis na vizinhança.", col1_title: "O que Muda", col1_text: "Coordenação motora fina; pensamento representacional e egocêntrico.", col2_title: "Estabilidade", col2_text: "O temperamento começa a se fixar como personalidade." },
+        infancia_3: { badge: "Fase Vital", ref: "[Aula 12]", title: "Terceira Infância", def: "Fase marcada pela inserção na escola formal e modelagem social intensa (Bandura) com o grupo de pares.", col1_title: "O que Muda", col1_text: "Ativação do processamento lógico concreto; autoeficácia em alta.", col2_title: "Estabilidade", col2_text: "A estruturação duradoura da autoestima e pertença." },
+        adolescencia: { badge: "Fase Vital", ref: "[Cap. 1]", title: "Adolescência", def: "Transição e mutações hormonais combinadas com fortes choques de identidade e autonomia no Exossistema.", col1_title: "O que Muda", col1_text: "Maturação do neocórtex; surgimento do raciocínio formal e complexo.", col2_title: "Estabilidade", col2_text: "Vulnerabilidade profunda de grupos e valores ético-morais." },
+        adulto_jovem: { badge: "Fase Vital", ref: "[Aula 02]", title: "Adulta Jovem", def: "A fase matriz do faturamento, constituição de família e estabelecimento da própria carreira.", col1_title: "O que Muda", col1_text: "Os compromissos cruciais profissionais e afetivos a longo prazo.", col2_title: "Estabilidade", col2_text: "Personalidade geral e estilo cognitivo se cimentam." },
+        adulto_inter: { badge: "Fase Vital", ref: "[Aula 14]", title: "Adulta Intermediária", def: "Estabilidade existencial marcada por dilemas temporais agudos e crises somáticas de carga alostática.", col1_title: "O que Muda", col1_text: "Declínio físico discreto; revisão e questionamento do próprio propósito.", col2_title: "Estabilidade", col2_text: "Máxima maturidade do lobo frontal (veto cognitivo) para problemas complexos." },
+        adulto_tardio: { badge: "Fase Vital", ref: "[Cap. 1]", title: "Adulta Tardia", def: "Fase reflexiva integrativa sobre realizações passadas em confronto direto com os drenos biológicos físicos.", col1_title: "O que Muda", col1_text: "Perda acentuada em capacidades orgânicas e na velocidade motora.", col2_title: "Estabilidade", col2_text: "A sabedoria cimentada e a alta blindagem e resiliência psicossocial." }
+    };
+
+    function selectVitalStage(vId) {
+        const data = VITAL_STAGE_DATA[vId];
+        const bar = document.getElementById("vital-buttons-bar");
+        if (bar) {
+            bar.querySelectorAll("button").forEach(btn => {
+                btn.classList.remove("bg-brand-600", "text-slate-200", "shadow-md", "shadow-brand-600/10");
+                btn.classList.add("bg-slate-700", "hover:bg-slate-600", "text-slate-200", "shadow-sm");
+            });
+        }
+        const activeBtn = document.getElementById(`btn-v-${vId}`);
+        if (activeBtn) {
+            activeBtn.classList.remove("bg-slate-700", "hover:bg-slate-600", "text-slate-200", "shadow-sm");
+            activeBtn.classList.add("bg-brand-600", "text-slate-200", "shadow-md", "shadow-brand-600/10");
+        }
+        document.getElementById("vital-badge").textContent = data.badge;
+        document.getElementById("vital-badge").className = "px-3 py-1 bg-brand-600 text-slate-200 font-extrabold rounded-md text-sm sm:text-base uppercase tracking-wider";
+        document.getElementById("vital-reference").textContent = data.ref;
+        document.getElementById("vital-title").textContent = data.title;
+        document.getElementById("vital-def").textContent = data.def;
+        document.getElementById("col-1-title").textContent = data.col1_title + ":";
+        document.getElementById("col-1-text").textContent = data.col1_text;
+        document.getElementById("col-2-title").textContent = data.col2_title + ":";
+        document.getElementById("col-2-text").textContent = data.col2_text;
+        document.getElementById("vital-details-grid").classList.remove("hidden");
+    }
+</script>

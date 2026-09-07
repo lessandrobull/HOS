@@ -1,0 +1,104 @@
+import asyncio
+import json
+import re
+import os
+import edge_tts
+from mutagen.mp3 import MP3
+
+VOZ_SELECIONADA = "pt-BR-FranciscaNeural"
+
+PARAGRAFOS = [
+  "<strong>1- Paradigma do Desenvolvimento Humano do PNUD (1990) e a Expansão das Liberdades Reais</strong>",
+  "O Paradigma do Desenvolvimento Humano, instituído em 1990 pelo PNUD sob as diretrizes de Amartya Sen e Mahbub ul Haq, rompeu com a visão mecanicista e unidimensional baseada estritamente no Produto Interno Bruto e na produtividade industrial de uma nação. Esse modelo consolidou que o real progresso social reside na ampliação das capacidades humanas, tirando o foco do acúmulo de riqueza macroeconômica para centralizá-lo nas pessoas e na expansão de suas escolhas.",
+  "A liberdade real de um indivíduo é compreendida pela distinção entre capacidades, que são as oportunidades potenciais de escolha, e funcionamentos, que constituem as realizações concretas. Amartya Sen postula que essa agência se viabiliza por meio de cinco liberdades instrumentais integradas: as liberdades políticas, as facilidades econômicas, as oportunidades sociais, as garantias de transparência e a segurança protetora das pessoas.",
+  "Para mensurar estatisticamente esse modelo focado no indivíduo, concebeu-se o Índice de Desenvolvimento Humano. Esse indicador unifica em uma média geométrica três dimensões básicas: a saúde, aferida pela expectativa de vida ao nascer; a educação, avaliada pelas médias de escolaridade de adultos e crianças; e o padrão de vida, calculado pela renda nacional bruta ajustada ao poder de compra para assegurar a dignidade do sujeito.",
+  "Na análise comportamental, esse paradigma elucida os graves danos de focar apenas no rendimento financeiro de Cronos. Quando o indivíduo prioriza metas econômicas brutas, o estresse crônico consome as horas de Kairós que deveriam ser dedicadas a atividades vitais, como o sono de ondas lentas, a nutrição de qualidade e o fortalecimento de laços de afeto, desequilibrando as dimensões físicas e mentais. Referência: Aula 02 / Aula 14.",
+  "<strong>2- Mecânica do Adoecimento Sistêmico por Hiperfoco Produtivo e Hiperprodutividade Corporativa</strong>",
+  "A hiperprodutividade mecânica das corporações contemporâneas impõe ao Neocórtex pré-frontal demandas atencionais extremas e ininterruptas. Sob a pressão por metas brutas agressivas, as funções executivas de alto nível do lobo frontal sofrem uma exaustão energética severa, esgotando rapidamente suas reservas de oxigênio e glicose. Esse dreno metabólico contínuo compromete a capacidade de tomada de decisões voluntárias, gerando paralisia por análise e névoa mental constante no indivíduo.",
+  "Quando as vias neocorticais falham devido ao cansaço atencional, o Tálamo distribui estímulos de sobrecarga ao Sistema Límbico, culminando no fenômeno do Sequestro Amigdalar. A amígdala assume o fluxo energético cerebral e dispara alarmes involuntários de luta e fuga. Esse processo força o Hipotálamo a descarregar cortisol constantemente na corrente sanguínea, elevando a carga alostática sistêmica e deteriorando a imunidade celular do sujeito.",
+  "Diante da inescapabilidade do estressor corporativo crônico, o sistema regride ao Cérebro Reptiliano, composto pelo tronco encefálico e gânglios da base. Esse mecanismo filogenético ativa o Desamparo Aprendido, uma paralisia defensiva de sobrevivência que desliga de forma voluntária os comportamentos de busca e agência do sujeito. O corpo passa a operar de forma reativa, congelando respostas para economizar o mínimo de energia celular somática restante.",
+  "Esse colapso corporal demonstra a indissociabilidade das dimensões física, cognitiva e psicossocial do desenvolvimento. O estresse gerado por metas corporativas retroalimenta o sistema por feedback recursivo, gerando somatizações e desestruturando os laços afetivos familiares. O adoecimento do sujeito é uma resposta sistêmica crônica à agressão contínua sofrida por suas estruturas biológicas. Referência: Aula 03 / Aula 05 / Aula 06.",
+  "<strong>3- Modulação da Homeostase Bioquímica por via de Cuidados Corporais Básicos</strong>",
+  "A Dimensão Física constitui a infraestrutura biológica primária indispensável para o pleno funcionamento das capacidades cognitivas e psicossocial do indivíduo. A negligência crônica do corpo somático, por meio da privação de sono e sedentarismo, sabota a homeostase bioquímica integrada. Sem essa integridade de base, as funções corticais superiores perdem a sustentação metabólica, colapsando a agência existencial de forma inevitável.",
+  "A modulação bioquímica restauradora fundamenta-se em três pilares funcionais ativos: o sono reparador de ondas lentas, a atividade física regular e a nutrição celular adequada. Durante o sono profundo, ocorre a depuração de resíduos metabólicos e a consolidação sináptica. Simultaneamente, os exercícios físicos e a alimentação saudável restauram o equilíbrio endócrino basal, promovendo a estabilidade imunológica do organismo.",
+  "Esses estímulos corporais positivos funcionam como moduladores diretos da neuroplasticidade e da neurogênese no Hipocampo. O hipocampo, central de processamento de memórias e emoções, responde de forma direta ao relaxamento basal e à liberação de fatores neurotróficos derivados da atividade somática. Esse ambiente molecular saudável estimula a sobrevivência de novos neurônios, restaurando a cognição ativa diante de estressores externos e de névoas mentais cotidianas.",
+  "A reversão da toxicidade do cortisol e da inflamação aguda é viabilizada pela ativação do controle descendente do Neocórtex pré-frontal. Esse mecanismo voluntário de Poder de Veto inibitório acalma a sinalização descendente da amígdala e desativa reações límbicas reativas. Com isso, o córtex reassume o comando autonômico, regulando a química do organismo e reestabelecendo a plena homeostase somática. Referência: Aula 04 / Aula 05 / Aula 07.",
+  "<strong>4- Análise Profunda e Integrada dos Processos Somáticos e de Desenvolvimento</strong>",
+  "A articulação sistêmica revela que o paradigma macroeconômico do PIB, medido em Cronos, atua como um estressor crônico que consome as capacidades reais do sujeito. Quando a produtividade corporativa dita a métrica de sucesso, ela sabota de forma direta a Dimensão Física, que serve como infraestrutura para as dimensões cognitiva e psicossocial. Essa agressão contínua desencadeia uma cascata neurobiológica que destrói a agência existencial e a qualidade de vida.",
+  "Fisiologicamente, o dreno metabólico imposto pelo hiperfoco produtivo exaure o neocórtex pré-frontal, permitindo que o sequestro amigdalar assuma o comando autonômico. Sob inundação ácida de cortisol e aumento da carga alostática, as liberdades instrumentais de agência e participação social são bloqueadas. O indivíduo regride ao desamparo aprendido do cérebro reptiliano, onde o corpo congela suas respostas e passa a operar unicamente em um estado reativo de sobrevivência.",
+  "A superação dessa paralisia defensiva exige reconhecer a indissociabilidade biopsicossocial do desenvolvimento por meio do autocuidado somático. Ao priorizar os pilares biológicos básicos, como o sono profundo de ondas lentas, exercícios e nutrição ativa, restabelece-se a homeostase bioquímica basal. Esse ambiente molecular saudável estimula novos neurônios no hipocampo, restaurando a cognição ativa diante de estressores e névoas cotidianas.",
+  "Esse equilíbrio somático devolve o oxigênio e a glicose ao lobo frontal, capacitando o sujeito a exercer o Poder de Veto cortical sobre impulsos do estresse. A transição de Cronos para Kairós resgata a autoeficácia e o florescimento ativo do modelo PERMA. Assim, a regulação descendente do sistema nervoso consolida a expansão das liberdades reais que definem a verdadeira dignidade humana. Referência: Aula 02 / Aula 06 / Aula 14.",
+  "<strong>5- Paradigma das Nações Unidas de 1990 (Casos, Evidências e Exemplos)</strong>",
+  "O caso clássico que evidencia empiricamente as limitações da métrica do Produto Interno Bruto e valida o paradigma do PNUD de 1990 é o estudo comparativo de nações de renda média. Países como Costa Rica e Sri Lanka, apesar de apresentarem renda per capita inferior à de algumas potências petroleiras do Oriente Médio, alcançaram índices de expectativa de vida e de alfabetização muito superiores, revelando o descompasso entre riqueza e bem-estar.",
+  "A Costa Rica ilustra esse direcionamento ao abolir suas forças armadas em 1948, realocando o faturamento do orçamento militar diretamente para os eixos de saúde pública e educação universal básica. Esse redirecionamento de prioridades fiscais expandiu as capacidades instrumentais de sua população, demonstrando de forma factual que o bem-estar social é determinado por decisões políticas e pela alocação intencional de recursos, não pela renda bruta.",
+  "No mesmo sentido, o Sri Lanka implementou programas robustos de distribuição de alimentos subsidiados e assistência médica gratuita muito antes de se tornar uma economia industrializada. Sob a análise de Amartya Sen, essas ações viabilizaram funcionamentos humanos básicos vitais, como a sobrevivência à mortalidade infantil e o acesso a conhecimentos formais, atestando a eficácia de políticas públicas focadas estritamente na dignidade somática.",
+  "Esse contraste empírico consolidou o entendimento de que a renda pessoal é apenas um meio instrumental para o desenvolvimento, e nunca um fim em si mesma. O progresso humano de uma comunidade deve ser mensurado pela expansão de suas liberdades reais de escolha e pela eliminação de privações biológicas básicas. Assim, as evidências históricas provam que o verdadeiro progresso deve focar na dignidade existencial do sujeito. Referência: Aula 02.",
+  "<strong>6- Análise Teórica e Epistemológica do Caso</strong>",
+  "A análise de Amartya Sen sobre a Costa Rica e o Sri Lanka demonstra que o faturamento de renda média de um país não se traduz automaticamente em funcionamentos ativos. Enquanto o PIB foca nos meios econômicos, a abordagem das capacidades analisa se o sujeito possui a liberdade real de ser e fazer o que valoriza. O investimento social direto garantiu a essas nações a superação de privações físicas essenciais de sobrevivência somática.",
+  "Esse desenvolvimento por agência se viabilizou pela articulação concertada das cinco liberdades instrumentais. Ao abolir o exército e subsidiar alimentos, as garantias de segurança protetora e facilidades econômicas apoiaram de forma eferente as oportunidades sociais e liberdades políticas de cidadania. Esse ciclo sinérgico prova que as liberdades instrumentais se fortalecem reciprocamente, elevando de forma sustentável a qualidade de vida.",
+  "O caso das duas nações atesta a indissociabilidade das dimensões física, cognitiva e psicossocial do desenvolvimento humano. O acesso universal à saúde (física) e à alfabetização escolar (cognitiva) forneceu a infraestrutura necessária para que o indivíduo exercesse sua agência comunitária (psicossocial). Tratar essas esferas de forma mecânica e fragmentada impede a consolidação das liberdades reais que asseguram a dignidade existencial.",
+  "Por fim, a transição epistemológica proposta por Mahbub ul Haq desmascara o faturamento numérico e linear de Cronos na avaliação social. Países focados apenas no acúmulo financeiro estéril produzem entropia social e adoecimento, ao passo que a Costa Rica priorizou Kairós, preservando as condições propícias de tempo para a saúde integral e bem-estar subjetivo, o que consagra o modelo centrado na dignidade humana. Referência: Aula 02.",
+  "<strong>Módulo 1: Análise Profunda e Integrada</strong>",
+  "A compreensão integral do comportamento humano no Módulo 1 exige articular as forças dialéticas da mudança e da estabilidade com as dimensões do desenvolvimento. As transformações quantitativas e qualitativas não ocorrem de forma isolada, mas sim de maneira simultânea nas esferas física, cognitiva e psicossocial do sujeito. Compreender essa engrenagem evita diagnósticos equivocados e superficiais sobre as oscilações do ciclo de vida.",
+  "A indissociabilidade dessas dimensões ganha clareza na abordagem das capacidades e na qualidade de vida. O progresso existencial de um indivíduo não pode ser medido apenas por métricas econômicas e de rendimento associadas a Cronos. Quando o sujeito prioriza a produtividade em detrimento de suas liberdades reais e escolhas, ele esvazia a sua agência e esgota de forma crônica os recursos biológicos de reserva de todo o seu organismo.",
+  "O estudo de caso de Cláudio e Patrícia ilustra o colapso integrado, em que a busca cega por metas financeiras causou analfabetismo afetivo e ruína psicossocial. O desgaste conjugal crônico mantém o sistema límbico de ambos em alerta permanente. Essa sobrecarga estimula o hipotálamo a liberar o cortisol continuamente, o que gera fadiga no neocórtex pré-frontal e bloqueia a capacidade de conter reações impulsivas de ataque e fuga.",
+  "A recuperação da harmonia exige reestabelecer o equilíbrio por meio do rapport, que desarma o sequestro emocional. Ao sintonizar a presença de kairós e nutrir o relacionamento pelas cinco linguagens do amor de Gary Chapman, o casal recupera a segurança psicológica. Essa dinâmica reconstrói a agência sistêmica, garantindo o florescimento saudável de todas as dimensões do indivíduo. Referência: Capítulo 1 / Aula 2 / Aula 3 / Aula 17 / Aula 21."
+]
+
+OUTPUT_DIR = "public/audio"
+OUTPUT_MP3 = os.path.join(OUTPUT_DIR, "modulo1-analise.mp3")
+OUTPUT_JSON = os.path.join(OUTPUT_DIR, "modulo1-analise-tempos.json")
+
+def limpar_html(texto):
+    t = re.sub(r'<[^>]+>', '', texto)
+    return t.strip()
+
+async def gerar():
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    timestamps = []
+    tempo_acumulado = 0.0
+
+    print(f"\n🎙️ Gerando áudio com a voz neural...")
+
+    temp_files = []
+    with open(OUTPUT_MP3, "wb") as master_audio:
+        for i, raw_text in enumerate(PARAGRAFOS):
+            texto_limpo = limpar_html(raw_text)
+            temp_chunk = f"temp_chunk_{i}.mp3"
+
+            communicate = edge_tts.Communicate(texto_limpo, VOZ_SELECIONADA)
+            await communicate.save(temp_chunk)
+
+            audio_info = MP3(temp_chunk).info
+            duracao = audio_info.length
+
+            inicio = round(tempo_acumulado, 2)
+            fim = round(tempo_acumulado + duracao, 2)
+
+            timestamps.append({
+                "index": i,
+                "start": inicio,
+                "end": fim
+            })
+
+            tempo_acumulado += duracao
+
+            with open(temp_chunk, "rb") as f_chunk:
+                master_audio.write(f_chunk.read())
+
+            temp_files.append(temp_chunk)
+            print(f"  ✓ Parágrafo {i + 1}/{len(PARAGRAFOS)} processado")
+
+    for f in temp_files:
+        if os.path.exists(f):
+            os.remove(f)
+
+    with open(OUTPUT_JSON, "w", encoding="utf-8") as jf:
+        json.dump(timestamps, jf, indent=2, ensure_ascii=False)
+
+    print("\n✅ Concluído com sucesso!")
+    print(f"-> Arquivo MP3: {OUTPUT_MP3}")
+    print(f"-> Arquivo de Tempos: {OUTPUT_JSON}\n")
+
+if __name__ == "__main__":
+    asyncio.run(gerar())
